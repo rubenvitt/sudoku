@@ -57,8 +57,18 @@ struct GridView: View, Equatable {
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), \(value == 0 ? "leer" : "\(value)")\(isWrong ? ", falsch" : "")")
+        .accessibilityLabel(accessibilityLabel(index, value: value, isGiven: isGiven, isWrong: isWrong))
         .accessibilityAddTraits(selection == index ? .isSelected : [])
+    }
+
+    /// "Zeile 1, Spalte 3, leer, Notizen 1, 2, 4" / "Zeile 9, Spalte 9, 9, vorgegeben"
+    private func accessibilityLabel(_ index: Int, value: Int, isGiven: Bool, isWrong: Bool) -> String {
+        var label = "Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), \(value == 0 ? "leer" : "\(value)")"
+        let notes = (1...9).filter { game.notes[index] & (1 << ($0 - 1)) != 0 }
+        if value == 0 && !notes.isEmpty { label += ", Notizen \(notes.map(String.init).joined(separator: ", "))" }
+        if isGiven { label += ", vorgegeben" }
+        if isWrong { label += ", falsch" }
+        return label
     }
 
     private func notes(_ mask: CandidateMask, size: CGFloat) -> some View {

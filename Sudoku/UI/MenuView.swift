@@ -89,6 +89,7 @@ struct MenuView: View {
             .background(Color.accentColor.gradient, in: .rect(cornerRadius: 20))
         }
         .buttonStyle(.plain)
+        .disabled(starting != nil) // a pending start would replace this game once its puzzle arrives
         .accessibilityElement(children: .combine)
     }
 

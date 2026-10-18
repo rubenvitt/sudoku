@@ -127,7 +127,7 @@ struct GameView: View {
             toolButton("Notizen", noteMode ? "pencil.circle.fill" : "pencil.circle") { noteMode.toggle() }
                 .accessibilityAddTraits(noteMode ? .isSelected : [])
             toolButton("Tipp", "lightbulb") { showHint() }
-            toolButton("Überprüfen", "checkmark.circle") { _ = game.check(); save() }
+            toolButton("Überprüfen", "checkmark.circle") { check() }
         }
         .padding(.horizontal, 12).padding(.vertical, 6)
         .background(.regularMaterial, in: .capsule)
@@ -173,15 +173,25 @@ struct GameView: View {
     private func showHint() {
         switch game.hint() {
         case let .wrongEntry(row):
-            banner = "In Zeile \(row) stimmt etwas nicht."
+            announce("In Zeile \(row) stimmt etwas nicht.")
         case let .step(step):
             focus = Set(step.focus)
-            banner = step.explanation
+            announce("\(step.technique.title): \(step.explanation)")
         case nil:
-            banner = "Für diese Stellung habe ich keinen Tipp."
+            announce("Für diese Stellung habe ich keinen Tipp.")
         }
-        if let banner { AccessibilityNotification.Announcement(banner).post() }
         save()
+    }
+
+    private func check() {
+        let errors = game.check().count
+        announce(errors == 0 ? "Keine Fehler gefunden." : "\(errors) Fehler markiert.")
+        save()
+    }
+
+    private func announce(_ text: String) {
+        banner = text
+        AccessibilityNotification.Announcement(text).post()
     }
 
     private func save() {

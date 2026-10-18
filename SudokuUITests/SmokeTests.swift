@@ -16,6 +16,7 @@ final class SmokeTests: XCTestCase {
         app.buttons["Ziffer 9"].tap()           // bekannt falsch im Fixture
         app.buttons["Überprüfen"].tap()
         XCTAssertTrue(app.buttons["Zeile 1, Spalte 3, 9, falsch"].exists)
+        XCTAssertTrue(app.buttons["1 Fehler markiert."].exists)
     }
 
     /// Plays the fixed puzzle to the end, through portrait and landscape, and starts the next game.
@@ -32,7 +33,8 @@ final class SmokeTests: XCTestCase {
         app.buttons["Notizen"].tap()
         for digit in [1, 2, 4] { app.buttons["Ziffer \(digit)"].tap() }
         app.buttons["Notizen"].tap()
-        let cornerCell = app.buttons["Zeile 9, Spalte 9, 9"]
+        XCTAssertTrue(app.buttons["Zeile 1, Spalte 3, leer, Notizen 1, 2, 4"].exists)
+        let cornerCell = app.buttons["Zeile 9, Spalte 9, 9, vorgegeben"]
         let frameWithoutBanner = cornerCell.frame
         app.buttons["Tipp"].tap()
         sleep(1) // let the banner transition finish before the screenshot
@@ -45,7 +47,8 @@ final class SmokeTests: XCTestCase {
                 sleep(2) // taps during the rotation animation hit stale cell frames
             }
             if index == 50 { attachScreenshot("Spiel Querformat") }
-            app.buttons["Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), leer"].tap()
+            let notes = index == 2 ? ", Notizen 1, 2, 4" : "" // the cell noted above
+            app.buttons["Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), leer\(notes)"].tap()
             app.buttons["Ziffer \(solution[index])"].tap()
         }
 
