@@ -9,7 +9,6 @@ final class GameTests: XCTestCase {
         Game(puzzle: Puzzle(variant: .classic, givens: Grid(Self.givens), solution: Grid(Self.solution), difficulty: .easy))
     }
 
-    /// Cell 2 (row 1) has solution 4; row 4 starts with 8 5 9 solved, cell 28 (row 4) solution 5.
     func testGivensAreReadOnly() {
         var game = makeGame()
         game.setDigit(9, at: 0)
@@ -23,7 +22,7 @@ final class GameTests: XCTestCase {
         var game = makeGame()
         game.toggleNote(4, at: 3)   // same row as cell 2
         game.toggleNote(4, at: 20)  // same box as cell 2
-        game.toggleNote(4, at: 29)  // unrelated... same column? 29 % 9 = 2, yes peer
+        game.toggleNote(4, at: 29)  // same column as cell 2
         game.toggleNote(4, at: 40)  // not a peer
         game.toggleNote(2, at: 3)
         game.setDigit(4, at: 2)
