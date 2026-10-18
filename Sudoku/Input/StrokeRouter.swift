@@ -20,6 +20,11 @@ struct StrokeRouter {
         strokeBounds.height < 0.5 * gridFrame.height / 9
     }
 
+    /// Too small to be a digit (a dot, a tick); scaled up for recognition it would read as "1".
+    func isSpeck(_ strokeBounds: CGRect) -> Bool {
+        max(strokeBounds.width, strokeBounds.height) < 0.12 * cellSide
+    }
+
     /// Path longer than 4 × its width with at least 3 reversals in x. Two guards keep digits out:
     /// a reversal only counts past 0.1 × cell width (pen jitter on a "1"), and horizontal travel must
     /// exceed twice the vertical travel (an "8" reverses in x four times, but travels as much in y).

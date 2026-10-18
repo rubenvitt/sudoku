@@ -1,7 +1,7 @@
 import SwiftUI
 import SudokuEngine
 
-enum CellInput {
+enum CellInput: Equatable {
     case digit(Int, cell: Int)
     case note(Int, cell: Int)
     case clear(cell: Int)
@@ -85,7 +85,7 @@ struct GameView: View {
     private func controls(columns: Int) -> some View {
         VStack(spacing: 16) {
             // Zero-height anchor: the banner grows upward over free space, so the grid's size
-            // (and Task 10's cell frames) never changes when it appears.
+            // (and the pencil canvas laid over it) never changes when it appears.
             Color.clear.frame(height: 0).overlay(alignment: .bottom) {
                 if let banner {
                     Button { self.banner = nil } label: {
@@ -145,6 +145,7 @@ struct GameView: View {
     }
 
     func apply(_ input: CellInput) {
+        guard !game.isSolved else { return } // pencil input lands 0.4 s + recognition after the stroke
         mutate { game in
             switch input {
             case let .digit(digit, cell): game.setDigit(digit, at: cell)

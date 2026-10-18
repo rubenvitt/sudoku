@@ -21,6 +21,12 @@ final class StrokeRouterTests: XCTestCase {
         XCTAssertFalse(router.isNote(CGRect(x: 5, y: 5, width: 20, height: 35))) // 0.7 × cell
     }
 
+    func testDotAndTickAreSpecks() {
+        XCTAssertTrue(router.isSpeck(CGRect(x: 20, y: 20, width: 1, height: 1)))
+        XCTAssertTrue(router.isSpeck(CGRect(x: 20, y: 20, width: 3, height: 5)))   // < 0.12 × 50
+        XCTAssertFalse(router.isSpeck(CGRect(x: 20, y: 20, width: 2, height: 10))) // a small note "1"
+    }
+
     func testZigZagIsScratchOut() {
         let zigZag = (0...8).map { CGPoint(x: $0.isMultiple(of: 2) ? 5 : 45, y: 10 + CGFloat($0) * 3) }
         XCTAssertTrue(router.isScratchOut(zigZag))

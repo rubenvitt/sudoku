@@ -44,13 +44,20 @@ struct PencilCanvas: UIViewRepresentable {
         context.coordinator.parent = self
     }
 
+    static func dismantleUIView(_ canvas: PKCanvasView, coordinator: Coordinator) {
+        coordinator.stop()
+    }
+
     @MainActor
     final class Coordinator: NSObject, PKCanvasViewDelegate {
         var parent: PencilCanvas
         weak var canvas: PKCanvasView?
-        private var knownStrokeCount = 0
+        private var knownStrokes: Set<Date> = []
         private var pending: [Int: [PKStroke]] = [:]
         private var debounces: [Int: Task<Void, Never>] = [:]
+        private var isUsingTool = false
+        private var deferredEdits: [() -> Void] = []
+        private var isStopped = false
 
         init(_ parent: PencilCanvas) { self.parent = parent }
 
@@ -67,11 +74,33 @@ struct PencilCanvas: UIViewRepresentable {
 
         @objc func undo() { parent.onUndo() }
 
-        /// Also fires for our own removals and re-inks; those never add strokes, and new strokes are always appended.
+        /// The game view is going away: no late recognition may still enter (and save) a digit.
+        func stop() {
+            isStopped = true
+            debounces.values.forEach { $0.cancel() }
+            debounces = [:]
+            pending = [:]
+        }
+
+        func canvasViewDidBeginUsingTool(_ canvasView: PKCanvasView) { isUsingTool = true }
+
+        func canvasViewDidEndUsingTool(_ canvasView: PKCanvasView) {
+            isUsingTool = false
+            let edits = deferredEdits
+            deferredEdits = []
+            edits.forEach { $0() }
+        }
+
+        /// Replacing the drawing mid-stroke would cut the stroke being written, e.g. in the neighbouring cell.
+        private func editDrawing(_ edit: @escaping () -> Void) {
+            if isUsingTool { deferredEdits.append(edit) } else { edit() }
+        }
+
+        /// Also fires for our own removals and re-inks, which keep stroke identity and so add nothing.
         func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
             let strokes = canvasView.drawing.strokes
-            let added = strokes.dropFirst(knownStrokeCount)
-            knownStrokeCount = strokes.count
+            let added = strokes.filter { !knownStrokes.contains($0.path.creationDate) }
+            knownStrokes = Set(strokes.map(\.path.creationDate))
             guard !added.isEmpty, let router else { return }
             var discarded: [PKStroke] = []
             for stroke in added {
@@ -96,8 +125,10 @@ struct PencilCanvas: UIViewRepresentable {
                 parent.onInput(.clear(cell: target))
                 return remove(strokes)
             }
+            guard !router.isSpeck(bounds) else { return fade(strokes) }
             let asNote = parent.noteMode || router.isNote(bounds)
             let result = await parent.recognizer.recognize(PKDrawing(strokes: strokes))
+            guard !isStopped else { return }
             guard let result, result.confidence >= PencilCanvas.minimumConfidence else { return fade(strokes) }
             parent.onInput(asNote ? .note(result.digit, cell: target) : .digit(result.digit, cell: target))
             remove(strokes)
@@ -105,13 +136,15 @@ struct PencilCanvas: UIViewRepresentable {
 
         /// Unrecognized ink stays visible in grey for a second, so the player sees it was not taken.
         private func fade(_ strokes: [PKStroke]) {
-            guard let canvas else { return }
             let ids = Set(strokes.map(\.path.creationDate))
-            canvas.drawing.strokes = canvas.drawing.strokes.map { stroke in
-                guard ids.contains(stroke.path.creationDate) else { return stroke }
-                var grey = stroke
-                grey.ink = PKInk(.pen, color: .systemGray)
-                return grey
+            editDrawing { [weak self] in
+                guard let canvas = self?.canvas else { return }
+                canvas.drawing.strokes = canvas.drawing.strokes.map { stroke in
+                    guard ids.contains(stroke.path.creationDate) else { return stroke }
+                    var grey = stroke
+                    grey.ink = PKInk(.pen, color: .systemGray)
+                    return grey
+                }
             }
             Task { [weak self] in
                 try? await Task.sleep(for: .seconds(1))
@@ -122,7 +155,7 @@ struct PencilCanvas: UIViewRepresentable {
         /// By identity, never "everything in the cell": the player may already be writing there again.
         private func remove(_ strokes: [PKStroke]) {
             let ids = Set(strokes.map(\.path.creationDate))
-            canvas?.drawing.strokes.removeAll { ids.contains($0.path.creationDate) }
+            editDrawing { [weak self] in self?.canvas?.drawing.strokes.removeAll { ids.contains($0.path.creationDate) } }
         }
     }
 }

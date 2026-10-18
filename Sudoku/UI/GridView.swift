@@ -1,14 +1,13 @@
 import SwiftUI
 import SudokuEngine
 
-/// The square board. Its own top-left is the origin of coordinate space `"grid"`; cells are exact `side / 9` squares.
+/// The square board; cells are exact `side / 9` squares, which the pencil canvas laid over it relies on.
 struct GridView: View, Equatable {
     let game: Game
     @Binding var selection: Int?
     var focus: Set<Int> = []
-    var onCellFrame: (Int, CGRect) -> Void = { _, _ in }
 
-    /// Ignores `elapsed` and the closures so the per-second timer tick doesn't redraw all 81 cells.
+    /// Ignores `elapsed` so the per-second timer tick doesn't redraw all 81 cells.
     nonisolated static func == (lhs: GridView, rhs: GridView) -> Bool {
         MainActor.assumeIsolated {
             lhs.game.entries == rhs.game.entries && lhs.game.notes == rhs.game.notes
@@ -30,16 +29,10 @@ struct GridView: View, Equatable {
                 }
             }
             .overlay { lines.allowsHitTesting(false) }
-            .onChange(of: size, initial: true) {
-                for index in 0..<81 {
-                    onCellFrame(index, CGRect(x: CGFloat(index % 9) * size, y: CGFloat(index / 9) * size, width: size, height: size))
-                }
-            }
         }
         .background(Color(.systemBackground))
         .clipShape(.rect(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.label), lineWidth: 3))
-        .coordinateSpace(.named("grid"))
         .animation(.easeOut(duration: 0.15), value: selection)
         .animation(.easeOut(duration: 0.25), value: focus)
     }
