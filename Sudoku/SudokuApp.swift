@@ -4,6 +4,7 @@ import SudokuEngine
 @main
 struct SudokuApp: App {
     @State private var stock: PuzzleStock
+    private let store: Store
 
     init() {
         let isUITest = ProcessInfo.processInfo.arguments.contains("-uiTestFixedPuzzle")
@@ -18,14 +19,10 @@ struct SudokuApp: App {
         let stock = PuzzleStock(store: store, fixed: fixed)
         stock.fillAll()
         _stock = State(initialValue: stock)
+        self.store = store
     }
 
     var body: some Scene {
-        WindowGroup { MenuView().environment(stock) }
+        WindowGroup { MenuView(store: store).environment(stock) }
     }
-}
-
-// Placeholder until the real UI replaces it.
-struct MenuView: View {
-    var body: some View { Text("Sudoku") }
 }
