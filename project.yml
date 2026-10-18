@@ -47,7 +47,8 @@ targets:
           UIInterfaceOrientationPortraitUpsideDown
           UIInterfaceOrientationLandscapeLeft
           UIInterfaceOrientationLandscapeRight
-        TARGETED_DEVICE_FAMILY: "2"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
+        TARGETED_DEVICE_FAMILY: "1,2"
         CODE_SIGN_STYLE: Automatic
 
   SudokuTests:

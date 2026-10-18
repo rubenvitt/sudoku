@@ -47,6 +47,7 @@ struct ResultView: View {
             .padding(40)
             .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 32))
             .shadow(color: .black.opacity(0.15), radius: 30, y: 10)
+            .padding(16) // keeps the card off the edges of an iPhone
         }
         .accessibilityAddTraits(.isModal)
     }

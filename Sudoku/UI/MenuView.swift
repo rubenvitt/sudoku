@@ -4,6 +4,7 @@ import SudokuEngine
 struct MenuView: View {
     let store: Store
     @Environment(PuzzleStock.self) private var stock
+    @Environment(\.horizontalSizeClass) private var sizeClass
     @State private var saved: Game?
     @State private var session: Session?
     @State private var pendingDiscard: Difficulty?
@@ -60,7 +61,7 @@ struct MenuView: View {
                 }
             }
             .frame(maxWidth: 640)
-            .padding(32)
+            .padding(sizeClass == .compact ? 20 : 32)
             .frame(maxWidth: .infinity)
         }
         .background(Color(.systemGroupedBackground))

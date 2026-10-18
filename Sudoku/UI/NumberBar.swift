@@ -3,6 +3,7 @@ import SwiftUI
 /// Digit entry for fingers and VoiceOver; the pencil writes directly into the grid.
 struct NumberBar: View {
     let columns: Int
+    var keyHeight: CGFloat = 64
     let noteMode: Bool
     let onDigit: (Int) -> Void
     let onClear: () -> Void
@@ -28,7 +29,7 @@ struct NumberBar: View {
     private func key(action: @escaping () -> Void, @ViewBuilder label: () -> some View) -> some View {
         Button(action: action) {
             label()
-                .frame(maxWidth: .infinity, minHeight: 64)
+                .frame(maxWidth: .infinity, minHeight: keyHeight)
                 .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 14))
                 .contentShape(.rect)
         }

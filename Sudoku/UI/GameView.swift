@@ -14,6 +14,7 @@ struct GameView: View {
     @State private var focus: Set<Int> = []
     @State private var banner: String?
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.horizontalSizeClass) private var sizeClass
 
     let store: Store
     let onNewGame: (Difficulty) -> Void
@@ -28,19 +29,29 @@ struct GameView: View {
 
     var body: some View {
         GeometryReader { geo in
-            VStack(spacing: 20) {
-                toolbar
-                if geo.size.width > geo.size.height {
-                    HStack(alignment: .center, spacing: 28) {
-                        board
-                        controls(columns: 3).frame(width: 300)
-                    }
-                } else {
+            if sizeClass == .compact {
+                // iPhone and narrow iPad windows: the actions move down to the keys, within thumb reach.
+                VStack(spacing: 12) {
+                    compactToolbar
                     board
-                    controls(columns: 10)
+                    controls(columns: 5, compact: true)
                 }
+                .padding(16)
+            } else {
+                VStack(spacing: 20) {
+                    toolbar
+                    if geo.size.width > geo.size.height {
+                        HStack(alignment: .center, spacing: 28) {
+                            board
+                            controls(columns: 3).frame(width: 300)
+                        }
+                    } else {
+                        board
+                        controls(columns: 10)
+                    }
+                }
+                .padding(24)
             }
-            .padding(24)
         }
         .disabled(game.isSolved)
         .accessibilityHidden(game.isSolved)
@@ -82,8 +93,8 @@ struct GameView: View {
         Set(game.puzzle.givens.cells.indices.filter { game.puzzle.givens.cells[$0] != 0 })
     }
 
-    private func controls(columns: Int) -> some View {
-        VStack(spacing: 16) {
+    private func controls(columns: Int, compact: Bool = false) -> some View {
+        VStack(spacing: compact ? 12 : 16) {
             // Zero-height anchor: the banner grows upward over free space, so the grid's size
             // (and the pencil canvas laid over it) never changes when it appears.
             Color.clear.frame(height: 0).overlay(alignment: .bottom) {
@@ -102,7 +113,12 @@ struct GameView: View {
                     .transition(.opacity)
                 }
             }
-            NumberBar(columns: columns, noteMode: noteMode, onDigit: { digit in
+            if compact {
+                HStack(spacing: 0) { actions(stretch: true) }
+                    .padding(.horizontal, 12).padding(.vertical, 6)
+                    .background(.regularMaterial, in: .capsule)
+            }
+            NumberBar(columns: columns, keyHeight: compact ? 52 : 64, noteMode: noteMode, onDigit: { digit in
                 guard let cell = selection else { return }
                 apply(noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell))
             }, onClear: {
@@ -114,31 +130,57 @@ struct GameView: View {
 
     private var toolbar: some View {
         HStack(spacing: 6) {
-            toolButton("Menü", "chevron.backward") { save(); onMenu() }
+            menuButton
             Spacer()
-            Text(game.elapsed.clock)
-                .font(.system(.title2, design: .rounded, weight: .medium).monospacedDigit())
-                .accessibilityLabel("Zeit \(game.elapsed.clock)")
+            clock
             Spacer()
-            toolButton("Rückgängig", "arrow.uturn.backward") { mutate { $0.undo() } }
-                .disabled(!game.canUndo)
-            toolButton("Wiederholen", "arrow.uturn.forward") { mutate { $0.redo() } }
-                .disabled(!game.canRedo)
-            toolButton("Notizen", noteMode ? "pencil.circle.fill" : "pencil.circle") { noteMode.toggle() }
-                .accessibilityAddTraits(noteMode ? .isSelected : [])
-            toolButton("Tipp", "lightbulb") { showHint() }
-            toolButton("Überprüfen", "checkmark.circle") { check() }
+            actions()
         }
         .padding(.horizontal, 12).padding(.vertical, 6)
         .background(.regularMaterial, in: .capsule)
     }
 
-    private func toolButton(_ title: String, _ symbol: String, action: @escaping () -> Void) -> some View {
+    private var compactToolbar: some View {
+        HStack(spacing: 6) {
+            menuButton
+            Spacer()
+            clock
+            Spacer()
+            Color.clear.frame(width: 52, height: 44) // balances the menu button, so the clock stays centred
+        }
+        .padding(.horizontal, 12).padding(.vertical, 6)
+        .background(.regularMaterial, in: .capsule)
+    }
+
+    private var menuButton: some View {
+        toolButton("Menü", "chevron.backward") { save(); onMenu() }
+    }
+
+    private var clock: some View {
+        Text(game.elapsed.clock)
+            .font(.system(.title2, design: .rounded, weight: .medium).monospacedDigit())
+            .accessibilityLabel("Zeit \(game.elapsed.clock)")
+    }
+
+    /// `stretch` spreads the buttons across the compact action row.
+    @ViewBuilder private func actions(stretch: Bool = false) -> some View {
+        toolButton("Rückgängig", "arrow.uturn.backward", stretch: stretch) { mutate { $0.undo() } }
+            .disabled(!game.canUndo)
+        toolButton("Wiederholen", "arrow.uturn.forward", stretch: stretch) { mutate { $0.redo() } }
+            .disabled(!game.canRedo)
+        toolButton("Notizen", noteMode ? "pencil.circle.fill" : "pencil.circle", stretch: stretch) { noteMode.toggle() }
+            .accessibilityAddTraits(noteMode ? .isSelected : [])
+        toolButton("Tipp", "lightbulb", stretch: stretch) { showHint() }
+        toolButton("Überprüfen", "checkmark.circle", stretch: stretch) { check() }
+    }
+
+    private func toolButton(_ title: String, _ symbol: String, stretch: Bool = false,
+                            action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(title, systemImage: symbol)
                 .labelStyle(.iconOnly)
                 .font(.title2)
-                .frame(width: 52, height: 44)
+                .frame(minWidth: 52, maxWidth: stretch ? .infinity : 52, minHeight: 44, maxHeight: 44)
                 .contentShape(.rect)
         }
         .buttonStyle(.borderless)

@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 
 final class SmokeTests: XCTestCase {
     @MainActor
@@ -19,7 +20,7 @@ final class SmokeTests: XCTestCase {
         XCTAssertTrue(app.buttons["1 Fehler markiert."].exists)
     }
 
-    /// Plays the fixed puzzle to the end, through portrait and landscape, and starts the next game.
+    /// Plays the fixed puzzle to the end, through portrait and (on iPad) landscape, and starts the next game.
     @MainActor
     func testPlayThroughToResultAndNewGame() {
         let givens = Array("53..7....6..195....98....6.8...6...34..8.3..17...2...6.6....28....419..5....8..79")
@@ -42,11 +43,11 @@ final class SmokeTests: XCTestCase {
         attachScreenshot("Spiel Hochformat")
 
         for (index, given) in givens.enumerated() where given == "." {
-            if index == 40 {
+            if index == 40 && UIDevice.current.userInterfaceIdiom == .pad { // the iPhone stays in portrait
                 XCUIDevice.shared.orientation = .landscapeLeft
                 sleep(2) // taps during the rotation animation hit stale cell frames
             }
-            if index == 50 { attachScreenshot("Spiel Querformat") }
+            if index == 50 && UIDevice.current.userInterfaceIdiom == .pad { attachScreenshot("Spiel Querformat") }
             let notes = index == 2 ? ", Notizen 1, 2, 4" : "" // the cell noted above
             app.buttons["Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), leer\(notes)"].tap()
             app.buttons["Ziffer \(solution[index])"].tap()
