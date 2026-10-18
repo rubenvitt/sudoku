@@ -3,6 +3,13 @@ public struct Puzzle: Codable, Hashable, Sendable {
     public let givens: Grid
     public let solution: Grid
     public let difficulty: Difficulty
+
+    public init(variant: Variant, givens: Grid, solution: Grid, difficulty: Difficulty) {
+        self.variant = variant
+        self.givens = givens
+        self.solution = solution
+        self.difficulty = difficulty
+    }
 }
 
 public enum Generator {
