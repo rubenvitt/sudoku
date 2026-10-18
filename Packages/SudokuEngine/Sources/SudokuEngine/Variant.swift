@@ -25,15 +25,18 @@ public struct Variant: Codable, Hashable, Sendable {
 
     private enum CodingKeys: String, CodingKey { case id, rows, columns, regions, extras }
 
+    /// A corrupt save must throw: `init` and the grader index by cell and keep group sets in 64 bits.
     public init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        self.init(
-            id: try c.decode(String.self, forKey: .id),
-            rows: try c.decode([[Int]].self, forKey: .rows),
-            columns: try c.decode([[Int]].self, forKey: .columns),
-            regions: try c.decode([[Int]].self, forKey: .regions),
-            extras: try c.decode([[Int]].self, forKey: .extras)
-        )
+        let rows = try c.decode([[Int]].self, forKey: .rows)
+        let columns = try c.decode([[Int]].self, forKey: .columns)
+        let regions = try c.decode([[Int]].self, forKey: .regions)
+        let extras = try c.decode([[Int]].self, forKey: .extras)
+        let groups = rows + columns + regions + extras
+        guard groups.count <= 64, groups.joined().allSatisfy((0..<81).contains) else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Variant has invalid groups"))
+        }
+        self.init(id: try c.decode(String.self, forKey: .id), rows: rows, columns: columns, regions: regions, extras: extras)
     }
 
     public func encode(to encoder: any Encoder) throws {

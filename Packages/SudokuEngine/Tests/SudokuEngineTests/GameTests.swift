@@ -127,6 +127,24 @@ final class GameTests: XCTestCase {
         XCTAssertThrowsError(try JSONDecoder().decode(Game.self, from: JSONSerialization.data(withJSONObject: bad)))
     }
 
+    func testDecodingRejectsOutOfRangeVariant() throws {
+        let variant = try JSONSerialization.jsonObject(with: JSONEncoder().encode(Variant.classic)) as! [String: Any]
+        var outOfRange = variant
+        outOfRange["extras"] = [[0, 81]]
+        var tooManyGroups = variant
+        tooManyGroups["extras"] = [[Int]](repeating: [0], count: 65 - Variant.classic.groups.count)
+        let game = try JSONSerialization.jsonObject(with: JSONEncoder().encode(makeGame())) as! [String: Any]
+        for bad in [outOfRange, tooManyGroups] {
+            XCTAssertThrowsError(try JSONDecoder().decode(Variant.self, from: JSONSerialization.data(withJSONObject: bad)))
+            var puzzle = game["puzzle"] as! [String: Any]
+            puzzle["variant"] = bad
+            XCTAssertThrowsError(try JSONDecoder().decode(Puzzle.self, from: JSONSerialization.data(withJSONObject: puzzle)))
+            var badGame = game
+            badGame["puzzle"] = puzzle
+            XCTAssertThrowsError(try JSONDecoder().decode(Game.self, from: JSONSerialization.data(withJSONObject: badGame)))
+        }
+    }
+
     func testNoOpEditKeepsErrorMark() {
         var game = makeGame()
         game.setDigit(1, at: 3)
