@@ -40,7 +40,11 @@ ein Builder ohne Rückfrage treffen durfte.
   Regionen-Variante (Diagonal, Hyper, Jigsaw) nur neue Regionen bedeutet
   (§4.1). Hinweis-Varianten (Killer usw.) brauchen später eigene
   Constraint-Typen und Grafik — das wird jetzt **nicht** vorgebaut.
-- iPhone, Mac **(Claude)**.
+- Mac **(Claude)**. iPhone war hier zunächst ausgeschlossen; seit 18.10. gibt es
+  eine iPhone-Variante **(Ruben)**: nur Hochformat, eigenes kompaktes Layout
+  (Aktionen über den Zifferntasten, Tasten in zwei Reihen), Eingabe per Finger.
+  Das iPad-Layout bleibt unverändert; das kompakte Layout greift nur bei
+  kompakter Breite (iPhone, schmale iPad-Fenster in Split View/Slide Over).
 - iCloud-Sync, Konto, Game Center, Statistik-Historie, Tagesrätsel,
   Werbung/Käufe **(Claude)**.
 - Mehrere parallele Spielstände: ein laufendes Spiel **(Claude)**.

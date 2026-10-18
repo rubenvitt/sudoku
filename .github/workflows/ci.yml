@@ -29,17 +29,24 @@ jobs:
   app:
     runs-on: macos-26
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        device: [iPad, iPhone]
+    name: app (${{ matrix.device }})
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - run: brew install xcodegen
       - run: xcodegen generate
-      - name: Test on an iPad simulator
+      - name: Test on an ${{ matrix.device }} simulator
+        env:
+          DEVICE: ${{ matrix.device }}
         run: |
-          UDID=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.name | startswith("iPad"))][0].udid')
+          UDID=$(xcrun simctl list devices available -j | jq -r --arg device "$DEVICE" '[.devices[][] | select(.name | startswith($device))][0].udid')
           if [ -z "$UDID" ] || [ "$UDID" = null ]; then
-            echo "No iPad simulator available" >&2
+            echo "No $DEVICE simulator available" >&2
             exit 1
           fi
           xcodebuild test -scheme Sudoku -destination "id=$UDID" -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
