@@ -21,13 +21,13 @@ final class GameTests: XCTestCase {
     func testSetDigitRemovesNoteFromPeers() {
         var game = makeGame()
         game.toggleNote(4, at: 3)   // same row as cell 2
-        game.toggleNote(4, at: 20)  // same box as cell 2
+        game.toggleNote(4, at: 10)  // empty cell, same box only
         game.toggleNote(4, at: 29)  // same column as cell 2
         game.toggleNote(4, at: 40)  // not a peer
         game.toggleNote(2, at: 3)
         game.setDigit(4, at: 2)
         XCTAssertEqual(game.notes[3], digitBit(2))
-        XCTAssertEqual(game.notes[20], 0)
+        XCTAssertEqual(game.notes[10], 0)
         XCTAssertEqual(game.notes[29], 0)
         XCTAssertEqual(game.notes[40], digitBit(4))
     }
@@ -101,6 +101,28 @@ final class GameTests: XCTestCase {
         guard case .step(let first)? = game.hint(), case .step(let second)? = game.hint() else { return XCTFail("expected steps") }
         XCTAssertNil(first.placement)
         XCTAssertNotEqual(first.explanation, second.explanation)
+    }
+
+    func testDecodingRejectsWrongSizes() throws {
+        let game = makeGame()
+        let json = try JSONSerialization.jsonObject(with: JSONEncoder().encode(game)) as! [String: Any]
+        for key in ["notes", "hintEliminations"] {
+            var bad = json
+            bad[key] = [0, 0]
+            let data = try JSONSerialization.data(withJSONObject: bad)
+            XCTAssertThrowsError(try JSONDecoder().decode(Game.self, from: data), key)
+        }
+        var bad = json
+        bad["entries"] = ["cells": [0, 0]]
+        XCTAssertThrowsError(try JSONDecoder().decode(Game.self, from: JSONSerialization.data(withJSONObject: bad)))
+    }
+
+    func testNoOpEditKeepsErrorMark() {
+        var game = makeGame()
+        game.setDigit(1, at: 3)
+        _ = game.check()
+        game.toggleNote(5, at: 3)  // filled cell: no-op
+        XCTAssertEqual(game.errorMarks, [3])
     }
 
     func testCodableRoundTrip() throws {

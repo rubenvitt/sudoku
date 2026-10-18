@@ -25,6 +25,35 @@ public struct Game: Codable, Sendable {
     private var undoStack: [Snapshot] = []
     private var redoStack: [Snapshot] = []
 
+    private enum CodingKeys: String, CodingKey {
+        case puzzle, entries, notes, errorMarks, elapsed, hintsUsed, checksUsed, errorsFound
+        case hintEliminations, undoStack, redoStack
+    }
+
+    /// A corrupt save must throw, never crash later on an out-of-range index.
+    public init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        puzzle = try c.decode(Puzzle.self, forKey: .puzzle)
+        entries = try c.decode(Grid.self, forKey: .entries)
+        notes = try c.decode([CandidateMask].self, forKey: .notes)
+        errorMarks = try c.decode(Set<Int>.self, forKey: .errorMarks)
+        elapsed = try c.decode(TimeInterval.self, forKey: .elapsed)
+        hintsUsed = try c.decode(Int.self, forKey: .hintsUsed)
+        checksUsed = try c.decode(Int.self, forKey: .checksUsed)
+        errorsFound = try c.decode(Int.self, forKey: .errorsFound)
+        hintEliminations = try c.decode([CandidateMask].self, forKey: .hintEliminations)
+        undoStack = try c.decode([Snapshot].self, forKey: .undoStack)
+        redoStack = try c.decode([Snapshot].self, forKey: .redoStack)
+        let snapshots = undoStack + redoStack
+        let sizesOK = [puzzle.givens.cells.count, puzzle.solution.cells.count, entries.cells.count,
+                       notes.count, hintEliminations.count].allSatisfy { $0 == 81 }
+            && snapshots.allSatisfy { $0.entries.cells.count == 81 && $0.notes.count == 81 }
+            && errorMarks.allSatisfy { (0..<81).contains($0) }
+        guard sizesOK else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Game state has wrong sizes"))
+        }
+    }
+
     public init(puzzle: Puzzle) {
         self.puzzle = puzzle
         entries = puzzle.givens
@@ -43,8 +72,8 @@ public struct Game: Codable, Sendable {
         guard !isGiven(cell) else { return }
         let before = Snapshot(entries: entries, notes: notes)
         change(&self)
-        errorMarks.remove(cell)
         guard entries != before.entries || notes != before.notes else { return }
+        errorMarks.remove(cell)
         undoStack.append(before)
         redoStack.removeAll()
     }
