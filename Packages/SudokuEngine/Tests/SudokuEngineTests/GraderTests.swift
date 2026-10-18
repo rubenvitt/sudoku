@@ -81,10 +81,34 @@ final class GraderTests: XCTestCase {
                 for e in step.eliminations {
                     XCTAssertNotEqual(Int(solution.cells[e.cell]), e.digit, step.explanation)
                 }
-                XCTAssertFalse(step.explanation.isEmpty)
+                assertPlainGerman(step)
                 board.apply(step)
             }
         }
+    }
+
+    /// One German sentence about fields: no "Z4S2" codes, no "Block", no "Kandidat".
+    private func assertPlainGerman(_ step: Step, file: StaticString = #filePath, line: UInt = #line) {
+        let text = step.explanation
+        XCTAssertNil(text.range(of: "Z\\d+S\\d+", options: .regularExpression), text, file: file, line: line)
+        XCTAssertFalse(text.contains("Block"), text, file: file, line: line)
+        XCTAssertFalse(text.contains("Kandidat"), text, file: file, line: line)
+        XCTAssertEqual(text.filter { $0 == "." }.count, 1, text, file: file, line: line)
+        XCTAssertTrue(text.hasSuffix("."), text, file: file, line: line)
+    }
+
+    func testBoxIsNamedByPosition() {
+        // Empty grid; the top-right box allows the 7 only in its second row.
+        var masks = [CandidateMask](repeating: 0x1FF, count: 81)
+        for cell in [6, 7, 8, 24, 25, 26] { masks[cell] &= ~(1 << 6) }
+        let step = Grader.nextStep(Grid(String(repeating: ".", count: 81)), candidates: masks, in: .classic)
+        XCTAssertEqual(step?.technique, .intersection)
+        XCTAssertEqual(step?.explanation, "Im Kasten oben rechts steht die 7 nur in Zeile 2, also fällt die 7 im Rest der Zeile 2 weg.")
+    }
+
+    func testTechniqueTitles() {
+        XCTAssertEqual(Technique.allCases.map(\.title), ["Nackter Einer", "Versteckter Einer", "Reihe-Kasten-Check", "Nacktes Paar",
+                                                         "Verstecktes Paar", "Nacktes Tripel", "X-Wing", "Schwertfisch", "XY-Wing"])
     }
 
     func testDifficultyTitles() {

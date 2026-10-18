@@ -24,21 +24,40 @@ struct Layout {
         isPeer = peer
     }
 
-    func groupName(_ g: Int) -> String {
+    private static let boxNames = ["oben links", "oben in der Mitte", "oben rechts", "in der Mitte links", "in der Mitte",
+                                   "in der Mitte rechts", "unten links", "unten in der Mitte", "unten rechts"]
+
+    /// "in Zeile 4", "im Kasten oben rechts"
+    func inGroup(_ g: Int) -> String { groupNames(g).in }
+
+    /// "der Zeile 4", "des Kastens oben rechts"
+    func ofGroup(_ g: Int) -> String { groupNames(g).of }
+
+    private func groupNames(_ g: Int) -> (in: String, of: String) {
         var i = g
-        for (count, name) in [(variant.rows.count, "Zeile"), (variant.columns.count, "Spalte"), (variant.regions.count, "Block")] {
-            if i < count { return "\(name) \(i + 1)" }
+        for (count, name) in [(variant.rows.count, "Zeile"), (variant.columns.count, "Spalte")] {
+            if i < count { return ("in \(name) \(i + 1)", "der \(name) \(i + 1)") }
             i -= count
         }
-        return "Zusatzgruppe \(i + 1)"
+        if i < variant.regions.count {
+            // Named by where its top-left cell sits, so the name never depends on region order.
+            let corner = variant.regions[i].min() ?? 0
+            let box = Self.boxNames[rowOf[corner] / 3 * 3 + columnOf[corner] / 3]
+            return ("im Kasten \(box)", "des Kastens \(box)")
+        }
+        i -= variant.regions.count
+        return ("in Zusatzgruppe \(i + 1)", "der Zusatzgruppe \(i + 1)")
     }
 
-    func cellName(_ c: Int) -> String { "Z\(rowOf[c] + 1)S\(columnOf[c] + 1)" }
+    func cellName(_ c: Int) -> String { "Zeile \(rowOf[c] + 1), Spalte \(columnOf[c] + 1)" }
 }
 
 func digitBit(_ d: Int) -> CandidateMask { 1 << (d - 1) }
 
 func digits(_ mask: CandidateMask) -> [Int] { (1...9).filter { mask & digitBit($0) != 0 } }
+
+/// "in Zeile 4" -> "In Zeile 4"
+func sentenceStart(_ text: String) -> String { text.prefix(1).uppercased() + text.dropFirst() }
 
 /// "3", "3 und 7", "3, 5 und 7"
 func list(_ items: [String]) -> String {
@@ -60,13 +79,11 @@ extension Board {
         targets.filter(isOpen).flatMap { c in digits(cand[c] & mask).map { (cell: c, digit: $0) } }
     }
 
-    private func names(_ cells: [Int]) -> String { list(cells.map(layout.cellName)) }
-
     func nakedSingle() -> Step? {
         guard let c = (0..<81).first(where: { isOpen($0) && cand[$0].nonzeroBitCount == 1 }) else { return nil }
         let d = digits(cand[c])[0]
         return Step(technique: .nakedSingle, placement: (c, d), eliminations: [], focus: [c],
-                    explanation: "In Zeile \(layout.rowOf[c] + 1), Spalte \(layout.columnOf[c] + 1) ist nur noch die \(d) möglich.")
+                    explanation: "In \(layout.cellName(c)) ist nur noch die \(d) möglich.")
     }
 
     func hiddenSingle() -> Step? {
@@ -80,9 +97,9 @@ extension Board {
             let rows = layout.variant.rows.count, columns = layout.variant.columns.count
             let place = g < rows ? "Spalte \(layout.columnOf[c] + 1)"
                 : g < rows + columns ? "Zeile \(layout.rowOf[c] + 1)"
-                : "Zeile \(layout.rowOf[c] + 1), Spalte \(layout.columnOf[c] + 1)"
+                : layout.cellName(c)
             return Step(technique: .hiddenSingle, placement: (c, d), eliminations: [], focus: [c],
-                        explanation: "In \(layout.groupName(g)) passt die \(d) nur noch in \(place).")
+                        explanation: "\(sentenceStart(layout.inGroup(g))) passt die \(d) nur noch in \(place).")
         }
         return nil
     }
@@ -101,8 +118,8 @@ extension Board {
                     let eliminations = removable(outside, digitBit(d))
                     guard !eliminations.isEmpty else { continue }
                     return Step(technique: .intersection, placement: nil, eliminations: eliminations, focus: positions,
-                                explanation: "In \(layout.groupName(a)) liegt die \(d) nur in \(layout.groupName(b)). "
-                                    + "Deshalb kann die \(d) im Rest von \(layout.groupName(b)) nicht stehen.")
+                                explanation: "\(sentenceStart(layout.inGroup(a))) steht die \(d) nur \(layout.inGroup(b)), "
+                                    + "also fällt die \(d) im Rest \(layout.ofGroup(b)) weg.")
                 }
             }
         }
@@ -117,9 +134,11 @@ extension Board {
                 guard union.nonzeroBitCount == size else { continue }
                 let eliminations = removable(group.filter { !subset.contains($0) }, union)
                 guard !eliminations.isEmpty else { continue }
+                let shared = digits(union)
                 return Step(technique: technique, placement: nil, eliminations: eliminations, focus: subset,
-                            explanation: "In \(layout.groupName(g)) teilen sich \(names(subset)) die Ziffern "
-                                + "\(list(digits(union).map(String.init))). Sie fallen deshalb in den übrigen Feldern von \(layout.groupName(g)) weg.")
+                            explanation: "\(sentenceStart(layout.inGroup(g))) bleiben für die \(size == 2 ? "zwei" : "drei") markierten Felder "
+                                + "nur \(list(shared.map { "die \($0)" })), also fallen \(list(shared.map(String.init))) "
+                                + "in den übrigen Feldern \(layout.ofGroup(g)) weg.")
             }
         }
         return nil
@@ -137,8 +156,8 @@ extension Board {
                     let eliminations = removable(pair, ~(digitBit(d1) | digitBit(d2)) & 0x1FF)
                     guard !eliminations.isEmpty else { continue }
                     return Step(technique: .hiddenPair, placement: nil, eliminations: eliminations, focus: pair,
-                                explanation: "In \(layout.groupName(g)) passen die \(d1) und die \(d2) nur in \(names(pair)). "
-                                    + "Alle anderen Kandidaten fallen dort weg.")
+                                explanation: "\(sentenceStart(layout.inGroup(g))) passen die \(d1) und die \(d2) nur in die zwei "
+                                    + "markierten Felder, also fallen dort alle anderen Ziffern weg.")
                 }
             }
         }
@@ -166,8 +185,8 @@ extension Board {
                     guard !eliminations.isEmpty else { continue }
                     let focus = baseSet.flatMap { bases[$0] }.filter { isOpen($0) && cand[$0] & bit != 0 }
                     return Step(technique: technique, placement: nil, eliminations: eliminations, focus: focus,
-                                explanation: "In den \(baseName) \(list(baseSet.map { String($0 + 1) })) passt die \(d) nur in den "
-                                    + "\(coverName) \(list(coverSet.map { String($0 + 1) })). Deshalb fällt die \(d) im Rest dieser \(coverName) weg.")
+                                explanation: "In den \(baseName) \(list(baseSet.map { String($0 + 1) })) passt die \(d) nur in die "
+                                    + "\(coverName) \(list(coverSet.map { String($0 + 1) })), also fällt die \(d) im Rest dieser \(coverName) weg.")
                 }
             }
         }
@@ -190,11 +209,9 @@ extension Board {
                     let eliminations = removable(seeingBoth, z)
                     guard !eliminations.isEmpty else { continue }
                     let x = digits(cand[a] & p)[0], y = digits(cand[b] & p)[0], zDigit = digits(z)[0]
-                    let pivotName = layout.cellName(pivot), aName = layout.cellName(a), bName = layout.cellName(b)
                     return Step(technique: .xyWing, placement: nil, eliminations: eliminations, focus: [pivot, a, b],
-                                explanation: "\(pivotName) kann nur \(x) oder \(y) sein. Bei \(x) wird \(aName) zur \(zDigit), "
-                                    + "bei \(y) wird \(bName) zur \(zDigit). Die \(zDigit) fällt daher in allen Feldern weg, "
-                                    + "die \(aName) und \(bName) beide sehen.")
+                                explanation: "\(layout.cellName(pivot)) ist \(x) oder \(y), und so oder so wird eines der anderen "
+                                    + "markierten Felder zur \(zDigit), also fällt die \(zDigit) in allen Feldern weg, die beide sehen.")
                 }
             }
         }

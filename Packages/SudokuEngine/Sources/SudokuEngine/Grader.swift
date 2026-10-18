@@ -11,8 +11,22 @@ public enum Difficulty: String, Codable, CaseIterable, Sendable {
     }
 }
 
-public enum Technique: Int, Comparable, Sendable {
+public enum Technique: Int, Comparable, CaseIterable, Sendable {
     case nakedSingle, hiddenSingle, intersection, nakedPair, hiddenPair, nakedTriple, xWing, swordfish, xyWing
+
+    public var title: String {
+        switch self {
+        case .nakedSingle: "Nackter Einer"
+        case .hiddenSingle: "Versteckter Einer"
+        case .intersection: "Reihe-Kasten-Check"
+        case .nakedPair: "Nacktes Paar"
+        case .hiddenPair: "Verstecktes Paar"
+        case .nakedTriple: "Nacktes Tripel"
+        case .xWing: "X-Wing"
+        case .swordfish: "Schwertfisch"
+        case .xyWing: "XY-Wing"
+        }
+    }
 
     public static func < (a: Technique, b: Technique) -> Bool { a.rawValue < b.rawValue }
 
