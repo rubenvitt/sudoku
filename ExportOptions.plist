@@ -10,5 +10,7 @@
 	<string>automatic</string>
 	<key>destination</key>
 	<string>export</string>
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
 </dict>
 </plist>

@@ -18,10 +18,13 @@ env:
 
 jobs:
   ci:
+    if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/ci.yml
 
   deploy:
     needs: ci
+    # workflow_dispatch can start from any branch; secrets must only reach main
+    if: github.ref == 'refs/heads/main'
     runs-on: macos-26
     timeout-minutes: 60
     steps:
@@ -43,7 +46,7 @@ jobs:
         run: |
           xcodebuild archive -scheme Sudoku -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/Sudoku.xcarchive" \
-            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER" \
+            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER.$GITHUB_RUN_ATTEMPT" \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$RUNNER_TEMP/asc_key.p8" \
             -authenticationKeyID "$ASC_KEY_ID" \
@@ -65,9 +68,16 @@ jobs:
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           TESTFLIGHT_GROUP: ${{ vars.TESTFLIGHT_GROUP }}
           FASTLANE_SKIP_UPDATE_CHECK: "1"
+          LC_ALL: en_US.UTF-8
+          LANG: en_US.UTF-8
         run: |
           export ASC_KEY_PATH="$RUNNER_TEMP/asc_key.p8"
-          export IPA_PATH="$RUNNER_TEMP/export/Sudoku.ipa"
+          set -- "$RUNNER_TEMP"/export/*.ipa
+          if [ "$#" -ne 1 ] || [ ! -f "$1" ]; then
+            echo "Expected exactly one .ipa in export dir, found: $*" >&2
+            exit 1
+          fi
+          export IPA_PATH="$1"
           CHANGELOG="$(git log -1 --pretty=%s)"
           export CHANGELOG
           fastlane beta

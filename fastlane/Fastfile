@@ -11,13 +11,14 @@ platform :ios do
     # The external group only exists after a first upload; until TESTFLIGHT_GROUP is set, just upload.
     group = ENV.fetch("TESTFLIGHT_GROUP", "")
     distribute = !group.empty?
-    pilot(
+    options = {
       api_key: api_key,
       ipa: ENV.fetch("IPA_PATH"),
-      distribute_external: distribute,
-      groups: distribute ? [group] : nil,
       changelog: ENV.fetch("CHANGELOG"),
+      distribute_external: distribute,
+      groups: (distribute ? [group] : nil),
       skip_waiting_for_build_processing: !distribute
-    )
+    }.compact
+    pilot(options)
   end
 end
