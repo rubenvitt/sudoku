@@ -67,10 +67,19 @@ struct GameView: View {
     }
 
     private var board: some View {
-        GridView(game: game, selection: $selection, focus: focus, onTwoFingerTap: { mutate { $0.undo() } })
+        GridView(game: game, selection: $selection, focus: focus)
             .equatable()
             .aspectRatio(1, contentMode: .fit)
+            // Before `.frame`, so the canvas covers exactly the grid and shares its coordinates.
+            .overlay {
+                PencilCanvas(givens: givens, noteMode: noteMode, onInput: apply,
+                             onSelect: { selection = $0 }, onUndo: { mutate { $0.undo() } })
+            }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var givens: Set<Int> {
+        Set(game.puzzle.givens.cells.indices.filter { game.puzzle.givens.cells[$0] != 0 })
     }
 
     private func controls(columns: Int) -> some View {

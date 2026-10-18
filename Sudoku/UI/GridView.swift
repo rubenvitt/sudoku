@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 import SudokuEngine
 
 /// The square board. Its own top-left is the origin of coordinate space `"grid"`; cells are exact `side / 9` squares.
@@ -8,7 +7,6 @@ struct GridView: View, Equatable {
     @Binding var selection: Int?
     var focus: Set<Int> = []
     var onCellFrame: (Int, CGRect) -> Void = { _, _ in }
-    var onTwoFingerTap: () -> Void = {}
 
     /// Ignores `elapsed` and the closures so the per-second timer tick doesn't redraw all 81 cells.
     nonisolated static func == (lhs: GridView, rhs: GridView) -> Bool {
@@ -42,7 +40,6 @@ struct GridView: View, Equatable {
         .clipShape(.rect(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.label), lineWidth: 3))
         .coordinateSpace(.named("grid"))
-        .gesture(TwoFingerTap(action: onTwoFingerTap))
         .animation(.easeOut(duration: 0.15), value: selection)
         .animation(.easeOut(duration: 0.25), value: focus)
     }
@@ -112,21 +109,5 @@ struct GridView: View, Equatable {
                 context.stroke(path, with: .color(isBox ? Color(.label) : Color(.separator)), lineWidth: isBox ? 2 : 0.5)
             }
         }
-    }
-}
-
-/// Two-finger tap = undo (spec §5); fingers only, so the pencil never triggers it.
-private struct TwoFingerTap: UIGestureRecognizerRepresentable {
-    let action: () -> Void
-
-    func makeUIGestureRecognizer(context: Context) -> UITapGestureRecognizer {
-        let recognizer = UITapGestureRecognizer()
-        recognizer.numberOfTouchesRequired = 2
-        recognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
-        return recognizer
-    }
-
-    func handleUIGestureRecognizerAction(_ recognizer: UITapGestureRecognizer, context: Context) {
-        if recognizer.state == .ended { action() }
     }
 }
