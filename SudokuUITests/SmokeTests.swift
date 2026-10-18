@@ -58,4 +58,14 @@ final class SmokeTests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
     }
+
+    @MainActor
+    func testTwoFingerTapUndoes() {
+        let app = XCUIApplication(); app.launchArguments = ["-uiTestFixedPuzzle"]; app.launch()
+        app.buttons["Leicht"].tap()
+        app.buttons["Zeile 1, Spalte 3, leer"].tap()
+        app.buttons["Ziffer 4"].tap()
+        app.buttons["Zeile 1, Spalte 3, 4"].twoFingerTap()
+        XCTAssertTrue(app.buttons["Zeile 1, Spalte 3, leer"].waitForExistence(timeout: 2))
+    }
 }

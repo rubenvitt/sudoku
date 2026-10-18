@@ -57,6 +57,7 @@ struct GameView: View {
             guard scenePhase == .active else { return }
             while !game.isSolved {
                 do { try await Task.sleep(for: .seconds(1)) } catch { return }
+                if game.isSolved { return } // solved during the sleep: the result shows the final time
                 game.elapsed += 1
             }
         }

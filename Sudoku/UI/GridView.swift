@@ -87,7 +87,7 @@ struct GridView: View {
         let selectedValue = Int(game.entries.cells[selected])
         if selectedValue != 0 && value == selectedValue { return .accentColor.opacity(0.2) }
         let sameBox = selected / 27 == index / 27 && selected % 9 / 3 == index % 9 / 3
-        if selected / 9 == index / 9 || selected % 9 == index % 9 || sameBox { return .accentColor.opacity(0.08) }
+        if selected / 9 == index / 9 || selected % 9 == index % 9 || sameBox { return .accentColor.opacity(0.12) }
         return .clear
     }
 
