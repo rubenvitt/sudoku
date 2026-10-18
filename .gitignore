@@ -1,0 +1,19 @@
+# Von xcodegen generiert — project.yml ist die Quelle der Wahrheit.
+Sudoku.xcodeproj/
+DerivedInfo/
+
+# Build-Artefakte
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Signierung / Upload — nie einchecken (Repo ist öffentlich)
+*.p8
+*.ipa
+*.xcarchive
+fastlane/report.xml
