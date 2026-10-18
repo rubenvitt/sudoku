@@ -26,7 +26,7 @@ jobs:
       - run: swift test
         working-directory: Packages/SudokuEngine
 
-  app:
+  app-device:
     runs-on: macos-26
     timeout-minutes: 45
     strategy:
@@ -50,3 +50,13 @@ jobs:
             exit 1
           fi
           xcodebuild test -scheme Sudoku -destination "id=$UDID" -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+
+  # The main ruleset requires a check named "app"; it passes only when every device passed.
+  app:
+    needs: app-device
+    if: always() # a skipped required check would count as passed
+    runs-on: ubuntu-latest
+    steps:
+      - run: test "$RESULT" = success
+        env:
+          RESULT: ${{ needs.app-device.result }}
