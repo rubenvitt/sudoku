@@ -9,7 +9,7 @@ Status: Planung. Design in [`docs/superpowers/specs`](docs/superpowers/specs), U
 | Verzeichnis | Inhalt |
 |---|---|
 | `Packages/SudokuEngine` | Reiner Rechenkern: Modell, Löser, Generator, Bewerter, Tipp. Läuft mit `swift test`. |
-| `Sudoku` | SwiftUI-App für iPadOS 26. |
+| `Sudoku` | SwiftUI-App für iPadOS 18+. |
 
 Das Xcode-Projekt ist nicht eingecheckt, es entsteht aus `project.yml`:
 

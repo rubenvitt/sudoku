@@ -61,7 +61,7 @@ Wie Rudel: **(Claude)**
 
 - `Packages/SudokuEngine` — reines Swift-Package, kein SwiftUI, kein UIKit.
   Modell, Löser, Generator, Bewerter, Tipp. Läuft mit `swift test`.
-- `Sudoku/` — SwiftUI-App (iPadOS 26.0, Swift 6, strict concurrency).
+- `Sudoku/` — SwiftUI-App (iPadOS 18.0 — Ruben, 18.10.: Gerät evtl. noch nicht auf 26; Swift 6, strict concurrency).
 - Xcode-Projekt per **xcodegen** aus `project.yml`, nicht eingecheckt.
 - Bundle-ID **`dev.rubeen.sudoku`** (Ruben: Präfix `dev.rubeen`, Name
   „Sudoku"). Anzeigename auf dem Homescreen: **Sudoku**.
@@ -118,10 +118,10 @@ Abfragen)**. Timer pausiert im Hintergrund.
   Die Eingabe darf nur Position, Neigung und Strichverlauf voraussetzen.
 - Der Crayon meldet sich als `UITouch.TouchType.pencil` → Pencil- und
   Fingereingabe sind trennbar wie mit einem Apple Pencil.
-- Deployment-Target iPadOS 26.0 passt; Messlatte für Latenz ist dieses
+- Deployment-Target iPadOS 18.0; Messlatte für Latenz ist dieses
   Gerät (A12–A14), nicht ein aktuelles iPad.
 
-**Das größte Risiko — erste Aufgabe ist eine Probefahrt (Spike).**
+**Das größte Risiko.** Ruben hat die Probefahrt am 18.10. gestrichen: Start direkt mit Vision (a), Abnahme auf dem Gerät, Core ML (b) nur als Plan B nach Rückfrage. Der Spike-Text unten bleibt als Begründung stehen.
 
 Soll-Verhalten **(Claude, Ruben ohne Widerspruch)**:
 
