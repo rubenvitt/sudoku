@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  # main is tested inside the TestFlight run, which calls this workflow
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+
+jobs:
+  engine:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: swift test
+        working-directory: Packages/SudokuEngine
+
+  app:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - name: Test on an iPad simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.name | startswith("iPad"))][0].udid')
+          if [ -z "$UDID" ] || [ "$UDID" = null ]; then
+            echo "No iPad simulator available" >&2
+            exit 1
+          fi
+          xcodebuild test -scheme Sudoku -destination "id=$UDID" -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
