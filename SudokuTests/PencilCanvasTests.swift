@@ -5,7 +5,11 @@ import PencilKit
 /// Always "reads" the same digit, so these tests exercise the canvas pipeline, not Vision.
 private struct StubRecognizer: DigitRecognizer {
     let result: RecognizedDigit?
-    func recognize(_ drawing: PKDrawing) async -> RecognizedDigit? { result }
+    var delay: Duration = .zero
+    func recognize(_ drawing: PKDrawing) async -> RecognizedDigit? {
+        try? await Task.sleep(for: delay)
+        return result
+    }
 }
 
 /// Runs synthetic strokes through the same canvas pipeline a stylus would (debounce, routing, recognizer).
@@ -16,9 +20,9 @@ final class PencilCanvasTests: XCTestCase {
     private var coordinator: PencilCanvas.Coordinator!
 
     private func makeCanvas(givens: Set<Int> = [], noteMode: Bool = false, reads digit: Int? = 7,
-                            expecting expectation: XCTestExpectation? = nil) {
+                            after delay: Duration = .zero, expecting expectation: XCTestExpectation? = nil) {
         canvas = PKCanvasView(frame: CGRect(x: 0, y: 0, width: 450, height: 450))
-        let recognizer = StubRecognizer(result: digit.map { RecognizedDigit(digit: $0, confidence: 1) })
+        let recognizer = StubRecognizer(result: digit.map { RecognizedDigit(digit: $0, confidence: 1) }, delay: delay)
         coordinator = PencilCanvas(givens: givens, noteMode: noteMode, onInput: { [weak self] input in
             self?.inputs.append(input)
             expectation?.fulfill()
@@ -63,6 +67,20 @@ final class PencilCanvasTests: XCTestCase {
         write([syntheticStroke(zigZag)]) // cell 20
         await fulfillment(of: [entered], timeout: 2)
         XCTAssertEqual(inputs, [.clear(cell: 20)])
+    }
+
+    func testScratchOutDuringRecognitionWins() async throws {
+        let cleared = expectation(description: "clear")
+        cleared.assertForOverFulfill = false // a stale digit after the clear must fail the assertion below, not crash
+        makeCanvas(after: .seconds(1.2), expecting: cleared)
+        write(syntheticSeven(at: CGPoint(x: 205, y: 205), size: 40)) // cell 40, recognition runs 0.4–1.6 s
+        try await Task.sleep(for: .seconds(0.5))
+        let zigZag = (0...8).map { CGPoint(x: $0.isMultiple(of: 2) ? 205 : 245, y: 210 + CGFloat($0) * 3) }
+        write([syntheticStroke(zigZag)]) // cell 40, cleared at about 0.9 s
+        await fulfillment(of: [cleared], timeout: 2)
+        try await Task.sleep(for: .seconds(1))
+        XCTAssertEqual(inputs, [.clear(cell: 40)])
+        XCTAssertTrue(canvas.drawing.strokes.isEmpty)
     }
 
     func testStrokeOnGivenIsDroppedWithoutInput() async throws {

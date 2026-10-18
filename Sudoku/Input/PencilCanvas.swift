@@ -55,6 +55,8 @@ struct PencilCanvas: UIViewRepresentable {
         private var knownStrokes: Set<Date> = []
         private var pending: [Int: [PKStroke]] = [:]
         private var debounces: [Int: Task<Void, Never>] = [:]
+        /// Bumped by every stroke in a cell, so a recognition that finishes after newer ink there is dropped.
+        private var revisions: [Int: Int] = [:]
         private var isUsingTool = false
         private var deferredEdits: [() -> Void] = []
         private var isStopped = false
@@ -106,6 +108,7 @@ struct PencilCanvas: UIViewRepresentable {
             for stroke in added {
                 guard let cell = router.cell(for: stroke.points.boundingBox) else { discarded.append(stroke); continue }
                 pending[cell, default: []].append(stroke)
+                revisions[cell, default: 0] += 1
                 debounces[cell]?.cancel()
                 debounces[cell] = Task { [weak self] in
                     do { try await Task.sleep(for: .seconds(0.4)) } catch { return }
@@ -127,8 +130,10 @@ struct PencilCanvas: UIViewRepresentable {
             }
             guard !router.isSpeck(bounds) else { return fade(strokes) }
             let asNote = parent.noteMode || router.isNote(bounds)
+            let revision = revisions[cell]
             let result = await parent.recognizer.recognize(PKDrawing(strokes: strokes))
             guard !isStopped else { return }
+            guard revisions[cell] == revision else { return remove(strokes) } // e.g. scratched out meanwhile
             guard let result, result.confidence >= PencilCanvas.minimumConfidence else { return fade(strokes) }
             parent.onInput(asNote ? .note(result.digit, cell: target) : .digit(result.digit, cell: target))
             remove(strokes)
