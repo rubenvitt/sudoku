@@ -117,6 +117,7 @@ struct MenuView: View {
     }
 
     private func start(_ difficulty: Difficulty) {
+        guard starting == nil else { return } // one tap, one puzzle
         starting = difficulty
         Task {
             let game = Game(puzzle: await stock.take(difficulty))

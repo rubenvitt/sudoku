@@ -5,6 +5,7 @@ struct ResultView: View {
     let game: Game
     let onNewGame: () -> Void
     let onMenu: () -> Void
+    @State private var starting = false
 
     var body: some View {
         ZStack {
@@ -29,8 +30,16 @@ struct ResultView: View {
                 HStack(spacing: 16) {
                     Button("Menü", action: onMenu)
                         .buttonStyle(.bordered)
-                    Button("Neues Spiel", action: onNewGame)
-                        .buttonStyle(.borderedProminent)
+                    Button {
+                        starting = true
+                        onNewGame()
+                    } label: {
+                        Text("Neues Spiel").opacity(starting ? 0 : 1)
+                            .overlay { if starting { ProgressView() } }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(starting)
+                    .accessibilityLabel("Neues Spiel")
                 }
                 .controlSize(.large)
                 .font(.title3.weight(.semibold))
@@ -39,6 +48,7 @@ struct ResultView: View {
             .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 32))
             .shadow(color: .black.opacity(0.15), radius: 30, y: 10)
         }
+        .accessibilityAddTraits(.isModal)
     }
 
     private func row(_ title: String, _ value: String) -> some View {

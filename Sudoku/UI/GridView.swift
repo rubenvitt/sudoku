@@ -3,12 +3,21 @@ import UIKit
 import SudokuEngine
 
 /// The square board. Its own top-left is the origin of coordinate space `"grid"`; cells are exact `side / 9` squares.
-struct GridView: View {
+struct GridView: View, Equatable {
     let game: Game
     @Binding var selection: Int?
     var focus: Set<Int> = []
     var onCellFrame: (Int, CGRect) -> Void = { _, _ in }
     var onTwoFingerTap: () -> Void = {}
+
+    /// Ignores `elapsed` and the closures so the per-second timer tick doesn't redraw all 81 cells.
+    nonisolated static func == (lhs: GridView, rhs: GridView) -> Bool {
+        MainActor.assumeIsolated {
+            lhs.game.entries == rhs.game.entries && lhs.game.notes == rhs.game.notes
+                && lhs.game.errorMarks == rhs.game.errorMarks && lhs.game.puzzle.givens == rhs.game.puzzle.givens
+                && lhs.selection == rhs.selection && lhs.focus == rhs.focus
+        }
+    }
 
     var body: some View {
         GeometryReader { geo in

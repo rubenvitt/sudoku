@@ -128,12 +128,16 @@ public struct Game: Codable, Sendable {
         (0..<81).filter { !isGiven($0) && entries.cells[$0] != 0 && entries.cells[$0] != puzzle.solution.cells[$0] }
     }
 
+    /// Marks wrong entries without counting a check — for the automatic marking of a full grid.
+    public mutating func markErrors() {
+        errorMarks = Set(wrongCells)
+    }
+
     public mutating func check() -> Set<Int> {
-        let wrong = Set(wrongCells)
-        errorMarks = wrong
+        markErrors()
         checksUsed += 1
-        errorsFound += wrong.count
-        return wrong
+        errorsFound += errorMarks.count
+        return errorMarks
     }
 
     public mutating func hint() -> Hint? {

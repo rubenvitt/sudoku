@@ -32,7 +32,11 @@ final class SmokeTests: XCTestCase {
         app.buttons["Notizen"].tap()
         for digit in [1, 2, 4] { app.buttons["Ziffer \(digit)"].tap() }
         app.buttons["Notizen"].tap()
+        let cornerCell = app.buttons["Zeile 9, Spalte 9, 9"]
+        let frameWithoutBanner = cornerCell.frame
         app.buttons["Tipp"].tap()
+        sleep(1) // let the banner transition finish before the screenshot
+        XCTAssertEqual(cornerCell.frame, frameWithoutBanner) // the hint banner must not resize the grid
         attachScreenshot("Spiel Hochformat")
 
         for (index, given) in givens.enumerated() where given == "." {

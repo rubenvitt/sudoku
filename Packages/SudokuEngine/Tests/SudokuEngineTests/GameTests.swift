@@ -50,6 +50,16 @@ final class GameTests: XCTestCase {
         XCTAssertEqual(game.errorsFound, 1)
     }
 
+    func testMarkErrorsDoesNotCount() {
+        var game = makeGame()
+        game.setDigit(4, at: 2)  // right
+        game.setDigit(1, at: 3)  // wrong (solution 6)
+        game.markErrors()
+        XCTAssertEqual(game.errorMarks, [3])
+        XCTAssertEqual(game.checksUsed, 0)
+        XCTAssertEqual(game.errorsFound, 0)
+    }
+
     func testUndoClearsErrorMark() {
         var game = makeGame()
         game.setDigit(1, at: 3)

@@ -42,6 +42,8 @@ struct GameView: View {
             }
             .padding(24)
         }
+        .disabled(game.isSolved)
+        .accessibilityHidden(game.isSolved)
         .background(Color(.systemGroupedBackground))
         .overlay {
             if game.isSolved {
@@ -66,20 +68,30 @@ struct GameView: View {
 
     private var board: some View {
         GridView(game: game, selection: $selection, focus: focus, onTwoFingerTap: { mutate { $0.undo() } })
+            .equatable()
             .aspectRatio(1, contentMode: .fit)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func controls(columns: Int) -> some View {
         VStack(spacing: 16) {
-            if let banner {
-                Text(banner)
-                    .font(.callout)
-                    .padding(.horizontal, 20).padding(.vertical, 14)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.thinMaterial, in: .rect(cornerRadius: 16))
-                    .onTapGesture { self.banner = nil }
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            // Zero-height anchor: the banner grows upward over free space, so the grid's size
+            // (and Task 10's cell frames) never changes when it appears.
+            Color.clear.frame(height: 0).overlay(alignment: .bottom) {
+                if let banner {
+                    Button { self.banner = nil } label: {
+                        Text(banner)
+                            .font(.callout)
+                            .multilineTextAlignment(.leading)
+                            .padding(.horizontal, 20).padding(.vertical, 14)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(.thinMaterial, in: .rect(cornerRadius: 16))
+                    }
+                    .buttonStyle(.plain)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityHint("Schließt den Hinweis")
+                    .transition(.opacity)
+                }
             }
             NumberBar(columns: columns, noteMode: noteMode, onDigit: { digit in
                 guard let cell = selection else { return }
@@ -144,7 +156,7 @@ struct GameView: View {
             try? store.deleteGame() // a leftover save only offers a finished game once more
             return
         }
-        if game.isFull { _ = game.check() }
+        if game.isFull { game.markErrors() }
         save()
     }
 
@@ -158,10 +170,12 @@ struct GameView: View {
         case nil:
             banner = "Für diese Stellung habe ich keinen Tipp."
         }
+        if let banner { AccessibilityNotification.Announcement(banner).post() }
         save()
     }
 
     private func save() {
+        guard !game.isSolved else { return } // the save was deleted on solve; never bring it back
         try? store.save(game) // nothing to offer the player beyond retrying on the next move
     }
 }
