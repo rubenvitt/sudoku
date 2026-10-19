@@ -83,7 +83,7 @@ struct GameView: View {
             .aspectRatio(1, contentMode: .fit)
             // Before `.frame`, so the layer covers exactly the grid and shares its coordinates.
             .overlay {
-                ScribbleLayer(givens: givens, entries: game.entries.cells, noteMode: noteMode, onInput: apply,
+                ScribbleLayer(givens: givens, noteMode: noteMode, onInput: apply,
                               onSelect: { selection = $0 }, onUndo: { mutate { $0.undo() } })
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

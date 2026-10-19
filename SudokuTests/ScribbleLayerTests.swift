@@ -9,19 +9,17 @@ final class ScribbleLayerTests: XCTestCase {
     private var coordinator: ScribbleLayer.Coordinator!
 
     /// 450 pt board: cells are 50 pt squares.
-    private func makeLayer(givens: Set<Int> = [2], noteMode: Bool = false, entries: [Int: UInt8] = [:]) {
-        var cells = [UInt8](repeating: 0, count: 81)
-        for (cell, digit) in entries { cells[cell] = digit }
+    private func makeLayer(givens: Set<Int> = [2], noteMode: Bool = false) {
         view = UIView(frame: CGRect(x: 0, y: 0, width: 450, height: 450))
-        coordinator = ScribbleLayer(givens: givens, entries: cells, noteMode: noteMode, onInput: { [weak self] in
+        coordinator = ScribbleLayer(givens: givens, noteMode: noteMode, onInput: { [weak self] in
             self?.inputs.append($0)
         }).makeCoordinator()
         coordinator.view = view
     }
 
-    /// Scribble delivering `text` into the focused field, as a replacement of `range`.
-    private func scribble(_ text: String, replacing range: NSRange = NSRange(location: 1, length: 0)) -> Bool {
-        coordinator.textField(coordinator.field, shouldChangeCharactersIn: range, replacementString: text)
+    /// Scribble inserting `text` into the focused, empty field.
+    private func scribble(_ text: String) -> Bool {
+        coordinator.textField(coordinator.field, shouldChangeCharactersIn: NSRange(location: 0, length: 0), replacementString: text)
     }
 
     func testGeometry() {
@@ -60,7 +58,7 @@ final class ScribbleLayerTests: XCTestCase {
         XCTAssertFalse(scribble(" l")) // Scribble's leading space, look-alike for 1
         XCTAssertFalse(scribble("x"))
         XCTAssertEqual(inputs, [.digit(7, cell: 40), .digit(1, cell: 40)])
-        XCTAssertEqual(coordinator.field.text, "0") // the field never takes the text
+        XCTAssertEqual(coordinator.field.text, "") // the field never takes the text
     }
 
     func testNoteModeWritesNotes() {
@@ -68,14 +66,6 @@ final class ScribbleLayerTests: XCTestCase {
         _ = coordinator.focus(40)
         _ = scribble("3")
         XCTAssertEqual(inputs, [.note(3, cell: 40)])
-    }
-
-    func testScratchOutClearsCell() {
-        makeLayer(entries: [40: 5])
-        _ = coordinator.focus(40)
-        XCTAssertEqual(coordinator.field.text, "5")
-        _ = scribble("", replacing: NSRange(location: 0, length: 1))
-        XCTAssertEqual(inputs, [.clear(cell: 40)])
     }
 
     func testGivenCannotBeFocused() {

@@ -136,7 +136,8 @@ Soll-Verhalten **(Claude, Ruben ohne Widerspruch)**:
 - ~~Klein geschrieben → Notiz~~ (gestrichen 19.10.): Notizen über den
   **Notizmodus-Umschalter**. Die Kandidaten werden immer an fester Position
   (3×3-Raster in der Zelle) angezeigt.
-- **Durchkritzeln** einer Zelle löscht sie. Eine bereits gesetzte Notiz-Ziffer
+- ~~Durchkritzeln löscht~~ (gestrichen 19.10., stört mit Scribble das Überschreiben): Dieselbe Ziffer
+  erneut schreiben löscht sie, sonst Löschen-Taste. Eine bereits gesetzte Notiz-Ziffer
   erneut schreiben entfernt sie (Toggle).
 - **Finger:** tippen wählt eine Zelle; eine schmale Ziffernleiste erlaubt
   Eingabe ohne Pencil (auch Barrierefreiheit/VoiceOver).

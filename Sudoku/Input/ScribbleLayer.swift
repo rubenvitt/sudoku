@@ -2,12 +2,11 @@ import SwiftUI
 
 /// Transparent layer laid exactly over the grid. The pencil writes straight into any non-given cell:
 /// Scribble (Apple's handwriting recognition) turns the ink into text, which a hidden text field
-/// hands back here as a `CellInput`. Scratching out the digit deletes the field's text and clears the cell.
+/// hands back here as a `CellInput`.
 ///
 /// It takes every touch over the grid, so finger taps (select, two-finger undo) are handled here, not by the cell buttons.
 struct ScribbleLayer: UIViewRepresentable {
     let givens: Set<Int>
-    let entries: [UInt8]
     let noteMode: Bool
     let onInput: (CellInput) -> Void
     var onSelect: (Int) -> Void = { _ in }
@@ -84,25 +83,19 @@ struct ScribbleLayer: UIViewRepresentable {
 
         @objc func undo() { parent.onUndo() }
 
-        /// Puts the hidden field over `cell`, holding the cell's digit (or "0" when empty) in a font as large as
-        /// the shown one, so a scratch-out over the visible digit strikes the field's text and deletes it.
+        /// Puts the hidden, always empty field over `cell`. Any text in it would sit under the pencil, and Scribble
+        /// reads strokes over existing text as gestures (select, delete) instead of writing.
         func focus(_ cell: Int) -> UITextField? {
             guard let geometry, !parent.givens.contains(cell) else { return nil }
-            let frame = geometry.frame(of: cell)
             focused = cell
-            field.frame = frame
-            field.font = .systemFont(ofSize: frame.height * 0.6)
-            let digit = parent.entries[cell]
-            field.text = digit == 0 ? "0" : "\(digit)"
+            field.frame = geometry.frame(of: cell)
             return field.isFirstResponder || field.becomeFirstResponder() ? field : nil
         }
 
-        /// The field's text never changes: each edit becomes a `CellInput` and the field keeps showing the cell.
+        /// The field never takes the text, so it stays empty: each recognized digit becomes a `CellInput`.
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             guard let cell = focused else { return false }
-            if string.isEmpty {
-                if range.length > 0 { parent.onInput(.clear(cell: cell)) } // scratched out
-            } else if let digit = mapRecognized(string) {
+            if let digit = mapRecognized(string) {
                 parent.onInput(parent.noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell))
             }
             return false
