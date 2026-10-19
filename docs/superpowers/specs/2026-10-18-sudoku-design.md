@@ -127,15 +127,15 @@ Abfragen)**. Timer pausiert im Hintergrund.
 
 **Das größte Risiko.** Ruben hat die Probefahrt am 18.10. gestrichen: Start direkt mit Vision (a), Abnahme auf dem Gerät, Core ML (b) nur als Plan B nach Rückfrage. Der Spike-Text unten bleibt als Begründung stehen.
 
+**Update 19.10.:** Vision ist auf dem Gerät durchgefallen (einzelne Ziffern kaum erkannt). Ruben hat Scribble (c) gewählt: `UIIndirectScribbleInteraction` über dem Raster, jede nicht vorgegebene Zelle ist ein Schreibfeld. Die Größenerkennung für Notizen ist gestrichen, Notizen nur noch über den Umschalter. Tinte und Wartezeit bis zur Übernahme bestimmt das System; Scribble muss in den Einstellungen an sein (Standard).
+
 Soll-Verhalten **(Claude, Ruben ohne Widerspruch)**:
 
 - Mit dem Pencil in eine Zelle schreiben → Ziffer erscheint gesetzt, sobald
-  der Stift ~0,3–0,5 s abgehoben ist.
-- **Klein geschrieben** (Strichhöhe unter ca. der halben Zellhöhe) → Notiz.
-  Die Kandidaten werden immer an fester Position (3×3-Raster in der Zelle)
-  angezeigt, egal wo geschrieben wurde.
-- **Notizmodus-Umschalter** in der Leiste als Fallback, falls die
-  Größenerkennung danebenliegt.
+  Scribble den Text übernimmt.
+- ~~Klein geschrieben → Notiz~~ (gestrichen 19.10.): Notizen über den
+  **Notizmodus-Umschalter**. Die Kandidaten werden immer an fester Position
+  (3×3-Raster in der Zelle) angezeigt.
 - **Durchkritzeln** einer Zelle löscht sie. Eine bereits gesetzte Notiz-Ziffer
   erneut schreiben entfernt sie (Toggle).
 - **Finger:** tippen wählt eine Zelle; eine schmale Ziffernleiste erlaubt

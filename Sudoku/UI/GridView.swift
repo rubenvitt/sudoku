@@ -1,7 +1,7 @@
 import SwiftUI
 import SudokuEngine
 
-/// The square board; cells are exact `side / 9` squares, which the pencil canvas laid over it relies on.
+/// The square board; cells are exact `side / 9` squares, which the Scribble layer laid over it relies on.
 struct GridView: View, Equatable {
     let game: Game
     @Binding var selection: Int?

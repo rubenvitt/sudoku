@@ -81,10 +81,10 @@ struct GameView: View {
         GridView(game: game, selection: $selection, focus: focus)
             .equatable()
             .aspectRatio(1, contentMode: .fit)
-            // Before `.frame`, so the canvas covers exactly the grid and shares its coordinates.
+            // Before `.frame`, so the layer covers exactly the grid and shares its coordinates.
             .overlay {
-                PencilCanvas(givens: givens, noteMode: noteMode, onInput: apply,
-                             onSelect: { selection = $0 }, onUndo: { mutate { $0.undo() } })
+                ScribbleLayer(givens: givens, entries: game.entries.cells, noteMode: noteMode, onInput: apply,
+                              onSelect: { selection = $0 }, onUndo: { mutate { $0.undo() } })
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -96,7 +96,7 @@ struct GameView: View {
     private func controls(columns: Int, compact: Bool = false) -> some View {
         VStack(spacing: compact ? 12 : 16) {
             // Zero-height anchor: the banner grows upward over free space, so the grid's size
-            // (and the pencil canvas laid over it) never changes when it appears.
+            // (and the Scribble layer laid over it) never changes when it appears.
             Color.clear.frame(height: 0).overlay(alignment: .bottom) {
                 if let banner {
                     Button { self.banner = nil } label: {
@@ -187,7 +187,7 @@ struct GameView: View {
     }
 
     func apply(_ input: CellInput) {
-        guard !game.isSolved else { return } // pencil input lands 0.4 s + recognition after the stroke
+        guard !game.isSolved else { return } // Scribble commits its text a moment after the pencil lifts
         mutate { game in
             switch input {
             case let .digit(digit, cell): game.setDigit(digit, at: cell)
