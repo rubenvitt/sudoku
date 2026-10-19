@@ -48,12 +48,18 @@ struct ScribbleLayer: UIViewRepresentable {
         }
     }
 
+    /// No caret or selection: a clear tint does not hide the caret on the device.
+    final class HiddenField: UITextField {
+        override func caretRect(for position: UITextPosition) -> CGRect { .zero }
+        override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] { [] }
+    }
+
     @MainActor
     final class Coordinator: NSObject, UITextFieldDelegate {
         var parent: ScribbleLayer
         weak var view: UIView?
         /// Receives Scribble's text for the focused cell. Invisible, no keyboard; the digit bias helps recognition.
-        let field = UITextField()
+        let field = HiddenField()
         private(set) var focused: Int?
 
         init(_ parent: ScribbleLayer) {
@@ -65,7 +71,6 @@ struct ScribbleLayer: UIViewRepresentable {
             field.spellCheckingType = .no
             field.textAlignment = .center
             field.textColor = .clear
-            field.tintColor = .clear
             field.inputView = UIView() // no on-screen keyboard; a hardware keyboard still types digits
             field.inputAssistantItem.leadingBarButtonGroups = []
             field.inputAssistantItem.trailingBarButtonGroups = []
