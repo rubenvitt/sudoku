@@ -42,21 +42,42 @@ final class SmokeTests: XCTestCase {
         XCTAssertEqual(cornerCell.frame, frameWithoutBanner) // the hint banner must not resize the grid
         attachScreenshot("Spiel Hochformat")
 
+        let lastEmpty = givens.lastIndex(of: ".")!
         for (index, given) in givens.enumerated() where given == "." {
             if index == 40 && UIDevice.current.userInterfaceIdiom == .pad { // the iPhone stays in portrait
+                let portraitFrame = cornerCell.frame
                 XCUIDevice.shared.orientation = .landscapeLeft
-                sleep(2) // taps during the rotation animation hit stale cell frames
+                waitUntilSettled(cornerCell, awayFrom: portraitFrame) // taps during the rotation hit stale cell frames
             }
             if index == 50 && UIDevice.current.userInterfaceIdiom == .pad { attachScreenshot("Spiel Querformat") }
+            let cell = "Zeile \(index / 9 + 1), Spalte \(index % 9 + 1)"
             let notes = index == 2 ? ", Notizen 1, 2, 4" : "" // the cell noted above
-            app.buttons["Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), leer\(notes)"].tap()
+            app.buttons["\(cell), leer\(notes)"].tap()
             app.buttons["Ziffer \(solution[index])"].tap()
+            if index != lastEmpty { // the last entry ends the game and replaces the grid with the result
+                XCTAssertTrue(app.buttons["\(cell), \(solution[index])"].waitForExistence(timeout: 5),
+                              "\(cell) does not show \(solution[index]); a cell or digit tap was missed")
+            }
         }
 
         XCTAssertTrue(app.buttons["Neues Spiel"].waitForExistence(timeout: 5))
         attachScreenshot("Auswertung")
         app.buttons["Neues Spiel"].tap()
         XCTAssertTrue(app.buttons["Zeile 1, Spalte 3, leer"].waitForExistence(timeout: 5))
+    }
+
+    /// Polls until the element has left `oldFrame` and its frame stays the same between two samples.
+    @MainActor
+    private func waitUntilSettled(_ element: XCUIElement, awayFrom oldFrame: CGRect, timeout: TimeInterval = 10) {
+        var previous = oldFrame
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            usleep(300_000)
+            let current = element.frame
+            if current != oldFrame && current == previous { return }
+            previous = current
+        }
+        XCTFail("\(element) did not settle in a new frame within \(timeout) s")
     }
 
     @MainActor
