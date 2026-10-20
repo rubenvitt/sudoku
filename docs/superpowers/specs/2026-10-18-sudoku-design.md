@@ -49,7 +49,7 @@ ein Builder ohne Rückfrage treffen durfte.
   `NavigationStack` (großer Titel im Menü, Zurück-Wischen aus dem Spiel, Zeit
   in der Navigationsleiste). Aktionen auf allen Geräten als Symbol mit
   Beschriftung über den Zifferntasten, Löschen ist eine Aktion. Zifferntasten
-  zeigen, wie oft eine Ziffer noch fehlt. Neues Icon, Akzentfarbe Indigo.
+  zeigen, wie oft eine Ziffer noch fehlt. Neues Icon, Akzentfarbe Petrol.
 - iCloud-Sync, Konto, Game Center, Statistik-Historie, Tagesrätsel,
   Werbung/Käufe **(Claude)**.
 - Mehrere parallele Spielstände: ein laufendes Spiel **(Claude)**.
