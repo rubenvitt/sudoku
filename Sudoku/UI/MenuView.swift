@@ -9,6 +9,8 @@ struct MenuView: View {
     @State private var path: [Session] = []
     @State private var pendingDiscard: Difficulty?
     @State private var starting: Difficulty?
+    @State private var choosingAccent = false
+    @Environment(\.accent) private var accent
 
     struct Session: Hashable {
         let id = UUID()
@@ -22,6 +24,17 @@ struct MenuView: View {
         NavigationStack(path: $path) {
             menu
                 .navigationTitle("Sudoku")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button { choosingAccent = true } label: {
+                            Image(systemName: "paintpalette")
+                        }
+                        .accessibilityLabel("Akzentfarbe")
+                    }
+                }
+                .sheet(isPresented: $choosingAccent) {
+                    AccentPicker().presentationDetents([.medium, .large])
+                }
                 .navigationDestination(for: Session.self) { session in
                     // Leaving saves the game first, so reloading afterwards shows the current time.
                     GameView(game: session.game, store: store, onNewGame: start,
@@ -88,8 +101,8 @@ struct MenuView: View {
             }
             .foregroundStyle(.white)
             .padding(18)
-            .background(Color.accentColor.gradient, in: .rect(cornerRadius: 24, style: .continuous))
-            .shadow(color: Color.accentColor.opacity(0.3), radius: 16, y: 8)
+            .background(accent.gradient, in: .rect(cornerRadius: 24, style: .continuous))
+            .shadow(color: accent.opacity(0.3), radius: 16, y: 8)
             .contentShape(.rect(cornerRadius: 24, style: .continuous))
         }
         .buttonStyle(PressableStyle())

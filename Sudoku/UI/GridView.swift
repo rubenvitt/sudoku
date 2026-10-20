@@ -6,6 +6,7 @@ struct GridView: View, Equatable {
     let game: Game
     @Binding var selection: Int?
     var focus: Set<Int> = []
+    @Environment(\.accent) private var accent
 
     /// Ignores `elapsed` so the per-second timer tick doesn't redraw all 81 cells.
     nonisolated static func == (lhs: GridView, rhs: GridView) -> Bool {
@@ -53,7 +54,7 @@ struct GridView: View, Equatable {
                 if value != 0 {
                     Text("\(value)")
                         .font(.system(size: size * 0.58, weight: isGiven ? .semibold : .medium, design: .rounded))
-                        .foregroundStyle(isWrong ? Color.red : isGiven ? Color.primary : Color.accentColor)
+                        .foregroundStyle(isWrong ? Color.red : isGiven ? Color.primary : accent)
                         .contentTransition(.numericText())
                 } else {
                     notes(game.notes[index], size: size, highlight: selectedValue)
@@ -87,7 +88,7 @@ struct GridView: View, Equatable {
                         let isHighlighted = digit == highlight
                         Text("\(digit)")
                             .font(.system(size: size * 0.22, weight: isHighlighted ? .bold : .medium, design: .rounded))
-                            .foregroundStyle(isHighlighted ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(.secondary))
+                            .foregroundStyle(isHighlighted ? AnyShapeStyle(accent) : AnyShapeStyle(.secondary))
                             .frame(width: size / 3.4, height: size / 3.4)
                             .opacity(mask & (1 << (digit - 1)) != 0 ? 1 : 0)
                     }
@@ -100,11 +101,11 @@ struct GridView: View, Equatable {
         if isWrong { return .red.opacity(0.15) }
         if focus.contains(index) { return .yellow.opacity(0.35) }
         guard let selected = selection else { return .clear }
-        if selected == index { return .accentColor.opacity(0.3) }
+        if selected == index { return accent.opacity(0.3) }
         let selectedValue = Int(game.entries.cells[selected])
-        if selectedValue != 0 && value == selectedValue { return .accentColor.opacity(0.18) }
+        if selectedValue != 0 && value == selectedValue { return accent.opacity(0.18) }
         let sameBox = selected / 27 == index / 27 && selected % 9 / 3 == index % 9 / 3
-        if selected / 9 == index / 9 || selected % 9 == index % 9 || sameBox { return .accentColor.opacity(0.07) }
+        if selected / 9 == index / 9 || selected % 9 == index % 9 || sameBox { return accent.opacity(0.07) }
         return .clear
     }
 

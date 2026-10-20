@@ -4,6 +4,7 @@ import SudokuEngine
 @main
 struct SudokuApp: App {
     @State private var stock: PuzzleStock
+    @AppStorage(AccentTheme.storageKey) private var accent: AccentTheme = .ocean
     private let store: Store
 
     init() {
@@ -32,6 +33,11 @@ struct SudokuApp: App {
     }
 
     var body: some Scene {
-        WindowGroup { MenuView(store: store).environment(stock) }
+        WindowGroup {
+            MenuView(store: store)
+                .environment(stock)
+                .environment(\.accent, accent.color)
+                .tint(accent.color)
+        }
     }
 }
