@@ -1,9 +1,10 @@
 name: Screenshots
 
 # App Store screenshots in the sizes App Store Connect asks for (6.9" iPhone, 13" iPad).
-# Start by hand; the PNGs come back as a workflow artifact.
+# Start by hand for a look; the App Store workflow calls it and uploads the PNGs.
 on:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read

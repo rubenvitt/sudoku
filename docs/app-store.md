@@ -10,23 +10,38 @@ Was im Repo vorbereitet ist und was nur in App Store Connect geht.
 | Version 1.0, Kategorie Rätselspiele | `project.yml` |
 | Datenschutz-Manifest (keine Daten, kein Tracking) | `Sudoku/PrivacyInfo.xcprivacy` |
 | Exportkontrolle: keine Verschlüsselung | `ITSAppUsesNonExemptEncryption = NO` in `project.yml` |
-| Texte (Name, Untertitel, Beschreibung, Schlüsselwörter, URLs) | `fastlane/metadata/de-DE` |
-| Screenshots 6,9″ iPhone und 13″ iPad | Workflow **Screenshots** (von Hand starten), Ergebnis als Artefakt |
+| Texte Deutsch und Englisch (Name, Untertitel, Beschreibung, Schlüsselwörter, Werbetext, URLs) | `fastlane/metadata/de-DE`, `fastlane/metadata/en-US` |
+| Notiz an das Prüfteam | `fastlane/metadata/review_information/notes.txt` |
+| Screenshots 6,9″ iPhone und 13″ iPad | Workflow **Screenshots**, läuft auch im Workflow **App Store** mit |
 | Build | Workflow **TestFlight** bei jedem Push auf `main` |
+| Texte und Screenshots hochladen, optional einreichen | Workflow **App Store** (von Hand starten, nur auf `main`) |
 
-## In App Store Connect (einmalig)
+## Workflow „App Store"
 
-1. **Name prüfen.** „Sudoku" allein ist vergeben; Vorschlag in `fastlane/metadata/de-DE/name.txt`. Auf dem Homescreen heißt die App weiter „Sudoku".
-2. **Datenschutz-URL erreichbar machen.** `privacy_url.txt` zeigt auf `PRIVACY.md` im Repo — dafür muss das Repo öffentlich sein (sonst z. B. auf GitHub Pages oder rubeen.dev legen und die URL anpassen).
-3. **App-Datenschutz:** „Keine Daten erhoben" auswählen.
-4. **Altersfreigabe:** Fragebogen überall mit „Nein" → 4+.
-5. **Preis und Verfügbarkeit:** kostenlos, Länder wählen.
-6. **Texte hochladen:** `fastlane metadata` (braucht `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_PATH` wie die TestFlight-Lane) oder von Hand aus `fastlane/metadata` kopieren.
-7. **Screenshots:** Workflow „Screenshots" starten, Artefakte herunterladen, unter 6,9″ (iPhone) und 13″ (iPad) hochladen.
-8. **Build wählen** (letzter TestFlight-Build mit Version 1.0), **Zur Prüfung einreichen.**
+Startet unter *Actions → App Store → Run workflow* auf `main`:
+
+- **Ohne Eingaben:** macht frische Screenshots und lädt sie mit allen Texten und der Prüfnotiz hoch (`fastlane metadata`). Nichts wird eingereicht.
+- **`submit` = `einreichen`:** wie oben, hängt zusätzlich den neuesten verarbeiteten TestFlight-Build an (oder den aus `build_number`) und reicht Version 1.0 zur Prüfung ein (`fastlane submit`). Nach der Freigabe durch Apple wird die App **nicht** automatisch veröffentlicht; das geschieht von Hand in App Store Connect.
+
+Kontakt für das Prüfteam (Pflicht beim Einreichen, bleibt aus dem öffentlichen Repo heraus), unter *Settings → Secrets and variables → Actions*:
+
+| Name | Art |
+|---|---|
+| `REVIEW_FIRST_NAME`, `REVIEW_LAST_NAME`, `REVIEW_EMAIL` | Variable |
+| `REVIEW_PHONE` | Secret, mit Ländervorwahl, z. B. `+49 …` |
+
+Wer die Felder lieber direkt in App Store Connect pflegt, lässt sie leer; die Lane überschreibt dann nur die Notiz.
+
+## In App Store Connect (einmalig, nur im Browser)
+
+Diese Angaben gibt es nicht über den API-Schlüssel:
+
+1. **App-Datenschutz:** „Keine Daten erhoben" auswählen und veröffentlichen. Datenschutz-URL ist schon in den Texten (`PRIVACY.md`, Repo ist öffentlich).
+2. **Altersfreigabe:** Fragebogen überall mit „Nein" bzw. „Keine" → 4+.
+3. **Preis und Verfügbarkeit:** kostenlos (0,00 €), Länder wählen.
+4. **Name prüfen.** „Sudoku" allein ist vergeben; Vorschlag in `name.txt`. Auf dem Homescreen heißt die App weiter „Sudoku".
+5. Danach Workflow **App Store** mit `submit` = `einreichen` starten, nach der Freigabe **Version veröffentlichen**.
 
 ## Hinweise für die Prüfung
 
-Kein Login, keine Demo-Daten nötig. Notiz an das Review-Team (optional):
-
-> Ziffern lassen sich auf dem iPad mit dem Apple Pencil direkt in die Zellen schreiben (iPadOS Scribble) oder auf allen Geräten über die Zifferntasten eingeben.
+Kein Login, keine Demo-Daten nötig. Die Notiz an das Prüfteam steht in `fastlane/metadata/review_information/notes.txt` und wird mit hochgeladen.
