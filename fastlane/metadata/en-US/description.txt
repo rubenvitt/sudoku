@@ -1,0 +1,27 @@
+Sudoku the way it should be: a calm board, endless puzzles and nothing to distract you.
+
+The app is in German. Sudoku needs no words, and the buttons carry symbols.
+
+WRITE LIKE ON PAPER
+On iPad, write digits straight into the cells with Apple Pencil. On iPhone, tap them in on a clear number pad that shows how many of each digit are still missing.
+
+ENDLESS PUZZLES
+Every puzzle is generated on your device and has exactly one solution. Four levels (Easy, Medium, Hard and Expert) follow the techniques you need to solve them. You never have to guess.
+
+HINTS THAT EXPLAIN
+Stuck? A hint shows you the next logical step and explains it, from a simple single up to X-Wing and Swordfish. You learn something with every puzzle.
+
+MISTAKES ONLY WHEN YOU ASK
+The app never tells you anything unasked. Wrong digits are marked only when you tap Check.
+
+YOUR GAME STAYS WHERE IT IS
+Every move is saved instantly. Close the app whenever you like and pick up exactly where you left off.
+
+ALSO
+• Notes for candidates, matching digits are highlighted
+• Undo and redo, also with a two-finger tap
+• Summary with time, hints and mistakes found
+• Light and dark mode, VoiceOver support
+• Works fully offline
+
+Buy once, get everything: no ads, no in-app purchases, no account, no data collection.
