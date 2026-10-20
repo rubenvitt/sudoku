@@ -1,6 +1,6 @@
 # Datenschutz
 
-**Sudoku – Stift & Tipps** · Stand: 20. Oktober 2026
+**Griffel Sudoku** · Stand: 20. Oktober 2026
 
 Diese App erhebt, speichert und überträgt keine personenbezogenen Daten.
 

@@ -40,7 +40,7 @@ Diese Angaben gibt es nicht über den API-Schlüssel:
 2. **Altersfreigabe:** Fragebogen überall mit „Nein" bzw. „Keine" → 4+.
 3. **Vertrag für bezahlte Apps:** unter *Business* (früher „Verträge, Steuern und Bankverbindungen") den Paid Apps Agreement annehmen, Bankkonto und Steuerformulare (W-8BEN für Deutschland) eintragen. Ohne aktiven Vertrag lässt sich kein Preis über 0 € setzen.
 4. **Preis und Verfügbarkeit:** Grundpreis 1,49 € (Deutschland als Basisland, die anderen Länder rechnet Apple um), Länder wählen. Einmalkauf, keine In-App-Käufe.
-5. **Name prüfen.** „Sudoku" allein ist vergeben; Vorschlag in `name.txt`. Auf dem Homescreen heißt die App weiter „Sudoku".
+5. **Name prüfen.** In App Store Connect heißt die App „Griffel Sudoku" (`name.txt` muss dazu passen, sonst benennt der Upload sie um). Auf dem Homescreen heißt die App weiter „Sudoku".
 6. Danach Workflow **App Store** mit `submit` = `einreichen` starten, nach der Freigabe **Version veröffentlichen**.
 
 ## Hinweise für die Prüfung
