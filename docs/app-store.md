@@ -38,9 +38,10 @@ Diese Angaben gibt es nicht über den API-Schlüssel:
 
 1. **App-Datenschutz:** „Keine Daten erhoben" auswählen und veröffentlichen. Datenschutz-URL ist schon in den Texten (`PRIVACY.md`, Repo ist öffentlich).
 2. **Altersfreigabe:** Fragebogen überall mit „Nein" bzw. „Keine" → 4+.
-3. **Preis und Verfügbarkeit:** kostenlos (0,00 €), Länder wählen.
-4. **Name prüfen.** „Sudoku" allein ist vergeben; Vorschlag in `name.txt`. Auf dem Homescreen heißt die App weiter „Sudoku".
-5. Danach Workflow **App Store** mit `submit` = `einreichen` starten, nach der Freigabe **Version veröffentlichen**.
+3. **Vertrag für bezahlte Apps:** unter *Business* (früher „Verträge, Steuern und Bankverbindungen") den Paid Apps Agreement annehmen, Bankkonto und Steuerformulare (W-8BEN für Deutschland) eintragen. Ohne aktiven Vertrag lässt sich kein Preis über 0 € setzen.
+4. **Preis und Verfügbarkeit:** Grundpreis 1,49 € (Deutschland als Basisland, die anderen Länder rechnet Apple um), Länder wählen. Einmalkauf, keine In-App-Käufe.
+5. **Name prüfen.** „Sudoku" allein ist vergeben; Vorschlag in `name.txt`. Auf dem Homescreen heißt die App weiter „Sudoku".
+6. Danach Workflow **App Store** mit `submit` = `einreichen` starten, nach der Freigabe **Version veröffentlichen**.
 
 ## Hinweise für die Prüfung
 
