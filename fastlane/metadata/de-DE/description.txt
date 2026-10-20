@@ -1,0 +1,25 @@
+Sudoku, wie es sein soll: ein ruhiges Spielfeld, unendlich viele Rätsel und nichts, was dich ablenkt.
+
+SCHREIBEN WIE AUF PAPIER
+Auf dem iPad schreibst du Ziffern mit dem Apple Pencil direkt in die Zellen. Auf dem iPhone tippst du sie über eine übersichtliche Zifferntastatur ein, die dir zeigt, wie oft jede Ziffer noch fehlt.
+
+UNENDLICH VIELE RÄTSEL
+Jedes Rätsel wird auf deinem Gerät erzeugt und hat genau eine Lösung. Vier Stufen – Leicht, Mittel, Schwer und Experte – richten sich nach den Techniken, die du zum Lösen brauchst. Raten musst du nie.
+
+TIPPS, DIE ETWAS ERKLÄREN
+Hängst du fest, zeigt dir der Tipp den nächsten logischen Schritt und erklärt ihn: vom einfachen Einer bis zu X-Wing und Swordfish. So lernst du mit jedem Rätsel dazu.
+
+FEHLER NUR, WENN DU FRAGST
+Die App verrät dir nichts ungefragt. Erst wenn du „Prüfen“ tippst, werden falsche Ziffern markiert.
+
+DEIN SPIEL BLEIBT, WO ES IST
+Jeder Zug wird sofort gespeichert. Schließ die App, wann du willst – beim nächsten Öffnen geht es genau dort weiter.
+
+AUSSERDEM
+• Notizen für Kandidaten, passende Ziffern werden hervorgehoben
+• Rückgängig und Wiederholen, auch per Zwei-Finger-Tipp
+• Auswertung mit Zeit, Tipps und gefundenen Fehlern
+• Hell- und Dunkelmodus, VoiceOver-Unterstützung
+• Funktioniert komplett offline
+
+Keine Werbung. Keine In-App-Käufe. Kein Konto. Keine Datensammlung.

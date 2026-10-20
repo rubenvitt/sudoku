@@ -42,9 +42,14 @@ ein Builder ohne Rückfrage treffen durfte.
   Constraint-Typen und Grafik — das wird jetzt **nicht** vorgebaut.
 - Mac **(Claude)**. iPhone war hier zunächst ausgeschlossen; seit 18.10. gibt es
   eine iPhone-Variante **(Ruben)**: nur Hochformat, eigenes kompaktes Layout
-  (Aktionen über den Zifferntasten, Tasten in zwei Reihen), Eingabe per Finger.
+  (Aktionen über den Zifferntasten, Tasten in zwei Reihen; seit 20.10. in einer Reihe), Eingabe per Finger.
   Das iPad-Layout bleibt unverändert; das kompakte Layout greift nur bei
   kompakter Breite (iPhone, schmale iPad-Fenster in Split View/Slide Over).
+- **Update 20.10. (Ruben: „moderner, mehr iOS-Stil“):** Navigation über
+  `NavigationStack` (großer Titel im Menü, Zurück-Wischen aus dem Spiel, Zeit
+  in der Navigationsleiste). Aktionen auf allen Geräten als Symbol mit
+  Beschriftung über den Zifferntasten, Löschen ist eine Aktion. Zifferntasten
+  zeigen, wie oft eine Ziffer noch fehlt. Neues Icon, Akzentfarbe Petrol.
 - iCloud-Sync, Konto, Game Center, Statistik-Historie, Tagesrätsel,
   Werbung/Käufe **(Claude)**.
 - Mehrere parallele Spielstände: ein laufendes Spiel **(Claude)**.

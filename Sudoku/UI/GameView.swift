@@ -19,36 +19,38 @@ struct GameView: View {
     let store: Store
     let onNewGame: (Difficulty) -> Void
     let onMenu: () -> Void
+    let onLeave: () -> Void
 
-    init(game: Game, store: Store, onNewGame: @escaping (Difficulty) -> Void, onMenu: @escaping () -> Void) {
+    init(game: Game, store: Store, onNewGame: @escaping (Difficulty) -> Void, onMenu: @escaping () -> Void,
+         onLeave: @escaping () -> Void = {}) {
         _game = State(initialValue: game)
         self.store = store
         self.onNewGame = onNewGame
         self.onMenu = onMenu
+        self.onLeave = onLeave
     }
 
     var body: some View {
         GeometryReader { geo in
             if sizeClass == .compact {
-                // iPhone and narrow iPad windows: the actions move down to the keys, within thumb reach.
-                VStack(spacing: 12) {
-                    compactToolbar
+                // iPhone and narrow iPad windows: one row of keys, the actions right above it within thumb reach.
+                VStack(spacing: 14) {
                     board
-                    controls(columns: 5, compact: true)
+                    controls(actionColumns: 6, digitColumns: 9, keyHeight: 58)
                 }
-                .padding(16)
+                .padding(.horizontal, 12)
+                .padding(.top, 4)
+                .padding(.bottom, 8)
+            } else if geo.size.width > geo.size.height {
+                HStack(alignment: .center, spacing: 32) {
+                    board
+                    controls(actionColumns: 3, digitColumns: 3, keyHeight: 76).frame(width: 320)
+                }
+                .padding(24)
             } else {
                 VStack(spacing: 20) {
-                    toolbar
-                    if geo.size.width > geo.size.height {
-                        HStack(alignment: .center, spacing: 28) {
-                            board
-                            controls(columns: 3).frame(width: 300)
-                        }
-                    } else {
-                        board
-                        controls(columns: 10)
-                    }
+                    board
+                    controls(actionColumns: 6, digitColumns: 9, keyHeight: 72)
                 }
                 .padding(24)
             }
@@ -56,6 +58,11 @@ struct GameView: View {
         .disabled(game.isSolved)
         .accessibilityHidden(game.isSolved)
         .background(Color(.systemGroupedBackground))
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(game.isSolved)
+        .toolbar {
+            ToolbarItem(placement: .principal) { title }
+        }
         .overlay {
             if game.isSolved {
                 ResultView(game: game, onNewGame: { onNewGame(game.puzzle.difficulty) }, onMenu: onMenu)
@@ -65,6 +72,7 @@ struct GameView: View {
         .animation(.spring(duration: 0.4), value: game.isSolved)
         .animation(.easeInOut(duration: 0.2), value: banner)
         .sensoryFeedback(.impact(weight: .light), trigger: game.entries)
+        .sensoryFeedback(.selection, trigger: noteMode)
         .sensoryFeedback(.success, trigger: game.isSolved) { _, solved in solved }
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
@@ -75,6 +83,21 @@ struct GameView: View {
             }
         }
         .onChange(of: scenePhase) { if scenePhase != .active && !game.isSolved { save() } }
+        .onDisappear { save(); onLeave() }
+    }
+
+    private var title: some View {
+        VStack(spacing: 0) {
+            Text(game.puzzle.difficulty.title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+            Text(game.elapsed.clock)
+                .font(.system(.headline, design: .rounded).monospacedDigit())
+                .contentTransition(.numericText())
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(game.puzzle.difficulty.title), Zeit \(game.elapsed.clock)")
     }
 
     private var board: some View {
@@ -93,97 +116,61 @@ struct GameView: View {
         Set(game.puzzle.givens.cells.indices.filter { game.puzzle.givens.cells[$0] != 0 })
     }
 
-    private func controls(columns: Int, compact: Bool = false) -> some View {
-        VStack(spacing: compact ? 12 : 16) {
+    /// How often each digit 1…9 may still be placed; index 0 is unused.
+    private var remaining: [Int] {
+        var counts = [Int](repeating: 9, count: 10)
+        for value in game.entries.cells where value != 0 { counts[Int(value)] -= 1 }
+        return counts
+    }
+
+    private func controls(actionColumns: Int, digitColumns: Int, keyHeight: CGFloat) -> some View {
+        VStack(spacing: 14) {
             // Zero-height anchor: the banner grows upward over free space, so the grid's size
             // (and the Scribble layer laid over it) never changes when it appears.
             Color.clear.frame(height: 0).overlay(alignment: .bottom) {
                 if let banner {
                     Button { self.banner = nil } label: {
-                        Text(banner)
-                            .font(.callout)
-                            .multilineTextAlignment(.leading)
-                            .padding(.horizontal, 20).padding(.vertical, 14)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(.thinMaterial, in: .rect(cornerRadius: 16))
+                        HStack(alignment: .firstTextBaseline, spacing: 12) {
+                            Image(systemName: "lightbulb.max.fill")
+                                .foregroundStyle(.yellow)
+                                .accessibilityHidden(true)
+                            Text(banner)
+                                .multilineTextAlignment(.leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .font(.callout)
+                        .padding(.horizontal, 18).padding(.vertical, 14)
+                        .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
+                        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
                     }
                     .buttonStyle(.plain)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityHint("Schließt den Hinweis")
-                    .transition(.opacity)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
-            if compact {
-                HStack(spacing: 0) { actions(stretch: true) }
-                    .padding(.horizontal, 12).padding(.vertical, 6)
-                    .background(.regularMaterial, in: .capsule)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: actionColumns), spacing: 8) {
+                actions
             }
-            NumberBar(columns: columns, keyHeight: compact ? 52 : 64, noteMode: noteMode, onDigit: { digit in
+            NumberBar(columns: digitColumns, keyHeight: keyHeight, noteMode: noteMode, remaining: remaining) { digit in
                 guard let cell = selection else { return }
                 apply(noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell))
-            }, onClear: {
-                guard let cell = selection else { return }
-                apply(.clear(cell: cell))
-            })
+            }
         }
     }
 
-    private var toolbar: some View {
-        HStack(spacing: 6) {
-            menuButton
-            Spacer()
-            clock
-            Spacer()
-            actions()
-        }
-        .padding(.horizontal, 12).padding(.vertical, 6)
-        .background(.regularMaterial, in: .capsule)
-    }
-
-    private var compactToolbar: some View {
-        HStack(spacing: 6) {
-            menuButton
-            Spacer()
-            clock
-            Spacer()
-            Color.clear.frame(width: 52, height: 44) // balances the menu button, so the clock stays centred
-        }
-        .padding(.horizontal, 12).padding(.vertical, 6)
-        .background(.regularMaterial, in: .capsule)
-    }
-
-    private var menuButton: some View {
-        toolButton("Menü", "chevron.backward") { save(); onMenu() }
-    }
-
-    private var clock: some View {
-        Text(game.elapsed.clock)
-            .font(.system(.title2, design: .rounded, weight: .medium).monospacedDigit())
-            .accessibilityLabel("Zeit \(game.elapsed.clock)")
-    }
-
-    /// `stretch` spreads the buttons across the compact action row.
-    @ViewBuilder private func actions(stretch: Bool = false) -> some View {
-        toolButton("Rückgängig", "arrow.uturn.backward", stretch: stretch) { mutate { $0.undo() } }
+    @ViewBuilder private var actions: some View {
+        ActionButton(title: "Rückgängig", symbol: "arrow.uturn.backward") { mutate { $0.undo() } }
             .disabled(!game.canUndo)
-        toolButton("Wiederholen", "arrow.uturn.forward", stretch: stretch) { mutate { $0.redo() } }
+        ActionButton(title: "Wiederholen", symbol: "arrow.uturn.forward") { mutate { $0.redo() } }
             .disabled(!game.canRedo)
-        toolButton("Notizen", noteMode ? "pencil.circle.fill" : "pencil.circle", stretch: stretch) { noteMode.toggle() }
-            .accessibilityAddTraits(noteMode ? .isSelected : [])
-        toolButton("Tipp", "lightbulb", stretch: stretch) { showHint() }
-        toolButton("Überprüfen", "checkmark.circle", stretch: stretch) { check() }
-    }
-
-    private func toolButton(_ title: String, _ symbol: String, stretch: Bool = false,
-                            action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Label(title, systemImage: symbol)
-                .labelStyle(.iconOnly)
-                .font(.title2)
-                .frame(minWidth: 52, maxWidth: stretch ? .infinity : 52, minHeight: 44, maxHeight: 44)
-                .contentShape(.rect)
+        ActionButton(title: "Löschen", symbol: "eraser") {
+            guard let cell = selection else { return }
+            apply(.clear(cell: cell))
         }
-        .buttonStyle(.borderless)
+        ActionButton(title: "Notizen", symbol: "pencil", isOn: noteMode) { noteMode.toggle() }
+        ActionButton(title: "Tipp", symbol: "lightbulb") { showHint() }
+        ActionButton(title: "Prüfen", accessibilityTitle: "Überprüfen", symbol: "checkmark.circle") { check() }
     }
 
     func apply(_ input: CellInput) {
@@ -239,6 +226,44 @@ struct GameView: View {
     private func save() {
         guard !game.isSolved else { return } // the save was deleted on solve; never bring it back
         try? store.save(game) // nothing to offer the player beyond retrying on the next move
+    }
+}
+
+/// Symbol above a short caption; `isOn` marks a toggle that is switched on.
+private struct ActionButton: View {
+    let title: String
+    var accessibilityTitle: String?
+    let symbol: String
+    var isOn: Bool?
+    let action: () -> Void
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: symbol)
+                    .font(.system(size: 20, weight: .medium))
+                    .frame(width: 44, height: 34)
+                    .foregroundStyle(isOn == true ? AnyShapeStyle(.white) : AnyShapeStyle(.tint))
+                    .background {
+                        if isOn == true {
+                            Capsule().fill(.tint)
+                        }
+                    }
+                Text(title)
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+            }
+            .frame(maxWidth: .infinity, minHeight: 56)
+            .opacity(isEnabled ? 1 : 0.35)
+            .contentShape(.rect)
+        }
+        .buttonStyle(PressableStyle())
+        .animation(.spring(duration: 0.25), value: isOn)
+        .accessibilityLabel(accessibilityTitle ?? title)
+        .accessibilityAddTraits(isOn == true ? .isSelected : [])
     }
 }
 
