@@ -30,9 +30,14 @@ struct GridView: View, Equatable {
             }
             .overlay { lines.allowsHitTesting(false) }
         }
-        .background(Color(.systemBackground))
-        .clipShape(.rect(cornerRadius: 10))
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.label), lineWidth: 3))
+        .clipShape(.rect(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(Color(.label).opacity(0.8), lineWidth: 2))
+        // The shadow sits on a plain shape, so it isn't re-rendered with every cell change.
+        .background {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.08), radius: 16, y: 6)
+        }
         .animation(.easeOut(duration: 0.15), value: selection)
         .animation(.easeOut(duration: 0.25), value: focus)
     }
@@ -41,16 +46,17 @@ struct GridView: View, Equatable {
         let value = Int(game.entries.cells[index])
         let isGiven = game.puzzle.givens.cells[index] != 0
         let isWrong = game.errorMarks.contains(index)
+        let selectedValue = selection.map { Int(game.entries.cells[$0]) } ?? 0
         return Button { selection = index } label: {
             ZStack {
                 Rectangle().fill(background(index, value: value, isWrong: isWrong))
                 if value != 0 {
                     Text("\(value)")
-                        .font(.system(size: size * 0.6, weight: isGiven ? .semibold : .regular, design: .rounded))
+                        .font(.system(size: size * 0.58, weight: isGiven ? .semibold : .medium, design: .rounded))
                         .foregroundStyle(isWrong ? Color.red : isGiven ? Color.primary : Color.accentColor)
                         .contentTransition(.numericText())
                 } else {
-                    notes(game.notes[index], size: size)
+                    notes(game.notes[index], size: size, highlight: selectedValue)
                 }
             }
             .frame(width: size, height: size)
@@ -71,15 +77,17 @@ struct GridView: View, Equatable {
         return label
     }
 
-    private func notes(_ mask: CandidateMask, size: CGFloat) -> some View {
+    /// Notes of `highlight`, the digit in the selected cell, stand out so its candidates are easy to spot.
+    private func notes(_ mask: CandidateMask, size: CGFloat, highlight: Int) -> some View {
         VStack(spacing: 0) {
             ForEach(0..<3, id: \.self) { row in
                 HStack(spacing: 0) {
                     ForEach(1...3, id: \.self) { column in
                         let digit = row * 3 + column
+                        let isHighlighted = digit == highlight
                         Text("\(digit)")
-                            .font(.system(size: size * 0.22, weight: .medium, design: .rounded))
-                            .foregroundStyle(.secondary)
+                            .font(.system(size: size * 0.22, weight: isHighlighted ? .bold : .medium, design: .rounded))
+                            .foregroundStyle(isHighlighted ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(.secondary))
                             .frame(width: size / 3.4, height: size / 3.4)
                             .opacity(mask & (1 << (digit - 1)) != 0 ? 1 : 0)
                     }
@@ -90,13 +98,13 @@ struct GridView: View, Equatable {
 
     private func background(_ index: Int, value: Int, isWrong: Bool) -> Color {
         if isWrong { return .red.opacity(0.15) }
-        if focus.contains(index) { return .orange.opacity(0.3) }
+        if focus.contains(index) { return .yellow.opacity(0.35) }
         guard let selected = selection else { return .clear }
-        if selected == index { return .accentColor.opacity(0.32) }
+        if selected == index { return .accentColor.opacity(0.3) }
         let selectedValue = Int(game.entries.cells[selected])
-        if selectedValue != 0 && value == selectedValue { return .accentColor.opacity(0.2) }
+        if selectedValue != 0 && value == selectedValue { return .accentColor.opacity(0.18) }
         let sameBox = selected / 27 == index / 27 && selected % 9 / 3 == index % 9 / 3
-        if selected / 9 == index / 9 || selected % 9 == index % 9 || sameBox { return .accentColor.opacity(0.12) }
+        if selected / 9 == index / 9 || selected % 9 == index % 9 || sameBox { return .accentColor.opacity(0.07) }
         return .clear
     }
 
@@ -109,7 +117,7 @@ struct GridView: View, Equatable {
                 path.move(to: CGPoint(x: offset, y: 0)); path.addLine(to: CGPoint(x: offset, y: size.height))
                 path.move(to: CGPoint(x: 0, y: offset)); path.addLine(to: CGPoint(x: size.width, y: offset))
                 let isBox = i % 3 == 0
-                context.stroke(path, with: .color(isBox ? Color(.label) : Color(.separator)), lineWidth: isBox ? 2 : 0.5)
+                context.stroke(path, with: .color(isBox ? Color(.label).opacity(0.8) : Color(.separator)), lineWidth: isBox ? 1.5 : 0.5)
             }
         }
     }
