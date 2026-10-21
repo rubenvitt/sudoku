@@ -55,6 +55,13 @@ struct GameView: View {
                 .padding(24)
             }
         }
+        // Taps that land beside the grid and the keys clear the selection, and with it the highlighted digit.
+        .background {
+            Color.clear
+                .contentShape(.rect)
+                .onTapGesture { selection = nil }
+                .accessibilityHidden(true)
+        }
         .disabled(game.isSolved)
         .accessibilityHidden(game.isSolved)
         .background(Color(.systemGroupedBackground))
@@ -157,6 +164,9 @@ struct GameView: View {
                 apply(noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell))
             }
         }
+        // A tap between two keys is a near miss, not a tap outside: it keeps the selection.
+        .contentShape(.rect)
+        .onTapGesture {}
     }
 
     @ViewBuilder private var actions: some View {
