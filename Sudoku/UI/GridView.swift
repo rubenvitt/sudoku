@@ -49,7 +49,7 @@ struct GridView: View, Equatable {
         let isGiven = game.puzzle.givens.cells[index] != 0
         let isWrong = game.errorMarks.contains(index)
         let selectedValue = selection.map { Int(game.entries.cells[$0]) } ?? 0
-        return Button { selection = index } label: {
+        return Button { selection = selection == index ? nil : index } label: {
             ZStack {
                 Rectangle().fill(background(index, value: value, isWrong: isWrong))
                 if let ink = ink[index], ink.digit == value, !isGiven {

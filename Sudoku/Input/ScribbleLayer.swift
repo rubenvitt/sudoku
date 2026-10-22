@@ -5,12 +5,15 @@ import UIKit.UIGestureRecognizerSubclass
 /// Scribble (Apple's handwriting recognition) turns the ink into text, which the cell's own hidden text field
 /// hands back here as a `CellInput`. One field per cell, so writing on in the next cell never redirects or drops
 /// the text Scribble is still recognizing for the last one. The pencil's strokes are recorded alongside, so a written digit keeps its handwriting.
+/// A cell's text only counts once the pencil has left that cell for a moment, so a digit written in two strokes (a 4, a 5) stays one digit.
 ///
 /// It takes every touch over the grid, so taps (select, two-finger undo) are handled here, not by the cell buttons.
 struct ScribbleLayer: UIViewRepresentable {
     let givens: Set<Int>
     let noteMode: Bool
     let onInput: (CellInput) -> Void
+    /// Colour of the strokes shown while a cell waits for its last stroke.
+    var inkColor: Color = .accentColor
     var onSelect: (Int) -> Void = { _ in }
     var onUndo: () -> Void = {}
 
@@ -30,7 +33,9 @@ struct ScribbleLayer: UIViewRepresentable {
         twoFingerTap.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
         view.addGestureRecognizer(tap)
         view.addGestureRecognizer(twoFingerTap)
-        view.addGestureRecognizer(InkRecorder { [weak coordinator = context.coordinator] in coordinator?.record($0) })
+        view.addGestureRecognizer(InkRecorder(
+            onBegin: { [weak coordinator = context.coordinator] in coordinator?.strokeBegan(at: $0) },
+            onEnd: { [weak coordinator = context.coordinator] in coordinator?.strokeEnded($0) }))
         return view
     }
 
@@ -40,11 +45,25 @@ struct ScribbleLayer: UIViewRepresentable {
     }
 
     static func dismantleUIView(_ view: LayerView, coordinator: Coordinator) {
+        coordinator.flush() // leaving the game mid-digit still enters what was written
         coordinator.fields.values.forEach { $0.resignFirstResponder() }
     }
 
     /// Keeps every touch on the layer itself, so fingers reach its tap recognizers and never the hidden field.
     final class LayerView: UIView {
+        /// Strokes of cells still waiting for a further stroke, so the handwriting never vanishes while it waits.
+        let preview = CAShapeLayer()
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            preview.fillColor = nil
+            preview.lineCap = .round
+            preview.lineJoin = .round
+            layer.addSublayer(preview)
+        }
+
+        required init?(coder: NSCoder) { fatalError("init(coder:) is not used") }
+
         override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
             self.point(inside: point, with: event) ? self : nil
         }
@@ -58,13 +77,16 @@ struct ScribbleLayer: UIViewRepresentable {
         override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] { [] }
     }
 
-    /// Watches the pencil without ever recognizing, so Scribble and the tap still get every touch; reports each finished stroke.
+    /// Watches the pencil without ever recognizing, so Scribble and the tap still get every touch; reports where each stroke
+    /// starts and, once the pencil lifts, the whole stroke (a single point for a tap).
     final class InkRecorder: UIGestureRecognizer, UIGestureRecognizerDelegate {
-        private let onStroke: ([CGPoint]) -> Void
+        private let onBegin: (CGPoint) -> Void
+        private let onEnd: ([CGPoint]) -> Void
         private var stroke: [CGPoint] = []
 
-        init(onStroke: @escaping ([CGPoint]) -> Void) {
-            self.onStroke = onStroke
+        init(onBegin: @escaping (CGPoint) -> Void, onEnd: @escaping ([CGPoint]) -> Void) {
+            self.onBegin = onBegin
+            self.onEnd = onEnd
             super.init(target: nil, action: nil)
             allowedTouchTypes = [UITouch.TouchType.pencil.rawValue as NSNumber]
             cancelsTouchesInView = false
@@ -80,6 +102,7 @@ struct ScribbleLayer: UIViewRepresentable {
 
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
             stroke = touches.first.map { [$0.preciseLocation(in: view)] } ?? []
+            if let start = stroke.first { onBegin(start) }
         }
 
         override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
@@ -92,7 +115,7 @@ struct ScribbleLayer: UIViewRepresentable {
         override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) { finish() }
 
         private func finish() {
-            if stroke.count > 1 { onStroke(stroke) } // a single point is a tap, not writing
+            if !stroke.isEmpty { onEnd(stroke) }
             stroke = []
             state = .failed
         }
@@ -109,6 +132,13 @@ struct ScribbleLayer: UIViewRepresentable {
         private(set) var focused: Int?
         /// Strokes not yet matched to a recognized digit, in layer coordinates.
         private var pending: [(points: [CGPoint], time: Date)] = []
+        /// How long a cell waits after its last stroke before its text counts.
+        var settle: Duration = .milliseconds(450)
+        /// Scribble's text per cell, possibly in pieces (a 4 can arrive as "L" and "1"), until the cell has settled.
+        private var recognized: [Int: [String]] = [:]
+        private var commits: [Int: Task<Void, Never>] = [:]
+        /// The cell the pencil is writing in right now; its text waits until the stroke ends.
+        private var writing: Int?
 
         init(_ parent: ScribbleLayer) {
             self.parent = parent
@@ -152,16 +182,74 @@ struct ScribbleLayer: UIViewRepresentable {
             pending.append((stroke, time))
         }
 
+        /// The pencil is down again: the cell it writes in is not done yet.
+        func strokeBegan(at point: CGPoint) {
+            writing = geometry?.cell(at: point)
+            if let writing {
+                commits.removeValue(forKey: writing)?.cancel()
+            }
+        }
+
+        /// The pencil lifted: keep the stroke (a single point is a tap, not writing) and let waiting cells settle from now.
+        func strokeEnded(_ stroke: [CGPoint]) {
+            writing = nil
+            if stroke.count > 1 { record(stroke) }
+            for cell in recognized.keys where commits[cell] == nil { schedule(cell) }
+            updatePreview()
+        }
+
+        private func schedule(_ cell: Int) {
+            commits[cell]?.cancel()
+            commits[cell] = Task { [weak self, settle] in
+                try? await Task.sleep(for: settle)
+                guard !Task.isCancelled else { return }
+                self?.commit(cell)
+            }
+        }
+
+        /// Enters what was written into `cell` as one digit or note, with all of its strokes.
+        func commit(_ cell: Int) {
+            commits.removeValue(forKey: cell)?.cancel()
+            defer { updatePreview() }
+            guard let pieces = recognized.removeValue(forKey: cell), !parent.givens.contains(cell),
+                  let digit = resolveRecognized(pieces) else { return }
+            let ink = takeInk(digit, in: cell) // taken in note mode too, so a note's strokes never end up on a digit
+            parent.onInput(parent.noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell, ink: ink))
+        }
+
+        /// Commits every waiting cell now.
+        func flush() {
+            for cell in Array(recognized.keys) { commit(cell) }
+        }
+
+        /// Draws the strokes of the cells that wait, as the board will draw them once they are entered.
+        private func updatePreview() {
+            guard let view = view as? LayerView, let geometry else { return }
+            let path = CGMutablePath()
+            for cell in recognized.keys {
+                let frame = geometry.frame(of: cell)
+                let strokes = pending.map(\.points).filter { isCentered($0, in: cell) }
+                guard let ink = Ink(digit: 0, strokes: strokes, in: frame) else { continue }
+                path.addPath(ink.path(side: frame.width).cgPath, transform: CGAffineTransform(translationX: frame.minX, y: frame.minY))
+            }
+            let side = view.bounds.width / 9
+            view.preview.frame = view.bounds
+            view.preview.lineWidth = max(1.5, side * 0.05)
+            view.preview.strokeColor = UIColor(parent.inkColor).resolvedColor(with: view.traitCollection).cgColor
+            view.preview.path = path
+        }
+
+        private func isCentered(_ points: [CGPoint], in cell: Int) -> Bool {
+            let xs = points.map(\.x), ys = points.map(\.y)
+            guard let geometry, let minX = xs.min(), let maxX = xs.max(), let minY = ys.min(), let maxY = ys.max() else { return false }
+            return geometry.cell(at: CGPoint(x: (minX + maxX) / 2, y: (minY + maxY) / 2)) == cell
+        }
+
         /// Takes the pending strokes centered in `cell` as the handwriting of `digit`.
         private func takeInk(_ digit: Int, in cell: Int) -> Ink? {
             guard let geometry else { return nil }
-            let isInCell = { (points: [CGPoint]) -> Bool in
-                let xs = points.map(\.x), ys = points.map(\.y)
-                guard let minX = xs.min(), let maxX = xs.max(), let minY = ys.min(), let maxY = ys.max() else { return false }
-                return geometry.cell(at: CGPoint(x: (minX + maxX) / 2, y: (minY + maxY) / 2)) == cell
-            }
-            let strokes = pending.map(\.points).filter(isInCell)
-            pending.removeAll { isInCell($0.points) }
+            let strokes = pending.map(\.points).filter { isCentered($0, in: cell) }
+            pending.removeAll { isCentered($0.points, in: cell) }
             return Ink(digit: digit, strokes: strokes, in: geometry.frame(of: cell))
         }
 
@@ -175,14 +263,13 @@ struct ScribbleLayer: UIViewRepresentable {
             return input.isFirstResponder || input.becomeFirstResponder() ? input : nil
         }
 
-        /// The field never takes the text, so it stays empty: each recognized digit becomes a `CellInput` for the
-        /// field's own cell, even when the pencil has already moved on to another one.
+        /// The field never takes the text, so it stays empty: the text waits for the field's own cell to settle, then becomes
+        /// a `CellInput` for that cell, even when the pencil has already moved on to another one.
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             guard let cell = (textField as? HiddenField)?.cell, !parent.givens.contains(cell) else { return false }
-            if let digit = mapRecognized(string) {
-                let ink = takeInk(digit, in: cell) // taken in note mode too, so a note's strokes never end up on a digit
-                parent.onInput(parent.noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell, ink: ink))
-            }
+            recognized[cell, default: []].append(string)
+            if writing != cell { schedule(cell) } // otherwise the end of the stroke schedules it
+            updatePreview()
             return false
         }
     }
@@ -209,6 +296,17 @@ extension ScribbleLayer.Coordinator: @preconcurrency UIIndirectScribbleInteracti
         if focused == elementIdentifier, let field = fields[elementIdentifier], field.isFirstResponder { return completion(field) }
         completion(focus(elementIdentifier))
     }
+}
+
+/// Turns everything Scribble delivered for one cell into a digit. A digit written in two strokes can arrive in pieces:
+/// a 4 as "L" and "1", a 7 as "7" and "-". A lone straight stroke (a 1) only counts when no other piece is a digit.
+func resolveRecognized(_ pieces: [String]) -> Int? {
+    if let digit = mapRecognized(pieces.joined()) { return digit }
+    let characters = pieces.joined().filter { !$0.isWhitespace && !".,".contains($0) }
+    if characters.count == 2, characters.contains(where: { "L+".contains($0) }),
+       characters.contains(where: { "1lI|!".contains($0) }) { return 4 }
+    let digits = pieces.compactMap(mapRecognized)
+    return digits.last { $0 != 1 } ?? digits.last
 }
 
 /// Maps Scribble's text for one handwritten character to a digit 1…9, folding common look-alikes.

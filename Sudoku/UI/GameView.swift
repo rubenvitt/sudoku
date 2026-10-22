@@ -18,6 +18,7 @@ struct GameView: View {
     @State private var banner: String?
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var sizeClass
+    @Environment(\.accent) private var accent
 
     let store: Store
     let onNewGame: (Difficulty) -> Void
@@ -117,10 +118,15 @@ struct GameView: View {
             .aspectRatio(1, contentMode: .fit)
             // Before `.frame`, so the layer covers exactly the grid and shares its coordinates.
             .overlay {
-                ScribbleLayer(givens: givens, noteMode: noteMode, onInput: apply,
-                              onSelect: { selection = $0 }, onUndo: { mutate { $0.undo() } })
+                ScribbleLayer(givens: givens, noteMode: noteMode, onInput: apply, inkColor: accent,
+                              onSelect: toggleSelection, onUndo: { mutate { $0.undo() } })
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    /// Tapping the selected cell again clears the selection, like a tap beside the grid.
+    private func toggleSelection(_ cell: Int) {
+        selection = selection == cell ? nil : cell
     }
 
     private var givens: Set<Int> {
