@@ -17,10 +17,18 @@ final class ScribbleLayerTests: XCTestCase {
         coordinator.view = view
     }
 
-    /// Scribble inserting `text` into `cell`'s empty field.
-    private func scribble(_ text: String, into cell: Int = 40) -> Bool {
-        coordinator.textField(coordinator.field(for: cell), shouldChangeCharactersIn: NSRange(location: 0, length: 0),
-                              replacementString: text)
+    /// Scribble inserting `text` into `cell`'s empty field; with `settle`, the cell then counts as done.
+    private func scribble(_ text: String, into cell: Int = 40, settle: Bool = true) -> Bool {
+        let accepted = coordinator.textField(coordinator.field(for: cell), shouldChangeCharactersIn: NSRange(location: 0, length: 0),
+                                             replacementString: text)
+        if settle { coordinator.commit(cell) }
+        return accepted
+    }
+
+    /// The pencil writing `stroke`, as the ink recorder reports it.
+    private func write(_ stroke: [CGPoint]) {
+        coordinator.strokeBegan(at: stroke[0])
+        coordinator.strokeEnded(stroke)
     }
 
     func testGeometry() {
@@ -90,6 +98,58 @@ final class ScribbleLayerTests: XCTestCase {
         // The strokes are used up: the next digit in the cell has no ink of its own.
         _ = scribble("4")
         XCTAssertEqual(inputs.last, .digit(4, cell: 40))
+    }
+
+    /// A 4 in two strokes: Scribble's text for the first stroke waits for the second, and the digit keeps both.
+    func testDigitInTwoStrokesIsOneDigit() {
+        makeLayer()
+        _ = coordinator.focus(40)
+        write([CGPoint(x: 215, y: 205), CGPoint(x: 210, y: 230), CGPoint(x: 240, y: 230)])
+        _ = scribble("L", settle: false)
+        write([CGPoint(x: 232, y: 210), CGPoint(x: 232, y: 245)])
+        _ = scribble("1", settle: false)
+        XCTAssertEqual(inputs, [])
+        coordinator.flush()
+        guard case let .digit(4, cell: 40, ink: ink?) = inputs.first, inputs.count == 1 else { return XCTFail("\(inputs)") }
+        XCTAssertEqual(ink.strokes.count, 2)
+    }
+
+    /// The text only counts once the pencil has been away from the cell for a moment.
+    func testTextWaitsWhileThePencilIsInTheCell() async throws {
+        makeLayer()
+        coordinator.settle = .milliseconds(50)
+        _ = coordinator.focus(40)
+        coordinator.strokeBegan(at: CGPoint(x: 220, y: 210))
+        _ = scribble("7", settle: false) // arrives while the pencil writes the 7's bar
+        try await Task.sleep(for: .milliseconds(200))
+        XCTAssertEqual(inputs, [])
+        coordinator.strokeEnded([CGPoint(x: 220, y: 210), CGPoint(x: 230, y: 240)])
+        try await Task.sleep(for: .milliseconds(300))
+        guard case .digit(7, cell: 40, _) = inputs.first, inputs.count == 1 else { return XCTFail("\(inputs)") }
+    }
+
+    /// Writing on in the next cell doesn't hold up the last one.
+    func testOtherCellsSettleOnTheirOwn() async throws {
+        makeLayer()
+        coordinator.settle = .milliseconds(50)
+        _ = coordinator.focus(40)
+        _ = scribble("6", settle: false)
+        coordinator.strokeBegan(at: CGPoint(x: 270, y: 210)) // cell 41
+        try await Task.sleep(for: .milliseconds(300))
+        XCTAssertEqual(inputs, [.digit(6, cell: 40)])
+    }
+
+    func testPiecesResolveToOneDigit() {
+        XCTAssertEqual(resolveRecognized(["4"]), 4)
+        XCTAssertEqual(resolveRecognized(["4", "1"]), 4)
+        XCTAssertEqual(resolveRecognized(["1", "4"]), 4)
+        XCTAssertEqual(resolveRecognized(["L", "1"]), 4)
+        XCTAssertEqual(resolveRecognized(["L", "|"]), 4)
+        XCTAssertEqual(resolveRecognized(["7", "-"]), 7)
+        XCTAssertEqual(resolveRecognized(["S", "-"]), 5)
+        XCTAssertEqual(resolveRecognized(["4", "4"]), 4) // never toggles the digit off again
+        XCTAssertEqual(resolveRecognized(["l"]), 1)
+        XCTAssertNil(resolveRecognized(["x", "-"]))
     }
 
     func testStrokesInNoteModeNeverBecomeInk() {

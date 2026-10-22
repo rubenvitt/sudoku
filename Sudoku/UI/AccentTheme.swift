@@ -3,7 +3,7 @@ import SwiftUI
 /// The player's accent colour: digits they write, the selection and every tinted control.
 /// Each preset has a light and a dark shade so written digits stay readable on both backgrounds.
 enum AccentTheme: String, CaseIterable, Identifiable {
-    case ocean, indigo, lavender, rose, coral, amber, forest, teal, graphite
+    case ocean, midnight, indigo, slate, lavender, plum, fuchsia, rose, coral, amber, cocoa, moss, forest, sage, teal, sky, graphite
 
     static let storageKey = "accentTheme"
 
@@ -12,13 +12,21 @@ enum AccentTheme: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .ocean: "Ozean"
+        case .midnight: "Nacht"
         case .indigo: "Indigo"
+        case .slate: "Schiefer"
         case .lavender: "Lavendel"
+        case .plum: "Pflaume"
+        case .fuchsia: "Fuchsie"
         case .rose: "Rosé"
         case .coral: "Koralle"
         case .amber: "Bernstein"
+        case .cocoa: "Kakao"
+        case .moss: "Moos"
         case .forest: "Wald"
+        case .sage: "Salbei"
         case .teal: "Petrol"
+        case .sky: "Himmel"
         case .graphite: "Graphit"
         }
     }
@@ -26,13 +34,21 @@ enum AccentTheme: String, CaseIterable, Identifiable {
     var color: Color {
         switch self {
         case .ocean: Color(light: 0x007AFF, dark: 0x0A84FF) // the system blue the app shipped with
+        case .midnight: Color(light: 0x1E3A8A, dark: 0x8FA8FF)
         case .indigo: Color(light: 0x4B4FD6, dark: 0x7D80F5)
+        case .slate: Color(light: 0x45648F, dark: 0x9DB8E0)
         case .lavender: Color(light: 0x8358D9, dark: 0xB08CFF)
+        case .plum: Color(light: 0x8E3A80, dark: 0xD98ACB)
+        case .fuchsia: Color(light: 0xB02BC4, dark: 0xE77DF5)
         case .rose: Color(light: 0xD6336C, dark: 0xFF6B9A)
         case .coral: Color(light: 0xE0533A, dark: 0xFF8A70)
         case .amber: Color(light: 0xC27803, dark: 0xF5B83D)
+        case .cocoa: Color(light: 0x8A5A3B, dark: 0xD9A77E)
+        case .moss: Color(light: 0x657A1E, dark: 0xB4CC5C)
         case .forest: Color(light: 0x2E8B57, dark: 0x5CC98A)
+        case .sage: Color(light: 0x557A66, dark: 0x9EC4AE)
         case .teal: Color(light: 0x0E7C86, dark: 0x3CC4CF)
+        case .sky: Color(light: 0x0A7BB5, dark: 0x5CC8F5)
         case .graphite: Color(light: 0x4A5160, dark: 0xB4BCC8)
         }
     }
