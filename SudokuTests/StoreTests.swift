@@ -30,6 +30,18 @@ final class StoreTests: XCTestCase {
         XCTAssertNil(store.loadGame())
     }
 
+    func testInkIsSavedWithTheGameAndResetByANewOne() throws {
+        let store = Store(directory: dir)
+        let ink = try XCTUnwrap(Ink(digit: 4, strokes: [[.zero, CGPoint(x: 10, y: 10)]], in: CGRect(x: 0, y: 0, width: 20, height: 20)))
+        try store.save(Game(puzzle: Self.puzzle), ink: [2: ink])
+        XCTAssertEqual(store.loadInk(), [2: ink])
+        try store.save(Game(puzzle: Self.puzzle)) // a new game
+        XCTAssertEqual(store.loadInk(), [:])
+        try store.save(Game(puzzle: Self.puzzle), ink: [2: ink])
+        try store.deleteGame()
+        XCTAssertEqual(store.loadInk(), [:])
+    }
+
     func testLoadReturnsNilForCorruptFile() throws {
         let store = Store(directory: dir)
         try "kaputt".write(to: dir.appendingPathComponent("game.json"), atomically: true, encoding: .utf8)

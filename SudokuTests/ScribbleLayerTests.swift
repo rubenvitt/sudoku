@@ -17,9 +17,10 @@ final class ScribbleLayerTests: XCTestCase {
         coordinator.view = view
     }
 
-    /// Scribble inserting `text` into the focused, empty field.
-    private func scribble(_ text: String) -> Bool {
-        coordinator.textField(coordinator.field, shouldChangeCharactersIn: NSRange(location: 0, length: 0), replacementString: text)
+    /// Scribble inserting `text` into `cell`'s empty field.
+    private func scribble(_ text: String, into cell: Int = 40) -> Bool {
+        coordinator.textField(coordinator.field(for: cell), shouldChangeCharactersIn: NSRange(location: 0, length: 0),
+                              replacementString: text)
     }
 
     func testGeometry() {
@@ -44,21 +45,85 @@ final class ScribbleLayerTests: XCTestCase {
         let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         let window = try XCTUnwrap(scene?.keyWindow, "the test host app has no key window")
         window.addSubview(view)
-        view.addSubview(coordinator.field)
-        defer { coordinator.field.resignFirstResponder(); view.removeFromSuperview() }
+        defer { coordinator.fields.values.forEach { $0.resignFirstResponder() }; view.removeFromSuperview() }
         XCTAssertNotNil(coordinator.focus(40))
-        XCTAssertTrue(coordinator.field.isFirstResponder)
+        XCTAssertTrue(coordinator.field(for: 40).isFirstResponder)
     }
 
     func testWrittenDigitEntersIntoFocusedCell() {
         makeLayer()
         _ = coordinator.focus(40) // no window: focus fails, but the field already sits over the cell
-        XCTAssertEqual(coordinator.field.frame, CGRect(x: 200, y: 200, width: 50, height: 50))
+        XCTAssertEqual(coordinator.field(for: 40).frame, CGRect(x: 200, y: 200, width: 50, height: 50))
         XCTAssertFalse(scribble("7"))
         XCTAssertFalse(scribble(" l")) // Scribble's leading space, look-alike for 1
         XCTAssertFalse(scribble("x"))
         XCTAssertEqual(inputs, [.digit(7, cell: 40), .digit(1, cell: 40)])
-        XCTAssertEqual(coordinator.field.text, "") // the field never takes the text
+        XCTAssertEqual(coordinator.field(for: 40).text, "") // the field never takes the text
+    }
+
+    /// Writing quickly across cells: text Scribble delivers late still lands in the cell it was written in.
+    func testLateTextLandsInItsOwnCell() {
+        makeLayer()
+        coordinator.record([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)])
+        _ = coordinator.focus(40)
+        coordinator.record([CGPoint(x: 260, y: 205), CGPoint(x: 290, y: 245)])
+        _ = coordinator.focus(41) // the pencil has moved on before 40 was recognized
+        _ = scribble("6", into: 40)
+        _ = scribble("8", into: 41)
+        guard case let .digit(6, cell: 40, ink: first?) = inputs.first, case let .digit(8, cell: 41, ink: second?) = inputs.last else {
+            return XCTFail("\(inputs)")
+        }
+        XCTAssertEqual(first.strokes.count, 1)
+        XCTAssertEqual(second.strokes.count, 1)
+    }
+
+    /// The strokes written into the cell travel with the digit, in cell units; strokes elsewhere stay out.
+    func testWrittenDigitKeepsItsStrokes() throws {
+        makeLayer()
+        coordinator.record([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 205), CGPoint(x: 220, y: 245)])
+        coordinator.record([CGPoint(x: 10, y: 10), CGPoint(x: 40, y: 40)]) // cell 0
+        _ = coordinator.focus(40)
+        _ = scribble("7")
+        guard case let .digit(7, cell: 40, ink: ink?) = inputs.first else { return XCTFail("no ink: \(inputs)") }
+        XCTAssertEqual(ink.digit, 7)
+        XCTAssertEqual(ink.strokes, [[.init(x: 0.2, y: 0.1), .init(x: 0.8, y: 0.1), .init(x: 0.4, y: 0.9)]])
+        // The strokes are used up: the next digit in the cell has no ink of its own.
+        _ = scribble("4")
+        XCTAssertEqual(inputs.last, .digit(4, cell: 40))
+    }
+
+    func testStrokesInNoteModeNeverBecomeInk() {
+        makeLayer(noteMode: true)
+        coordinator.record([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)])
+        _ = coordinator.focus(40)
+        _ = scribble("3")
+        coordinator.parent = ScribbleLayer(givens: [2], noteMode: false, onInput: { [weak self] in self?.inputs.append($0) })
+        _ = scribble("3")
+        XCTAssertEqual(inputs, [.note(3, cell: 40), .digit(3, cell: 40)])
+    }
+
+    func testOldStrokesExpire() {
+        makeLayer()
+        coordinator.record([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)], at: .now - 10)
+        coordinator.record([CGPoint(x: 10, y: 10), CGPoint(x: 40, y: 40)]) // drops the old one
+        _ = coordinator.focus(40)
+        _ = scribble("1")
+        XCTAssertEqual(inputs, [.digit(1, cell: 40)])
+    }
+
+    func testInkReachingOverTheEdgeIsFittedIntoTheCell() throws {
+        let inside = try XCTUnwrap(Ink(digit: 1, strokes: [[CGPoint(x: 25, y: 10), CGPoint(x: 25, y: 40)]],
+                                       in: CGRect(x: 0, y: 0, width: 50, height: 50)))
+        let written = inside.path(side: 100).boundingRect // as written: not moved, not scaled
+        XCTAssertEqual(written.minY, 20, accuracy: 0.001)
+        XCTAssertEqual(written.maxY, 80, accuracy: 0.001)
+        XCTAssertEqual(written.midX, 50, accuracy: 0.001)
+        let tall = try XCTUnwrap(Ink(digit: 1, strokes: [[CGPoint(x: 25, y: -25), CGPoint(x: 25, y: 75)]],
+                                     in: CGRect(x: 0, y: 0, width: 50, height: 50)))
+        let rect = tall.path(side: 100).boundingRect
+        XCTAssertEqual(rect.minY, 10, accuracy: 0.001)
+        XCTAssertEqual(rect.maxY, 90, accuracy: 0.001)
+        XCTAssertEqual(rect.midX, 50, accuracy: 0.001)
     }
 
     func testNoteModeWritesNotes() {
@@ -71,7 +136,7 @@ final class ScribbleLayerTests: XCTestCase {
     func testGivenCannotBeFocused() {
         makeLayer()
         XCTAssertNil(coordinator.focus(2))
-        XCTAssertFalse(scribble("4"))
+        XCTAssertFalse(scribble("4", into: 2))
         XCTAssertEqual(inputs, [])
     }
 
