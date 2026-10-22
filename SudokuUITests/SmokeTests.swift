@@ -52,7 +52,8 @@ final class SmokeTests: XCTestCase {
             if index == 50 && UIDevice.current.userInterfaceIdiom == .pad { attachScreenshot("Spiel Querformat") }
             let cell = "Zeile \(index / 9 + 1), Spalte \(index % 9 + 1)"
             let notes = index == 2 ? ", Notizen 1, 2, 4" : "" // the cell noted above
-            app.buttons["\(cell), leer\(notes)"].tap()
+            let button = app.buttons["\(cell), leer\(notes)"]
+            if !button.isSelected { button.tap() } // tapping the selected cell again would clear the selection
             app.buttons["Ziffer \(solution[index])"].tap()
             if index != lastEmpty { // the last entry ends the game and replaces the grid with the result
                 XCTAssertTrue(app.buttons["\(cell), \(solution[index])"].waitForExistence(timeout: 5),
