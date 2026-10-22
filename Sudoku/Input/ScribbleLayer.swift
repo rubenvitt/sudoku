@@ -1,10 +1,11 @@
 import SwiftUI
+import UIKit.UIGestureRecognizerSubclass
 
 /// Transparent layer laid exactly over the grid. The pencil writes straight into any non-given cell:
 /// Scribble (Apple's handwriting recognition) turns the ink into text, which a hidden text field
-/// hands back here as a `CellInput`.
+/// hands back here as a `CellInput`. The pencil's strokes are recorded alongside, so a written digit keeps its handwriting.
 ///
-/// It takes every touch over the grid, so finger taps (select, two-finger undo) are handled here, not by the cell buttons.
+/// It takes every touch over the grid, so taps (select, two-finger undo) are handled here, not by the cell buttons.
 struct ScribbleLayer: UIViewRepresentable {
     let givens: Set<Int>
     let noteMode: Bool
@@ -23,12 +24,13 @@ struct ScribbleLayer: UIViewRepresentable {
         context.coordinator.view = view
 
         let tap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.select))
-        tap.allowedTouchTypes = [UITouch.TouchType.direct, .indirectPointer].map { $0.rawValue as NSNumber }
+        tap.allowedTouchTypes = [UITouch.TouchType.direct, .pencil, .indirectPointer].map { $0.rawValue as NSNumber }
         let twoFingerTap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.undo))
         twoFingerTap.numberOfTouchesRequired = 2
         twoFingerTap.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
         view.addGestureRecognizer(tap)
         view.addGestureRecognizer(twoFingerTap)
+        view.addGestureRecognizer(InkRecorder { [weak coordinator = context.coordinator] in coordinator?.record($0) })
         return view
     }
 
@@ -54,6 +56,48 @@ struct ScribbleLayer: UIViewRepresentable {
         override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] { [] }
     }
 
+    /// Watches the pencil without ever recognizing, so Scribble and the tap still get every touch; reports each finished stroke.
+    final class InkRecorder: UIGestureRecognizer, UIGestureRecognizerDelegate {
+        private let onStroke: ([CGPoint]) -> Void
+        private var stroke: [CGPoint] = []
+
+        init(onStroke: @escaping ([CGPoint]) -> Void) {
+            self.onStroke = onStroke
+            super.init(target: nil, action: nil)
+            allowedTouchTypes = [UITouch.TouchType.pencil.rawValue as NSNumber]
+            cancelsTouchesInView = false
+            delaysTouchesEnded = false
+            delegate = self
+        }
+
+        override func canBePrevented(by preventingGestureRecognizer: UIGestureRecognizer) -> Bool { false }
+        override func canPrevent(_ preventedGestureRecognizer: UIGestureRecognizer) -> Bool { false }
+
+        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                               shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool { true }
+
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+            stroke = touches.first.map { [$0.preciseLocation(in: view)] } ?? []
+        }
+
+        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+            guard let touch = touches.first else { return }
+            stroke += (event.coalescedTouches(for: touch) ?? [touch]).map { $0.preciseLocation(in: view) }
+        }
+
+        /// Scribble may cancel the touch once it takes over the writing; what was recorded up to then still counts.
+        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) { finish() }
+        override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) { finish() }
+
+        private func finish() {
+            if stroke.count > 1 { onStroke(stroke) } // a single point is a tap, not writing
+            stroke = []
+            state = .failed
+        }
+
+        override func reset() { stroke = [] }
+    }
+
     @MainActor
     final class Coordinator: NSObject, UITextFieldDelegate {
         var parent: ScribbleLayer
@@ -61,6 +105,8 @@ struct ScribbleLayer: UIViewRepresentable {
         /// Receives Scribble's text for the focused cell. Invisible, no keyboard; the digit bias helps recognition.
         let field = HiddenField()
         private(set) var focused: Int?
+        /// Strokes not yet matched to a recognized digit, in layer coordinates.
+        private var pending: [(points: [CGPoint], time: Date)] = []
 
         init(_ parent: ScribbleLayer) {
             self.parent = parent
@@ -88,6 +134,25 @@ struct ScribbleLayer: UIViewRepresentable {
 
         @objc func undo() { parent.onUndo() }
 
+        /// Keeps a finished stroke until Scribble's text for it arrives; strokes that never turned into a digit expire.
+        func record(_ stroke: [CGPoint], at time: Date = .now) {
+            pending.removeAll { time.timeIntervalSince($0.time) > 5 }
+            pending.append((stroke, time))
+        }
+
+        /// Takes the pending strokes centered in `cell` as the handwriting of `digit`.
+        private func takeInk(_ digit: Int, in cell: Int) -> Ink? {
+            guard let geometry else { return nil }
+            let isInCell = { (points: [CGPoint]) -> Bool in
+                let xs = points.map(\.x), ys = points.map(\.y)
+                guard let minX = xs.min(), let maxX = xs.max(), let minY = ys.min(), let maxY = ys.max() else { return false }
+                return geometry.cell(at: CGPoint(x: (minX + maxX) / 2, y: (minY + maxY) / 2)) == cell
+            }
+            let strokes = pending.map(\.points).filter(isInCell)
+            pending.removeAll { isInCell($0.points) }
+            return Ink(digit: digit, strokes: strokes, in: geometry.frame(of: cell))
+        }
+
         /// Puts the hidden, always empty field over `cell`. Any text in it would sit under the pencil, and Scribble
         /// reads strokes over existing text as gestures (select, delete) instead of writing.
         func focus(_ cell: Int) -> UITextField? {
@@ -101,7 +166,8 @@ struct ScribbleLayer: UIViewRepresentable {
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             guard let cell = focused else { return false }
             if let digit = mapRecognized(string) {
-                parent.onInput(parent.noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell))
+                let ink = takeInk(digit, in: cell) // taken in note mode too, so a note's strokes never end up on a digit
+                parent.onInput(parent.noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell, ink: ink))
             }
             return false
         }

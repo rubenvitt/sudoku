@@ -2,7 +2,8 @@ import SwiftUI
 import SudokuEngine
 
 enum CellInput: Equatable {
-    case digit(Int, cell: Int)
+    /// `ink` is the handwriting the digit was recognized from; keypad digits have none.
+    case digit(Int, cell: Int, ink: Ink? = nil)
     case note(Int, cell: Int)
     case clear(cell: Int)
 }
@@ -12,6 +13,8 @@ struct GameView: View {
     @State var noteMode = false
     @State private var selection: Int?
     @State private var focus: Set<Int> = []
+    /// Handwriting per cell; shown instead of the typeset digit while the cell holds the digit it was written as.
+    @State private var ink: [Int: Ink]
     @State private var banner: String?
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var sizeClass
@@ -24,6 +27,7 @@ struct GameView: View {
     init(game: Game, store: Store, onNewGame: @escaping (Difficulty) -> Void, onMenu: @escaping () -> Void,
          onLeave: @escaping () -> Void = {}) {
         _game = State(initialValue: game)
+        _ink = State(initialValue: store.loadInk())
         self.store = store
         self.onNewGame = onNewGame
         self.onMenu = onMenu
@@ -108,7 +112,7 @@ struct GameView: View {
     }
 
     private var board: some View {
-        GridView(game: game, selection: $selection, focus: focus)
+        GridView(game: game, selection: $selection, focus: focus, ink: ink)
             .equatable()
             .aspectRatio(1, contentMode: .fit)
             // Before `.frame`, so the layer covers exactly the grid and shares its coordinates.
@@ -187,7 +191,10 @@ struct GameView: View {
         guard !game.isSolved else { return } // Scribble commits its text a moment after the pencil lifts
         mutate { game in
             switch input {
-            case let .digit(digit, cell): game.setDigit(digit, at: cell)
+            case let .digit(digit, cell, written):
+                game.setDigit(digit, at: cell)
+                // Old ink is kept when another digit replaces it, so undo brings the handwriting back.
+                if let written { ink[cell] = written } else if ink[cell]?.digit == digit { ink[cell] = nil }
             case let .note(digit, cell): game.toggleNote(digit, at: cell)
             case let .clear(cell): game.clear(cell)
             }
@@ -235,7 +242,7 @@ struct GameView: View {
 
     private func save() {
         guard !game.isSolved else { return } // the save was deleted on solve; never bring it back
-        try? store.save(game) // nothing to offer the player beyond retrying on the next move
+        try? store.save(game, ink: ink) // nothing to offer the player beyond retrying on the next move
     }
 }
 

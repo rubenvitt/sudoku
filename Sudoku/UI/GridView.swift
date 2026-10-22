@@ -6,6 +6,7 @@ struct GridView: View, Equatable {
     let game: Game
     @Binding var selection: Int?
     var focus: Set<Int> = []
+    var ink: [Int: Ink] = [:]
     @Environment(\.accent) private var accent
 
     /// Ignores `elapsed` so the per-second timer tick doesn't redraw all 81 cells.
@@ -13,7 +14,7 @@ struct GridView: View, Equatable {
         MainActor.assumeIsolated {
             lhs.game.entries == rhs.game.entries && lhs.game.notes == rhs.game.notes
                 && lhs.game.errorMarks == rhs.game.errorMarks && lhs.game.puzzle.givens == rhs.game.puzzle.givens
-                && lhs.selection == rhs.selection && lhs.focus == rhs.focus
+                && lhs.selection == rhs.selection && lhs.focus == rhs.focus && lhs.ink == rhs.ink
         }
     }
 
@@ -51,7 +52,14 @@ struct GridView: View, Equatable {
         return Button { selection = index } label: {
             ZStack {
                 Rectangle().fill(background(index, value: value, isWrong: isWrong))
-                if value != 0 {
+                if let ink = ink[index], ink.digit == value, !isGiven {
+                    // The digit as the pencil wrote it; recognition only set the value behind it.
+                    ink.path(side: size)
+                        .stroke(isWrong ? Color.red : accent,
+                                style: StrokeStyle(lineWidth: max(1.5, size * 0.05), lineCap: .round, lineJoin: .round))
+                        .frame(width: size, height: size)
+                        .transition(.opacity)
+                } else if value != 0 {
                     Text("\(value)")
                         .font(.system(size: size * 0.58, weight: isGiven ? .semibold : .medium, design: .rounded))
                         .foregroundStyle(isWrong ? Color.red : isGiven ? Color.primary : accent)

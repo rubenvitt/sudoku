@@ -61,6 +61,55 @@ final class ScribbleLayerTests: XCTestCase {
         XCTAssertEqual(coordinator.field.text, "") // the field never takes the text
     }
 
+    /// The strokes written into the cell travel with the digit, in cell units; strokes elsewhere stay out.
+    func testWrittenDigitKeepsItsStrokes() throws {
+        makeLayer()
+        coordinator.record([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 205), CGPoint(x: 220, y: 245)])
+        coordinator.record([CGPoint(x: 10, y: 10), CGPoint(x: 40, y: 40)]) // cell 0
+        _ = coordinator.focus(40)
+        _ = scribble("7")
+        guard case let .digit(7, cell: 40, ink: ink?) = inputs.first else { return XCTFail("no ink: \(inputs)") }
+        XCTAssertEqual(ink.digit, 7)
+        XCTAssertEqual(ink.strokes, [[.init(x: 0.2, y: 0.1), .init(x: 0.8, y: 0.1), .init(x: 0.4, y: 0.9)]])
+        // The strokes are used up: the next digit in the cell has no ink of its own.
+        _ = scribble("4")
+        XCTAssertEqual(inputs.last, .digit(4, cell: 40))
+    }
+
+    func testStrokesInNoteModeNeverBecomeInk() {
+        makeLayer(noteMode: true)
+        coordinator.record([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)])
+        _ = coordinator.focus(40)
+        _ = scribble("3")
+        coordinator.parent = ScribbleLayer(givens: [2], noteMode: false, onInput: { [weak self] in self?.inputs.append($0) })
+        _ = scribble("3")
+        XCTAssertEqual(inputs, [.note(3, cell: 40), .digit(3, cell: 40)])
+    }
+
+    func testOldStrokesExpire() {
+        makeLayer()
+        coordinator.record([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)], at: .now - 10)
+        coordinator.record([CGPoint(x: 10, y: 10), CGPoint(x: 40, y: 40)]) // drops the old one
+        _ = coordinator.focus(40)
+        _ = scribble("1")
+        XCTAssertEqual(inputs, [.digit(1, cell: 40)])
+    }
+
+    func testInkReachingOverTheEdgeIsFittedIntoTheCell() throws {
+        let inside = try XCTUnwrap(Ink(digit: 1, strokes: [[CGPoint(x: 25, y: 10), CGPoint(x: 25, y: 40)]],
+                                       in: CGRect(x: 0, y: 0, width: 50, height: 50)))
+        let written = inside.path(side: 100).boundingRect // as written: not moved, not scaled
+        XCTAssertEqual(written.minY, 20, accuracy: 0.001)
+        XCTAssertEqual(written.maxY, 80, accuracy: 0.001)
+        XCTAssertEqual(written.midX, 50, accuracy: 0.001)
+        let tall = try XCTUnwrap(Ink(digit: 1, strokes: [[CGPoint(x: 25, y: -25), CGPoint(x: 25, y: 75)]],
+                                     in: CGRect(x: 0, y: 0, width: 50, height: 50)))
+        let rect = tall.path(side: 100).boundingRect
+        XCTAssertEqual(rect.minY, 10, accuracy: 0.001)
+        XCTAssertEqual(rect.maxY, 90, accuracy: 0.001)
+        XCTAssertEqual(rect.midX, 50, accuracy: 0.001)
+    }
+
     func testNoteModeWritesNotes() {
         makeLayer(noteMode: true)
         _ = coordinator.focus(40)
