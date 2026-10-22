@@ -2,8 +2,9 @@ import SwiftUI
 import UIKit.UIGestureRecognizerSubclass
 
 /// Transparent layer laid exactly over the grid. The pencil writes straight into any non-given cell:
-/// Scribble (Apple's handwriting recognition) turns the ink into text, which a hidden text field
-/// hands back here as a `CellInput`. The pencil's strokes are recorded alongside, so a written digit keeps its handwriting.
+/// Scribble (Apple's handwriting recognition) turns the ink into text, which the cell's own hidden text field
+/// hands back here as a `CellInput`. One field per cell, so writing on in the next cell never redirects or drops
+/// the text Scribble is still recognizing for the last one. The pencil's strokes are recorded alongside, so a written digit keeps its handwriting.
 ///
 /// It takes every touch over the grid, so taps (select, two-finger undo) are handled here, not by the cell buttons.
 struct ScribbleLayer: UIViewRepresentable {
@@ -20,7 +21,6 @@ struct ScribbleLayer: UIViewRepresentable {
         view.backgroundColor = .clear
         view.accessibilityElementsHidden = true // VoiceOver keeps reaching the cell buttons below
         view.addInteraction(UIIndirectScribbleInteraction(delegate: context.coordinator))
-        view.addSubview(context.coordinator.field)
         context.coordinator.view = view
 
         let tap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.select))
@@ -40,7 +40,7 @@ struct ScribbleLayer: UIViewRepresentable {
     }
 
     static func dismantleUIView(_ view: LayerView, coordinator: Coordinator) {
-        coordinator.field.resignFirstResponder()
+        coordinator.fields.values.forEach { $0.resignFirstResponder() }
     }
 
     /// Keeps every touch on the layer itself, so fingers reach its tap recognizers and never the hidden field.
@@ -52,6 +52,8 @@ struct ScribbleLayer: UIViewRepresentable {
 
     /// No caret or selection: a clear tint does not hide the caret on the device.
     final class HiddenField: UITextField {
+        var cell = 0
+
         override func caretRect(for position: UITextPosition) -> CGRect { .zero }
         override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] { [] }
     }
@@ -102,8 +104,8 @@ struct ScribbleLayer: UIViewRepresentable {
     final class Coordinator: NSObject, UITextFieldDelegate {
         var parent: ScribbleLayer
         weak var view: UIView?
-        /// Receives Scribble's text for the focused cell. Invisible, no keyboard; the digit bias helps recognition.
-        let field = HiddenField()
+        /// Receive Scribble's text, one per cell that was written into, created on first use.
+        private(set) var fields: [Int: HiddenField] = [:]
         private(set) var focused: Int?
         /// Strokes not yet matched to a recognized digit, in layer coordinates.
         private var pending: [(points: [CGPoint], time: Date)] = []
@@ -111,6 +113,13 @@ struct ScribbleLayer: UIViewRepresentable {
         init(_ parent: ScribbleLayer) {
             self.parent = parent
             super.init()
+        }
+
+        /// `cell`'s field: invisible, no keyboard; the digit bias helps recognition.
+        func field(for cell: Int) -> HiddenField {
+            if let field = fields[cell] { return field }
+            let field = HiddenField()
+            field.cell = cell
             field.delegate = self
             field.keyboardType = .numberPad
             field.autocorrectionType = .no
@@ -120,6 +129,9 @@ struct ScribbleLayer: UIViewRepresentable {
             field.inputView = UIView() // no on-screen keyboard; a hardware keyboard still types digits
             field.inputAssistantItem.leadingBarButtonGroups = []
             field.inputAssistantItem.trailingBarButtonGroups = []
+            view?.addSubview(field)
+            fields[cell] = field
+            return field
         }
 
         private var geometry: GridGeometry? {
@@ -153,18 +165,20 @@ struct ScribbleLayer: UIViewRepresentable {
             return Ink(digit: digit, strokes: strokes, in: geometry.frame(of: cell))
         }
 
-        /// Puts the hidden, always empty field over `cell`. Any text in it would sit under the pencil, and Scribble
+        /// Puts `cell`'s hidden, always empty field over it and focuses it. Any text in it would sit under the pencil, and Scribble
         /// reads strokes over existing text as gestures (select, delete) instead of writing.
         func focus(_ cell: Int) -> UITextField? {
             guard let geometry, !parent.givens.contains(cell) else { return nil }
             focused = cell
-            field.frame = geometry.frame(of: cell)
-            return field.isFirstResponder || field.becomeFirstResponder() ? field : nil
+            let input = field(for: cell)
+            input.frame = geometry.frame(of: cell) // again on every focus: the board may have been resized
+            return input.isFirstResponder || input.becomeFirstResponder() ? input : nil
         }
 
-        /// The field never takes the text, so it stays empty: each recognized digit becomes a `CellInput`.
+        /// The field never takes the text, so it stays empty: each recognized digit becomes a `CellInput` for the
+        /// field's own cell, even when the pencil has already moved on to another one.
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            guard let cell = focused else { return false }
+            guard let cell = (textField as? HiddenField)?.cell, !parent.givens.contains(cell) else { return false }
             if let digit = mapRecognized(string) {
                 let ink = takeInk(digit, in: cell) // taken in note mode too, so a note's strokes never end up on a digit
                 parent.onInput(parent.noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell, ink: ink))
@@ -182,7 +196,7 @@ extension ScribbleLayer.Coordinator: @preconcurrency UIIndirectScribbleInteracti
     }
 
     func indirectScribbleInteraction(_ interaction: any UIInteraction, isElementFocused elementIdentifier: Int) -> Bool {
-        focused == elementIdentifier && field.isFirstResponder
+        focused == elementIdentifier && fields[elementIdentifier]?.isFirstResponder == true
     }
 
     func indirectScribbleInteraction(_ interaction: any UIInteraction, frameForElement elementIdentifier: Int) -> CGRect {
@@ -192,7 +206,8 @@ extension ScribbleLayer.Coordinator: @preconcurrency UIIndirectScribbleInteracti
     func indirectScribbleInteraction(_ interaction: any UIInteraction, focusElementIfNeeded elementIdentifier: Int,
                                      referencePoint focusReferencePoint: CGPoint,
                                      completion: @escaping ((any UIResponder & UITextInput)?) -> Void) {
-        completion(focused == elementIdentifier && field.isFirstResponder ? field : focus(elementIdentifier))
+        if focused == elementIdentifier, let field = fields[elementIdentifier], field.isFirstResponder { return completion(field) }
+        completion(focus(elementIdentifier))
     }
 }
 
