@@ -16,6 +16,8 @@ struct GameView: View {
     /// Handwriting per cell; shown instead of the typeset digit while the cell holds the digit it was written as.
     @State private var ink: [Int: Ink]
     @State private var banner: String?
+    /// Edits per cell that did not come from the pencil; see `ScribbleLayer.revisions`.
+    @State private var revisions: [Int: Int] = [:]
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.accent) private var accent
@@ -119,7 +121,7 @@ struct GameView: View {
             // Before `.frame`, so the layer covers exactly the grid and shares its coordinates.
             .overlay {
                 ScribbleLayer(givens: givens, noteMode: noteMode, onInput: apply, inkColor: accent,
-                              onSelect: toggleSelection, onUndo: { mutate { $0.undo() } })
+                              onSelect: toggleSelection, onUndo: { history { $0.undo() } }, revisions: revisions)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -171,6 +173,7 @@ struct GameView: View {
             }
             NumberBar(columns: digitColumns, keyHeight: keyHeight, noteMode: noteMode, remaining: remaining) { digit in
                 guard let cell = selection else { return }
+                revise([cell])
                 apply(noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell))
             }
         }
@@ -180,12 +183,13 @@ struct GameView: View {
     }
 
     @ViewBuilder private var actions: some View {
-        ActionButton(title: "Rückgängig", symbol: "arrow.uturn.backward") { mutate { $0.undo() } }
+        ActionButton(title: "Rückgängig", symbol: "arrow.uturn.backward") { history { $0.undo() } }
             .disabled(!game.canUndo)
-        ActionButton(title: "Wiederholen", symbol: "arrow.uturn.forward") { mutate { $0.redo() } }
+        ActionButton(title: "Wiederholen", symbol: "arrow.uturn.forward") { history { $0.redo() } }
             .disabled(!game.canRedo)
         ActionButton(title: "Löschen", symbol: "eraser") {
             guard let cell = selection else { return }
+            revise([cell])
             apply(.clear(cell: cell))
         }
         ActionButton(title: "Notizen", symbol: "pencil", isOn: noteMode) { noteMode.toggle() }
@@ -205,6 +209,17 @@ struct GameView: View {
             case let .clear(cell): game.clear(cell)
             }
         }
+    }
+
+    /// Undo or redo: the cells it changes count as edited, so handwriting still being recognized there is dropped.
+    private func history(_ change: (inout Game) -> Void) {
+        let before = (entries: game.entries.cells, notes: game.notes)
+        mutate(change)
+        revise((0..<81).filter { game.entries.cells[$0] != before.entries[$0] || game.notes[$0] != before.notes[$0] })
+    }
+
+    private func revise(_ cells: [Int]) {
+        for cell in cells { revisions[cell, default: 0] += 1 }
     }
 
     /// Runs `change` and, only if the board actually changed, saves and evaluates the new state.
