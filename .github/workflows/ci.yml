@@ -20,7 +20,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - run: swift test
@@ -35,11 +35,10 @@ jobs:
         device: [iPad, iPhone]
     name: app (${{ matrix.device }})
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - run: brew install xcodegen
-      - run: xcodegen generate
+      - uses: ./.github/actions/xcodegen
       - name: Test on an ${{ matrix.device }} simulator
         env:
           DEVICE: ${{ matrix.device }}

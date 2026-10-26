@@ -25,7 +25,8 @@ public struct Variant: Codable, Hashable, Sendable {
 
     private enum CodingKeys: String, CodingKey { case id, rows, columns, regions, extras }
 
-    /// A corrupt save must throw: `init` and the grader index by cell and keep group sets in 64 bits.
+    /// A corrupt save must throw: `init` and the grader index by cell and keep group sets in 64 bits, and the hints name
+    /// rows, columns and boxes of a 9×9 board (a tenth row would point past the box names).
     public init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         let rows = try c.decode([[Int]].self, forKey: .rows)
@@ -33,7 +34,12 @@ public struct Variant: Codable, Hashable, Sendable {
         let regions = try c.decode([[Int]].self, forKey: .regions)
         let extras = try c.decode([[Int]].self, forKey: .extras)
         let groups = rows + columns + regions + extras
-        guard groups.count <= 64, groups.joined().allSatisfy((0..<81).contains) else {
+        /// Nine groups of nine cells that together cover the board once.
+        func partitions(_ lines: [[Int]]) -> Bool {
+            lines.count == 9 && lines.allSatisfy { $0.count == 9 } && Set(lines.joined()) == Set(0..<81)
+        }
+        guard groups.count <= 64, groups.joined().allSatisfy((0..<81).contains),
+              partitions(rows), partitions(columns), regions.allSatisfy({ $0.count == 9 }), regions.count <= 9 else {
             throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Variant has invalid groups"))
         }
         self.init(id: try c.decode(String.self, forKey: .id), rows: rows, columns: columns, regions: regions, extras: extras)
