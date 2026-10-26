@@ -20,6 +20,8 @@ public struct Game: Codable, Sendable {
     public private(set) var hintsUsed = 0
     public private(set) var checksUsed = 0
     public private(set) var errorsFound = 0
+    /// Wrong values already counted in `errorsFound`, as `cell * 10 + digit`, so checking again never counts them twice.
+    private var countedErrors: Set<Int> = []
     /// Candidates already ruled out by shown hints; kept outside the undo history so repeated hints advance.
     public private(set) var hintEliminations = [CandidateMask](repeating: 0, count: 81)
     private var undoStack: [Snapshot] = []
@@ -27,23 +29,26 @@ public struct Game: Codable, Sendable {
 
     private enum CodingKeys: String, CodingKey {
         case puzzle, entries, notes, errorMarks, elapsed, hintsUsed, checksUsed, errorsFound
-        case hintEliminations, undoStack, redoStack
+        case hintEliminations, undoStack, redoStack, countedErrors
     }
 
     /// A corrupt save must throw, never crash later on an out-of-range index.
+    /// Everything with a default is optional, so a save from an older version (a tester's running game) still loads.
     public init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         puzzle = try c.decode(Puzzle.self, forKey: .puzzle)
         entries = try c.decode(Grid.self, forKey: .entries)
         notes = try c.decode([CandidateMask].self, forKey: .notes)
-        errorMarks = try c.decode(Set<Int>.self, forKey: .errorMarks)
-        elapsed = try c.decode(TimeInterval.self, forKey: .elapsed)
-        hintsUsed = try c.decode(Int.self, forKey: .hintsUsed)
-        checksUsed = try c.decode(Int.self, forKey: .checksUsed)
-        errorsFound = try c.decode(Int.self, forKey: .errorsFound)
-        hintEliminations = try c.decode([CandidateMask].self, forKey: .hintEliminations)
-        undoStack = try c.decode([Snapshot].self, forKey: .undoStack)
-        redoStack = try c.decode([Snapshot].self, forKey: .redoStack)
+        errorMarks = try c.decodeIfPresent(Set<Int>.self, forKey: .errorMarks) ?? []
+        elapsed = try c.decodeIfPresent(TimeInterval.self, forKey: .elapsed) ?? 0
+        hintsUsed = try c.decodeIfPresent(Int.self, forKey: .hintsUsed) ?? 0
+        checksUsed = try c.decodeIfPresent(Int.self, forKey: .checksUsed) ?? 0
+        errorsFound = try c.decodeIfPresent(Int.self, forKey: .errorsFound) ?? 0
+        countedErrors = try c.decodeIfPresent(Set<Int>.self, forKey: .countedErrors) ?? []
+        hintEliminations = try c.decodeIfPresent([CandidateMask].self, forKey: .hintEliminations)
+            ?? [CandidateMask](repeating: 0, count: 81)
+        undoStack = try c.decodeIfPresent([Snapshot].self, forKey: .undoStack) ?? []
+        redoStack = try c.decodeIfPresent([Snapshot].self, forKey: .redoStack) ?? []
         let snapshots = undoStack + redoStack
         let sizesOK = [puzzle.givens.cells.count, puzzle.solution.cells.count, entries.cells.count,
                        notes.count, hintEliminations.count].allSatisfy { $0 == 81 }
@@ -136,7 +141,9 @@ public struct Game: Codable, Sendable {
     public mutating func check() -> Set<Int> {
         markErrors()
         checksUsed += 1
-        errorsFound += errorMarks.count
+        let wrong = Set(errorMarks.map { $0 * 10 + Int(entries.cells[$0]) })
+        errorsFound += wrong.subtracting(countedErrors).count
+        countedErrors.formUnion(wrong)
         return errorMarks
     }
 

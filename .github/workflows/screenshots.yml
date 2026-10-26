@@ -26,11 +26,10 @@ jobs:
             pattern: '^iPad Pro 13-inch'
     name: screenshots (${{ matrix.name }})
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - run: brew install xcodegen
-      - run: xcodegen generate
+      - uses: ./.github/actions/xcodegen
       - name: Boot simulator with a clean status bar
         env:
           PATTERN: ${{ matrix.pattern }}
@@ -61,7 +60,7 @@ jobs:
           jq -r '.[].attachments[] | [.exportedFileName, .suggestedHumanReadableName] | @tsv' manifest.json |
             while IFS=$'\t' read -r file name; do mv "$file" "$name"; done
           ls -la
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: screenshots-${{ matrix.name }}
           path: ${{ runner.temp }}/screenshots/*.png

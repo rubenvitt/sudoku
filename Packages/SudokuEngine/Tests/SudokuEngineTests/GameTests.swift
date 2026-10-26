@@ -50,6 +50,25 @@ final class GameTests: XCTestCase {
         XCTAssertEqual(game.errorsFound, 1)
     }
 
+    func testCheckingAgainCountsOnlyNewErrors() throws {
+        var game = makeGame()
+        game.setDigit(1, at: 3)  // wrong (solution 6)
+        _ = game.check()
+        _ = game.check()
+        XCTAssertEqual(game.errorsFound, 1)
+        game.setDigit(2, at: 3)  // another wrong value in the same cell
+        _ = game.check()
+        XCTAssertEqual(game.errorsFound, 2)
+        game.setDigit(1, at: 3)  // the first wrong value again
+        _ = game.check()
+        XCTAssertEqual(game.errorsFound, 2)
+        XCTAssertEqual(game.checksUsed, 4)
+        let decoded = try JSONDecoder().decode(Game.self, from: JSONEncoder().encode(game))
+        var again = decoded
+        _ = again.check()
+        XCTAssertEqual(again.errorsFound, 2) // the counted values survive saving
+    }
+
     func testMarkErrorsDoesNotCount() {
         var game = makeGame()
         game.setDigit(4, at: 2)  // right
@@ -133,8 +152,14 @@ final class GameTests: XCTestCase {
         outOfRange["extras"] = [[0, 81]]
         var tooManyGroups = variant
         tooManyGroups["extras"] = [[Int]](repeating: [0], count: 65 - Variant.classic.groups.count)
+        var tenRows = variant
+        tenRows["rows"] = (variant["rows"] as! [[Int]]) + [[0, 1, 2, 3, 4, 5, 6, 7, 8]]
+        var shortColumn = variant
+        shortColumn["columns"] = (variant["columns"] as! [[Int]]).enumerated().map { $0.offset == 0 ? Array($0.element.dropLast()) : $0.element }
+        var tenRegions = variant
+        tenRegions["regions"] = (variant["regions"] as! [[Int]]) + [[0, 1, 2, 9, 10, 11, 18, 19, 20]]
         let game = try JSONSerialization.jsonObject(with: JSONEncoder().encode(makeGame())) as! [String: Any]
-        for bad in [outOfRange, tooManyGroups] {
+        for bad in [outOfRange, tooManyGroups, tenRows, shortColumn, tenRegions] {
             XCTAssertThrowsError(try JSONDecoder().decode(Variant.self, from: JSONSerialization.data(withJSONObject: bad)))
             var puzzle = game["puzzle"] as! [String: Any]
             puzzle["variant"] = bad
@@ -151,6 +176,22 @@ final class GameTests: XCTestCase {
         _ = game.check()
         game.toggleNote(5, at: 3)  // filled cell: no-op
         XCTAssertEqual(game.errorMarks, [3])
+    }
+
+    /// Saves from older versions lack newer fields; they must still load instead of losing the running game.
+    func testDecodingOlderSaveWithoutOptionalFields() throws {
+        var game = makeGame()
+        game.setDigit(4, at: 2)
+        var json = try JSONSerialization.jsonObject(with: JSONEncoder().encode(game)) as! [String: Any]
+        for key in ["errorMarks", "elapsed", "hintsUsed", "checksUsed", "errorsFound", "countedErrors",
+                    "hintEliminations", "undoStack", "redoStack"] {
+            json[key] = nil
+        }
+        let decoded = try JSONDecoder().decode(Game.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertEqual(decoded.entries, game.entries)
+        XCTAssertEqual(decoded.hintEliminations.count, 81)
+        XCTAssertFalse(decoded.canUndo)
+        XCTAssertEqual(decoded.errorsFound, 0)
     }
 
     func testCodableRoundTrip() throws {

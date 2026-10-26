@@ -16,6 +16,9 @@ struct ScribbleLayer: UIViewRepresentable {
     var inkColor: Color = .accentColor
     var onSelect: (Int) -> Void = { _ in }
     var onUndo: () -> Void = {}
+    /// Counts, per cell, the edits that did not come from the pencil (keypad, erase, undo). Text still being recognized for a
+    /// cell is dropped once its count moves, so a late result never overwrites what was entered there in the meantime.
+    var revisions: [Int: Int] = [:]
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -139,6 +142,8 @@ struct ScribbleLayer: UIViewRepresentable {
         private var commits: [Int: Task<Void, Never>] = [:]
         /// The cell the pencil is writing in right now; its text waits until the stroke ends.
         private var writing: Int?
+        /// Each waiting cell's revision when the pencil started writing there.
+        private var baselines: [Int: Int] = [:]
 
         init(_ parent: ScribbleLayer) {
             self.parent = parent
@@ -187,6 +192,8 @@ struct ScribbleLayer: UIViewRepresentable {
             writing = geometry?.cell(at: point)
             if let writing {
                 commits.removeValue(forKey: writing)?.cancel()
+                // A further stroke (or a stray dot) while the cell waits keeps the cell's first baseline.
+                if recognized[writing] == nil { baselines[writing] = parent.revisions[writing, default: 0] }
             }
         }
 
@@ -207,14 +214,25 @@ struct ScribbleLayer: UIViewRepresentable {
             }
         }
 
-        /// Enters what was written into `cell` as one digit or note, with all of its strokes.
+        /// Enters what was written into `cell` as one digit with all of its strokes, or as notes.
+        /// Nothing is entered when the cell was edited another way since the pencil started writing there.
         func commit(_ cell: Int) {
             commits.removeValue(forKey: cell)?.cancel()
             defer { updatePreview() }
-            guard let pieces = recognized.removeValue(forKey: cell), !parent.givens.contains(cell),
-                  let digit = resolveRecognized(pieces) else { return }
-            let ink = takeInk(digit, in: cell) // taken in note mode too, so a note's strokes never end up on a digit
-            parent.onInput(parent.noteMode ? .note(digit, cell: cell) : .digit(digit, cell: cell, ink: ink))
+            let baseline = baselines.removeValue(forKey: cell)
+            guard let pieces = recognized.removeValue(forKey: cell), !parent.givens.contains(cell) else { return }
+            guard baseline == nil || baseline == parent.revisions[cell, default: 0] else {
+                pending.removeAll { isCentered($0.points, in: cell) } // the overridden handwriting goes with its text
+                return
+            }
+            if parent.noteMode {
+                // Strokes are taken in note mode too, so a note's strokes never end up on a digit.
+                let strokes = takeStrokes(in: cell)
+                for digit in resolveNotes(pieces, columns: columnCount(strokes)) { parent.onInput(.note(digit, cell: cell)) }
+                return
+            }
+            guard let digit = resolveRecognized(pieces) else { return }
+            parent.onInput(.digit(digit, cell: cell, ink: takeInk(digit, in: cell)))
         }
 
         /// Commits every waiting cell now.
@@ -248,9 +266,13 @@ struct ScribbleLayer: UIViewRepresentable {
         /// Takes the pending strokes centered in `cell` as the handwriting of `digit`.
         private func takeInk(_ digit: Int, in cell: Int) -> Ink? {
             guard let geometry else { return nil }
+            return Ink(digit: digit, strokes: takeStrokes(in: cell), in: geometry.frame(of: cell))
+        }
+
+        private func takeStrokes(in cell: Int) -> [[CGPoint]] {
             let strokes = pending.map(\.points).filter { isCentered($0, in: cell) }
             pending.removeAll { isCentered($0.points, in: cell) }
-            return Ink(digit: digit, strokes: strokes, in: geometry.frame(of: cell))
+            return strokes
         }
 
         /// Puts `cell`'s hidden, always empty field over it and focuses it. Any text in it would sit under the pencil, and Scribble
@@ -267,6 +289,7 @@ struct ScribbleLayer: UIViewRepresentable {
         /// a `CellInput` for that cell, even when the pencil has already moved on to another one.
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             guard let cell = (textField as? HiddenField)?.cell, !parent.givens.contains(cell) else { return false }
+            if recognized[cell] == nil, baselines[cell] == nil { baselines[cell] = parent.revisions[cell, default: 0] }
             recognized[cell, default: []].append(string)
             if writing != cell { schedule(cell) } // otherwise the end of the stroke schedules it
             updatePreview()
@@ -307,6 +330,36 @@ func resolveRecognized(_ pieces: [String]) -> Int? {
        characters.contains(where: { "1lI|!".contains($0) }) { return 4 }
     let digits = pieces.compactMap(mapRecognized)
     return digits.last { $0 != 1 } ?? digits.last
+}
+
+/// Turns everything Scribble delivered for one cell in note mode into notes. Several notes can be written into a cell in
+/// one go ("1 2 4"): they count when Scribble read them as one text, or when the strokes stand side by side in separate
+/// `columns`. Otherwise the pieces are one character in several strokes (a 4 as "4" and "1") and give one note.
+func resolveNotes(_ pieces: [String], columns: Int) -> [Int] {
+    let characters = pieces.joined().filter { !$0.isWhitespace && !".,".contains($0) }
+    let digits = characters.compactMap { mapRecognized(String($0)) }
+    let readAsSeveral = pieces.contains { piece in piece.filter { !$0.isWhitespace && !".,".contains($0) }.count > 1 }
+    if digits.count > 1, digits.count == characters.count, readAsSeveral || columns > 1 {
+        var seen = Set<Int>()
+        return digits.filter { seen.insert($0).inserted } // a note written twice still toggles once
+    }
+    return resolveRecognized(pieces).map { [$0] } ?? []
+}
+
+/// How many side-by-side groups the strokes form: strokes whose horizontal extents overlap belong to one character.
+func columnCount(_ strokes: [[CGPoint]]) -> Int {
+    let spans = strokes.compactMap { stroke -> ClosedRange<CGFloat>? in
+        let xs = stroke.map(\.x)
+        guard let low = xs.min(), let high = xs.max() else { return nil }
+        return low...high
+    }.sorted { $0.lowerBound < $1.lowerBound }
+    var count = 0
+    var right = -CGFloat.infinity
+    for span in spans {
+        if span.lowerBound > right { count += 1 }
+        right = max(right, span.upperBound)
+    }
+    return count
 }
 
 /// Maps Scribble's text for one handwritten character to a digit 1…9, folding common look-alikes.

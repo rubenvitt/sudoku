@@ -200,6 +200,80 @@ final class ScribbleLayerTests: XCTestCase {
         XCTAssertEqual(inputs, [])
     }
 
+    /// Keypad, erase or undo on the cell while its writing is still being recognized wins over the late result.
+    func testOtherEditWhileRecognizingDropsTheWriting() {
+        makeLayer()
+        _ = coordinator.focus(40)
+        write([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)])
+        _ = scribble("5", settle: false)
+        coordinator.parent.revisions = [40: 1] // the keypad entered a digit there
+        coordinator.flush()
+        XCTAssertEqual(inputs, [])
+        write([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)]) // writing there again counts
+        _ = scribble("6")
+        guard case let .digit(6, cell: 40, ink: ink?) = inputs.first, inputs.count == 1 else { return XCTFail("\(inputs)") }
+        XCTAssertEqual(ink.strokes.count, 1) // the dropped writing's strokes went with it
+    }
+
+    /// Edits elsewhere leave the cell's writing alone.
+    func testOtherCellsEditDoesNotDropTheWriting() {
+        makeLayer()
+        _ = coordinator.focus(40)
+        write([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)])
+        _ = scribble("5", settle: false)
+        coordinator.parent.revisions = [41: 1]
+        coordinator.flush()
+        guard case .digit(5, cell: 40, _) = inputs.first, inputs.count == 1 else { return XCTFail("\(inputs)") }
+    }
+
+    /// A dot or a short stray stroke while the cell waits neither drops the digit nor its ink.
+    func testStrayDotKeepsTheWaitingDigit() {
+        makeLayer()
+        _ = coordinator.focus(40)
+        write([CGPoint(x: 210, y: 205), CGPoint(x: 240, y: 245)])
+        _ = scribble("5", settle: false)
+        write([CGPoint(x: 230, y: 230)])
+        _ = scribble(".", settle: false)
+        coordinator.flush()
+        guard case let .digit(5, cell: 40, ink: ink?) = inputs.first, inputs.count == 1 else { return XCTFail("\(inputs)") }
+        XCTAssertEqual(ink.strokes.count, 1)
+    }
+
+    /// Several notes written into one cell in one go each toggle.
+    func testSeveralNotesInOneCell() {
+        makeLayer(noteMode: true)
+        _ = coordinator.focus(40)
+        write([CGPoint(x: 205, y: 205), CGPoint(x: 206, y: 220)])
+        write([CGPoint(x: 220, y: 205), CGPoint(x: 228, y: 220)])
+        write([CGPoint(x: 235, y: 205), CGPoint(x: 245, y: 220)])
+        _ = scribble("1", settle: false)
+        _ = scribble("2", settle: false)
+        _ = scribble("4", settle: false)
+        coordinator.flush()
+        XCTAssertEqual(inputs, [.note(1, cell: 40), .note(2, cell: 40), .note(4, cell: 40)])
+    }
+
+    func testPiecesResolveToNotes() {
+        XCTAssertEqual(resolveNotes(["124"], columns: 0), [1, 2, 4]) // Scribble read them as one text
+        XCTAssertEqual(resolveNotes(["1 2 4"], columns: 1), [1, 2, 4])
+        XCTAssertEqual(resolveNotes(["1", "2", "4"], columns: 3), [1, 2, 4])
+        XCTAssertEqual(resolveNotes(["3", "3"], columns: 2), [3]) // toggles once
+        XCTAssertEqual(resolveNotes(["4", "1"], columns: 1), [4]) // one 4 in two strokes
+        XCTAssertEqual(resolveNotes(["L", "1"], columns: 2), [4])
+        XCTAssertEqual(resolveNotes(["7", "-"], columns: 1), [7])
+        XCTAssertEqual(resolveNotes(["x"], columns: 1), [])
+    }
+
+    func testColumnCount() {
+        XCTAssertEqual(columnCount([]), 0)
+        // A 4: the bar crosses the upright, so both strokes overlap.
+        XCTAssertEqual(columnCount([[CGPoint(x: 10, y: 0), CGPoint(x: 0, y: 20), CGPoint(x: 20, y: 20)],
+                                    [CGPoint(x: 15, y: 0), CGPoint(x: 15, y: 30)]]), 1)
+        XCTAssertEqual(columnCount([[CGPoint(x: 0, y: 0), CGPoint(x: 5, y: 20)],
+                                    [CGPoint(x: 30, y: 0), CGPoint(x: 40, y: 20)],
+                                    [CGPoint(x: 10, y: 0), CGPoint(x: 20, y: 20)]]), 3)
+    }
+
     func testRecognizerMapsLookalikes() {
         XCTAssertEqual(mapRecognized("7"), 7)
         XCTAssertEqual(mapRecognized(" 3\n"), 3)
