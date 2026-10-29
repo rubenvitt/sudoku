@@ -4,6 +4,12 @@
     "%@ in %@" : {
       "comment" : "Difficulty and time, e.g. \"Leicht in 12:34\".",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ in %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33,6 +39,12 @@
     "%@, Zeit %@" : {
       "comment" : "VoiceOver: difficulty and time.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, Zeit %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61,6 +73,12 @@
     },
     "%lld Fehler markiert." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Fehler markiert."
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -137,6 +155,12 @@
     },
     "%lld Prozent gelöst" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Prozent gelöst"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165,6 +189,12 @@
     },
     "Aktuelles Spiel verwerfen?" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuelles Spiel verwerfen?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -193,6 +223,12 @@
     },
     "Akzentfarbe" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akzentfarbe"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -221,6 +257,12 @@
     },
     "Bernstein" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bernstein"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -249,6 +291,12 @@
     },
     "Dein laufendes Spiel geht dabei verloren." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein laufendes Spiel geht dabei verloren."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -277,6 +325,12 @@
     },
     "Fertig" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -305,6 +359,12 @@
     },
     "Fuchsie" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuchsie"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -333,6 +393,12 @@
     },
     "Für diese Stellung habe ich keinen Tipp." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für diese Stellung habe ich keinen Tipp."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -361,6 +427,12 @@
     },
     "Gefundene Fehler" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefundene Fehler"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -389,6 +461,12 @@
     },
     "Gelöst!" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelöst!"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -417,6 +495,12 @@
     },
     "Graphit" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -445,6 +529,12 @@
     },
     "Himmel" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Himmel"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -473,6 +563,12 @@
     },
     "In Zeile %lld stimmt etwas nicht." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Zeile %lld stimmt etwas nicht."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -501,6 +597,12 @@
     },
     "Indigo" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indigo"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -529,6 +631,12 @@
     },
     "Kakao" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kakao"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -557,6 +665,12 @@
     },
     "Keine Fehler gefunden." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Fehler gefunden."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -585,6 +699,12 @@
     },
     "Klassisch · 9 × 9" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klassisch · 9 × 9"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -613,6 +733,12 @@
     },
     "Koralle" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koralle"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -641,6 +767,12 @@
     },
     "Kästen, Zeilen und Spalten im Blick" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kästen, Zeilen und Spalten im Blick"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -669,6 +801,12 @@
     },
     "Lavendel" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lavendel"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -697,6 +835,12 @@
     },
     "Löschen" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -725,6 +869,12 @@
     },
     "Moos" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moos"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -753,6 +903,12 @@
     },
     "Nacht" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nacht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -781,6 +937,12 @@
     },
     "Neues Spiel" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neues Spiel"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -809,6 +971,12 @@
     },
     "Notizen" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -838,6 +1006,12 @@
     "Notizen %@" : {
       "comment" : "VoiceOver, notes in an empty cell, e.g. \"Notizen 1, 2, 4\".",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -866,6 +1040,12 @@
     },
     "Ozean" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ozean"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -894,6 +1074,12 @@
     },
     "Paare und Dreier finden" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paare und Dreier finden"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -922,6 +1108,12 @@
     },
     "Petrol" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Petrol"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -950,6 +1142,12 @@
     },
     "Pflaume" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pflaume"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -979,6 +1177,12 @@
     "Prüfen" : {
       "comment" : "Short caption under the check button.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1007,6 +1211,12 @@
     },
     "Prüfungen" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1035,6 +1245,12 @@
     },
     "Rosé" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosé"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1063,6 +1279,12 @@
     },
     "Rückgängig" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rückgängig"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1091,6 +1313,12 @@
     },
     "Salbei" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salbei"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1119,6 +1347,12 @@
     },
     "Schiefer" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schiefer"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1147,6 +1381,12 @@
     },
     "Schließt den Hinweis" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließt den Hinweis"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1176,6 +1416,12 @@
     "Tipp" : {
       "comment" : "Short caption under the hint button.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipp"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1204,6 +1450,12 @@
     },
     "Tipps" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipps"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1233,6 +1485,12 @@
     "Verwerfen und %@ starten" : {
       "comment" : "%@ is a difficulty, e.g. Leicht.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwerfen und %@ starten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1261,6 +1519,12 @@
     },
     "Wald" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wald"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1289,6 +1553,12 @@
     },
     "Weiterspielen" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiterspielen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1317,6 +1587,12 @@
     },
     "Wiederholen" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederholen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1345,6 +1621,12 @@
     },
     "X-Wing, Swordfish & Co." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X-Wing, Swordfish & Co."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1373,6 +1655,12 @@
     },
     "Zeile %lld, Spalte %lld, %@" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeile %lld, Spalte %lld, %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1401,6 +1689,12 @@
     },
     "Zeit" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1429,6 +1723,12 @@
     },
     "Ziffer %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ziffer %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1457,6 +1757,12 @@
     },
     "Zum Ankommen – nur einfache Schritte" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zum Ankommen – nur einfache Schritte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1485,6 +1791,12 @@
     },
     "Zum Menü" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zum Menü"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1514,6 +1826,12 @@
     "falsch" : {
       "comment" : "VoiceOver: the cell's digit was marked as wrong.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "falsch"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1543,6 +1861,12 @@
     "leer" : {
       "comment" : "VoiceOver: an empty cell.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "leer"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1572,6 +1896,12 @@
     "noch %lld" : {
       "comment" : "VoiceOver value of a digit key: how often the digit is still missing.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "noch %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1600,6 +1930,12 @@
     },
     "vollständig" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vollständig"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1629,6 +1965,12 @@
     "vorgegeben" : {
       "comment" : "VoiceOver: the cell's digit was given by the puzzle.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vorgegeben"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1658,6 +2000,12 @@
     "Überprüfen" : {
       "comment" : "VoiceOver label of the check button.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überprüfen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

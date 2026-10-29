@@ -3,6 +3,12 @@
   "strings" : {
     "%@ bleiben für die drei markierten Felder nur %@, also fallen %@ in den übrigen Feldern %@ weg." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ bleiben für die drei markierten Felder nur %@, also fallen %@ in den übrigen Feldern %@ weg."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31,6 +37,12 @@
     },
     "%@ bleiben für die zwei markierten Felder nur %@, also fallen %@ in den übrigen Feldern %@ weg." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ bleiben für die zwei markierten Felder nur %@, also fallen %@ in den übrigen Feldern %@ weg."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59,6 +71,12 @@
     },
     "%@ ist %lld oder %lld, und so oder so wird eines der anderen markierten Felder zur %lld, also fällt die %lld in allen Feldern weg, die beide sehen." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ist %lld oder %lld, und so oder so wird eines der anderen markierten Felder zur %lld, also fällt die %lld in allen Feldern weg, die beide sehen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -87,6 +105,12 @@
     },
     "%@ passen die %lld und die %lld nur in die zwei markierten Felder, also fallen dort alle anderen Ziffern weg." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ passen die %lld und die %lld nur in die zwei markierten Felder, also fallen dort alle anderen Ziffern weg."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115,6 +139,12 @@
     },
     "%@ passt die %lld nur noch in %@." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ passt die %lld nur noch in %@."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -143,6 +173,12 @@
     },
     "%@ steht die %lld nur %@, also fällt die %lld im Rest %@ weg." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ steht die %lld nur %@, also fällt die %lld im Rest %@ weg."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -172,6 +208,12 @@
     "%@ und %@" : {
       "comment" : "Last two items of a list, e.g. \"3, 5 und 7\".",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ und %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -200,6 +242,12 @@
     },
     "Experte" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -228,6 +276,12 @@
     },
     "In %@ ist nur noch die %lld möglich." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In %@ ist nur noch die %lld möglich."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -256,6 +310,12 @@
     },
     "In den Spalten %@ passt die %lld nur in die Zeilen %@, also fällt die %lld im Rest dieser Zeilen weg." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In den Spalten %@ passt die %lld nur in die Zeilen %@, also fällt die %lld im Rest dieser Zeilen weg."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -284,6 +344,12 @@
     },
     "In den Zeilen %@ passt die %lld nur in die Spalten %@, also fällt die %lld im Rest dieser Spalten weg." : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In den Zeilen %@ passt die %lld nur in die Spalten %@, also fällt die %lld im Rest dieser Spalten weg."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -312,6 +378,12 @@
     },
     "Leicht" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leicht"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -340,6 +412,12 @@
     },
     "Mittel" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mittel"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -368,6 +446,12 @@
     },
     "Nackter Einer" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nackter Einer"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -396,6 +480,12 @@
     },
     "Nacktes Paar" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nacktes Paar"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -424,6 +514,12 @@
     },
     "Nacktes Tripel" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nacktes Tripel"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -452,6 +548,12 @@
     },
     "Reihe-Kasten-Check" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reihe-Kasten-Check"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -480,6 +582,12 @@
     },
     "Schwer" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwer"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -508,6 +616,12 @@
     },
     "Schwertfisch" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwertfisch"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -537,6 +651,12 @@
     "Spalte %lld" : {
       "comment" : "Where a hidden single goes, after \"passt … nur noch in\".",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spalte %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -565,6 +685,12 @@
     },
     "Versteckter Einer" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versteckter Einer"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -593,6 +719,12 @@
     },
     "Verstecktes Paar" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verstecktes Paar"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -621,6 +753,12 @@
     },
     "X-Wing" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X-Wing"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -649,6 +787,12 @@
     },
     "XY-Wing" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "XY-Wing"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -678,6 +822,12 @@
     "Zeile %lld" : {
       "comment" : "Where a hidden single goes, after \"passt … nur noch in\".",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeile %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -707,6 +857,12 @@
     "Zeile %lld, Spalte %lld" : {
       "comment" : "A cell. Used after \"In\" and \"passt … nur noch in\" and as the subject of the XY-Wing hint.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeile %lld, Spalte %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -735,6 +891,12 @@
     },
     "der Spalte %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "der Spalte %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -763,6 +925,12 @@
     },
     "der Zeile %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "der Zeile %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -791,6 +959,12 @@
     },
     "der Zusatzgruppe %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "der Zusatzgruppe %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -819,6 +993,12 @@
     },
     "des Kastens %@" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "des Kastens %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -848,6 +1028,12 @@
     "die %lld" : {
       "comment" : "A digit in a list, e.g. \"nur die 3 und die 7\".",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "die %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -876,6 +1062,12 @@
     },
     "im Kasten %@" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "im Kasten %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -904,6 +1096,12 @@
     },
     "in Spalte %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in Spalte %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -932,6 +1130,12 @@
     },
     "in Zeile %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in Zeile %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -960,6 +1164,12 @@
     },
     "in Zusatzgruppe %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in Zusatzgruppe %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -988,6 +1198,12 @@
     },
     "in der Mitte" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in der Mitte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1016,6 +1232,12 @@
     },
     "in der Mitte links" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in der Mitte links"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1044,6 +1266,12 @@
     },
     "in der Mitte rechts" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in der Mitte rechts"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1072,6 +1300,12 @@
     },
     "oben in der Mitte" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "oben in der Mitte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1100,6 +1334,12 @@
     },
     "oben links" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "oben links"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1128,6 +1368,12 @@
     },
     "oben rechts" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "oben rechts"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1156,6 +1402,12 @@
     },
     "unten in der Mitte" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unten in der Mitte"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1184,6 +1436,12 @@
     },
     "unten links" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unten links"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1212,6 +1470,12 @@
     },
     "unten rechts" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unten rechts"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
