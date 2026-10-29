@@ -22,6 +22,7 @@ Startet unter *Actions → App Store → Run workflow* auf `main`:
 
 - **Ohne Eingaben:** macht frische Screenshots und lädt sie mit allen Texten und der Prüfnotiz hoch (`fastlane metadata`). Nichts wird eingereicht.
 - **`submit` = `einreichen`:** wie oben, hängt zusätzlich den neuesten verarbeiteten TestFlight-Build an (oder den aus `build_number`) und reicht die Version aus `project.yml` zur Prüfung ein (`fastlane submit`). Nach der Freigabe durch Apple wird die App **nicht** automatisch veröffentlicht; das geschieht von Hand in App Store Connect.
+- **`screenshots` aus:** überspringt die Screenshots und behält die in App Store Connect. Hilft, wenn Apple beim Verarbeiten der Bilder hängt und der Upload ins Zeitlimit läuft.
 
 Kontakt für das Prüfteam (Pflicht beim Einreichen, bleibt aus dem öffentlichen Repo heraus), unter *Settings → Secrets and variables → Actions*:
 
