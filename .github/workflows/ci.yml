@@ -23,7 +23,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - run: swift test
+      # xcodebuild, not `swift test`: only Xcode's build compiles the String Catalog, which the hint tests read.
+      - run: |
+          xcodebuild -list
+          xcodebuild test -scheme SudokuEngine -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
         working-directory: Packages/SudokuEngine
 
   app-device:

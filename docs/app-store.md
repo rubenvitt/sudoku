@@ -60,6 +60,6 @@ Kein Login, keine Demo-Daten nötig. Die Notiz an das Prüfteam steht in `fastla
 Entwicklungssprache ist Deutsch: Die Schlüssel in den String Catalogs sind die deutschen Texte im Code. Übersetzt sind Englisch, Französisch, Spanisch und Italienisch.
 
 - **Neuer oder geänderter Text:** In Xcode bauen, dann füllt Xcode den Katalog mit dem neuen Schlüssel; die Übersetzungen im Katalog-Editor ergänzen. Fehlt eine Übersetzung, zeigt die App den deutschen Text.
-- **Tipp-Texte** setzt der Rechenkern aus Bausteinen zusammen (Zeile, Kasten, Ziffernliste). `swift test` prüft für jede Sprache, dass jeder Tipp ein ganzer Satz ohne leere Platzhalter ist.
+- **Tipp-Texte** setzt der Rechenkern aus Bausteinen zusammen (Zeile, Kasten, Ziffernliste). Die Engine-Tests (in CI per `xcodebuild`, weil `swift test` den Katalog nicht übersetzt) prüfen für jede Sprache, dass jeder Tipp ein ganzer Satz ohne leere Platzhalter ist.
 - **Neue Sprache:** in allen drei Katalogen ergänzen, `fastlane/metadata/<locale>` anlegen und die Sprache in `.github/workflows/screenshots.yml` (`LANGUAGES`) und `.github/workflows/app-store.yml` (Zuordnung zur App-Store-Locale) eintragen.
 - UI-Tests starten die App immer auf Deutsch; nur der Screenshot-Test läuft je Sprache und findet die Bedienelemente über `accessibilityIdentifier`.
