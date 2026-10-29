@@ -1,5 +1,1 @@
-• Better Apple Pencil writing: digits drawn with several strokes are recognized, digits written in quick succession land in the right cell, and a late recognition no longer overwrites your input.
-• Write several notes into a cell at once.
-• Choose your own accent color.
-• Tap a selected cell again, or next to the board, to clear the selection.
-• Older saved games load more reliably.
+• Griffel Sudoku now speaks English, French, Spanish and Italian as well as German: menus, hints and VoiceOver follow your device’s language.

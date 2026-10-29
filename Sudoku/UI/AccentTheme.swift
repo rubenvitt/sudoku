@@ -11,23 +11,23 @@ enum AccentTheme: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .ocean: "Ozean"
-        case .midnight: "Nacht"
-        case .indigo: "Indigo"
-        case .slate: "Schiefer"
-        case .lavender: "Lavendel"
-        case .plum: "Pflaume"
-        case .fuchsia: "Fuchsie"
-        case .rose: "Rosé"
-        case .coral: "Koralle"
-        case .amber: "Bernstein"
-        case .cocoa: "Kakao"
-        case .moss: "Moos"
-        case .forest: "Wald"
-        case .sage: "Salbei"
-        case .teal: "Petrol"
-        case .sky: "Himmel"
-        case .graphite: "Graphit"
+        case .ocean: String(localized: "Ozean")
+        case .midnight: String(localized: "Nacht")
+        case .indigo: String(localized: "Indigo")
+        case .slate: String(localized: "Schiefer")
+        case .lavender: String(localized: "Lavendel")
+        case .plum: String(localized: "Pflaume")
+        case .fuchsia: String(localized: "Fuchsie")
+        case .rose: String(localized: "Rosé")
+        case .coral: String(localized: "Koralle")
+        case .amber: String(localized: "Bernstein")
+        case .cocoa: String(localized: "Kakao")
+        case .moss: String(localized: "Moos")
+        case .forest: String(localized: "Wald")
+        case .sage: String(localized: "Salbei")
+        case .teal: String(localized: "Petrol")
+        case .sky: String(localized: "Himmel")
+        case .graphite: String(localized: "Graphit")
         }
     }
 

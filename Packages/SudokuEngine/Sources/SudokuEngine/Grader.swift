@@ -1,12 +1,15 @@
 public enum Difficulty: String, Codable, CaseIterable, Sendable {
     case easy, medium, hard, expert
 
-    public var title: String {
+    public var title: String { title(language: nil) }
+
+    /// `language` forces a language, e.g. "de"; nil follows the app.
+    public func title(language: String?) -> String {
         switch self {
-        case .easy: "Leicht"
-        case .medium: "Mittel"
-        case .hard: "Schwer"
-        case .expert: "Experte"
+        case .easy: localized("Leicht", language)
+        case .medium: localized("Mittel", language)
+        case .hard: localized("Schwer", language)
+        case .expert: localized("Experte", language)
         }
     }
 }
@@ -14,17 +17,20 @@ public enum Difficulty: String, Codable, CaseIterable, Sendable {
 public enum Technique: Int, Comparable, CaseIterable, Sendable {
     case nakedSingle, hiddenSingle, intersection, nakedPair, hiddenPair, nakedTriple, xWing, swordfish, xyWing
 
-    public var title: String {
+    public var title: String { title(language: nil) }
+
+    /// `language` forces a language, e.g. "de"; nil follows the app.
+    public func title(language: String?) -> String {
         switch self {
-        case .nakedSingle: "Nackter Einer"
-        case .hiddenSingle: "Versteckter Einer"
-        case .intersection: "Reihe-Kasten-Check"
-        case .nakedPair: "Nacktes Paar"
-        case .hiddenPair: "Verstecktes Paar"
-        case .nakedTriple: "Nacktes Tripel"
-        case .xWing: "X-Wing"
-        case .swordfish: "Schwertfisch"
-        case .xyWing: "XY-Wing"
+        case .nakedSingle: localized("Nackter Einer", language)
+        case .hiddenSingle: localized("Versteckter Einer", language)
+        case .intersection: localized("Reihe-Kasten-Check", language)
+        case .nakedPair: localized("Nacktes Paar", language)
+        case .hiddenPair: localized("Verstecktes Paar", language)
+        case .nakedTriple: localized("Nacktes Tripel", language)
+        case .xWing: localized("X-Wing", language)
+        case .swordfish: localized("Schwertfisch", language)
+        case .xyWing: localized("XY-Wing", language)
         }
     }
 
@@ -45,7 +51,13 @@ public struct Step: Sendable {
     public let placement: (cell: Int, digit: Int)?
     public let eliminations: [(cell: Int, digit: Int)]
     public let focus: [Int]
-    public let explanation: String
+    /// Built only when shown, so grading many puzzles never formats text.
+    let describe: @Sendable (_ language: String?) -> String
+
+    public var explanation: String { describe(nil) }
+
+    /// `language` forces a language, e.g. "de"; nil follows the app.
+    public func explanation(language: String?) -> String { describe(language) }
 }
 
 public enum Grader {

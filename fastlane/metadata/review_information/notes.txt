@@ -1,3 +1,3 @@
 No login or demo account needed. The app works fully offline and collects no data.
 
-On iPad, digits can be written straight into the cells with Apple Pencil (iPadOS Scribble); on every device they can also be entered with the number pad. "Tipp" shows the next logical step, "Prüfen" marks wrong digits.
+On iPad, digits can be written straight into the cells with Apple Pencil (iPadOS Scribble); on every device they can also be entered with the number pad. "Hint" shows the next logical step, "Check" marks wrong digits. The app follows the device language: German, English, French, Spanish or Italian.

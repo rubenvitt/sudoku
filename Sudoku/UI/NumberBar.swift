@@ -31,7 +31,8 @@ struct NumberBar: View {
                 }
                 .buttonStyle(PressableStyle())
                 .accessibilityLabel("Ziffer \(digit)")
-                .accessibilityValue(done ? "vollständig" : "noch \(remaining[digit])")
+                .accessibilityIdentifier("digit-\(digit)")
+                .accessibilityValue(done ? Text("vollständig") : Text("noch \(remaining[digit])"))
             }
         }
         .animation(.easeInOut(duration: 0.15), value: noteMode)
