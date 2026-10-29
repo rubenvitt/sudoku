@@ -21,7 +21,7 @@ Was im Repo vorbereitet ist und was nur in App Store Connect geht.
 Startet unter *Actions → App Store → Run workflow* auf `main`:
 
 - **Ohne Eingaben:** macht frische Screenshots und lädt sie mit allen Texten und der Prüfnotiz hoch (`fastlane metadata`). Nichts wird eingereicht.
-- **`submit` = `einreichen`:** wie oben, hängt zusätzlich den neuesten verarbeiteten TestFlight-Build an (oder den aus `build_number`) und reicht Version 1.0 zur Prüfung ein (`fastlane submit`). Nach der Freigabe durch Apple wird die App **nicht** automatisch veröffentlicht; das geschieht von Hand in App Store Connect.
+- **`submit` = `einreichen`:** wie oben, hängt zusätzlich den neuesten verarbeiteten TestFlight-Build an (oder den aus `build_number`) und reicht die Version aus `project.yml` zur Prüfung ein (`fastlane submit`). Nach der Freigabe durch Apple wird die App **nicht** automatisch veröffentlicht; das geschieht von Hand in App Store Connect.
 
 Kontakt für das Prüfteam (Pflicht beim Einreichen, bleibt aus dem öffentlichen Repo heraus), unter *Settings → Secrets and variables → Actions*:
 
