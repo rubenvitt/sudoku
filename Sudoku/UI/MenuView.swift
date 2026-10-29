@@ -109,6 +109,7 @@ struct MenuView: View {
         .disabled(starting != nil) // a pending start would replace this game once its puzzle arrives
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Weiterspielen")
+        .accessibilityIdentifier("continue")
         .accessibilityValue("\(game.puzzle.difficulty.title), \(game.elapsed.clock)")
     }
 
@@ -144,6 +145,7 @@ struct MenuView: View {
         .disabled(starting != nil)
         .accessibilityLabel(difficulty.title)
         .accessibilityHint(difficulty.subtitle)
+        .accessibilityIdentifier("difficulty-\(difficulty.rawValue)")
     }
 
     private func start(_ difficulty: Difficulty) {
@@ -218,10 +220,10 @@ extension Difficulty {
 
     var subtitle: String {
         switch self {
-        case .easy: "Zum Ankommen – nur einfache Schritte"
-        case .medium: "Kästen, Zeilen und Spalten im Blick"
-        case .hard: "Paare und Dreier finden"
-        case .expert: "X-Wing, Swordfish & Co."
+        case .easy: String(localized: "Zum Ankommen – nur einfache Schritte")
+        case .medium: String(localized: "Kästen, Zeilen und Spalten im Blick")
+        case .hard: String(localized: "Paare und Dreier finden")
+        case .expert: String(localized: "X-Wing, Swordfish & Co.")
         }
     }
 

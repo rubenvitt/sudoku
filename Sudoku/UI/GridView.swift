@@ -73,16 +73,20 @@ struct GridView: View, Equatable {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel(index, value: value, isGiven: isGiven, isWrong: isWrong))
+        .accessibilityIdentifier("cell-\(index)")
         .accessibilityAddTraits(selection == index ? .isSelected : [])
     }
 
     /// "Zeile 1, Spalte 3, leer, Notizen 1, 2, 4" / "Zeile 9, Spalte 9, 9, vorgegeben"
     private func accessibilityLabel(_ index: Int, value: Int, isGiven: Bool, isWrong: Bool) -> String {
-        var label = "Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), \(value == 0 ? "leer" : "\(value)")"
+        let content = value == 0 ? String(localized: "leer") : "\(value)"
+        var label = String(localized: "Zeile \(index / 9 + 1), Spalte \(index % 9 + 1), \(content)")
         let notes = (1...9).filter { game.notes[index] & (1 << ($0 - 1)) != 0 }
-        if value == 0 && !notes.isEmpty { label += ", Notizen \(notes.map(String.init).joined(separator: ", "))" }
-        if isGiven { label += ", vorgegeben" }
-        if isWrong { label += ", falsch" }
+        if value == 0 && !notes.isEmpty {
+            label += ", " + String(localized: "Notizen \(notes.map(String.init).joined(separator: ", "))")
+        }
+        if isGiven { label += ", " + String(localized: "vorgegeben") }
+        if isWrong { label += ", " + String(localized: "falsch") }
         return label
     }
 

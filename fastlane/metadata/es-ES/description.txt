@@ -1,0 +1,25 @@
+El sudoku como debe ser: un tablero tranquilo, sudokus infinitos y nada que te distraiga.
+
+ESCRIBE COMO EN PAPEL
+En el iPad, escribe las cifras directamente en las casillas con el Apple Pencil. En el iPhone, tócalas en un teclado numérico claro que te muestra cuántas veces falta todavía cada cifra.
+
+SUDOKUS INFINITOS
+Cada sudoku se genera en tu dispositivo y tiene exactamente una solución. Cuatro niveles (Fácil, Medio, Difícil y Experto) se basan en las técnicas que necesitas para resolverlo. Nunca tendrás que adivinar.
+
+PISTAS QUE EXPLICAN
+¿Te has atascado? Una pista te muestra el siguiente paso lógico y te lo explica, desde un simple solitario hasta X-Wing y Pez espada. Con cada sudoku aprendes algo nuevo.
+
+ERRORES SOLO SI LOS PIDES
+La app nunca te dice nada sin que se lo pidas. Las cifras incorrectas solo se marcan cuando tocas Comprobar.
+
+TU PARTIDA TE ESPERA
+Cada jugada se guarda al instante. Cierra la app cuando quieras y continúa justo donde lo dejaste.
+
+ADEMÁS
+• Notas para los candidatos, las cifras iguales se resaltan
+• Deshacer y rehacer, también con un toque de dos dedos
+• Resumen con tiempo, pistas y errores encontrados
+• Modo claro y oscuro, compatible con VoiceOver
+• Funciona completamente sin conexión
+
+Compra una vez y tenlo todo: sin anuncios, sin compras dentro de la app, sin cuenta y sin recopilación de datos.

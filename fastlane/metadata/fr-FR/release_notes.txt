@@ -1,0 +1,1 @@
+• Griffel Sudoku parle désormais français, anglais, espagnol et italien en plus de l’allemand : menus, indices et VoiceOver suivent la langue de votre appareil.
