@@ -7,7 +7,7 @@ Was im Repo vorbereitet ist und was nur in App Store Connect geht.
 | Was | Wo |
 |---|---|
 | App-Icon hell, dunkel, getönt | `Sudoku/Assets.xcassets/AppIcon.appiconset`, Quellen in `design/` |
-| Version 1.0, Kategorie Rätselspiele | `project.yml` |
+| Version (`MARKETING_VERSION`), Kategorie Rätselspiele | `project.yml` |
 | Datenschutz-Manifest (keine Daten, kein Tracking) | `Sudoku/PrivacyInfo.xcprivacy` |
 | Exportkontrolle: keine Verschlüsselung | `ITSAppUsesNonExemptEncryption = NO` in `project.yml` |
 | Texte Deutsch und Englisch (Name, Untertitel, Beschreibung, Schlüsselwörter, Werbetext, URLs) | `fastlane/metadata/de-DE`, `fastlane/metadata/en-US` |
@@ -21,7 +21,7 @@ Was im Repo vorbereitet ist und was nur in App Store Connect geht.
 Startet unter *Actions → App Store → Run workflow* auf `main`:
 
 - **Ohne Eingaben:** macht frische Screenshots und lädt sie mit allen Texten und der Prüfnotiz hoch (`fastlane metadata`). Nichts wird eingereicht.
-- **`submit` = `einreichen`:** wie oben, hängt zusätzlich den neuesten verarbeiteten TestFlight-Build an (oder den aus `build_number`) und reicht Version 1.0 zur Prüfung ein (`fastlane submit`). Nach der Freigabe durch Apple wird die App **nicht** automatisch veröffentlicht; das geschieht von Hand in App Store Connect.
+- **`submit` = `einreichen`:** wie oben, hängt zusätzlich den neuesten verarbeiteten TestFlight-Build an (oder den aus `build_number`) und reicht die Version aus `project.yml` zur Prüfung ein (`fastlane submit`). Nach der Freigabe durch Apple wird die App **nicht** automatisch veröffentlicht; das geschieht von Hand in App Store Connect.
 
 Kontakt für das Prüfteam (Pflicht beim Einreichen, bleibt aus dem öffentlichen Repo heraus), unter *Settings → Secrets and variables → Actions*:
 
@@ -46,3 +46,10 @@ Diese Angaben gibt es nicht über den API-Schlüssel:
 ## Hinweise für die Prüfung
 
 Kein Login, keine Demo-Daten nötig. Die Notiz an das Prüfteam steht in `fastlane/metadata/review_information/notes.txt` und wird mit hochgeladen.
+
+## Updates
+
+1. `MARKETING_VERSION` in `project.yml` erhöhen und `fastlane/metadata/*/release_notes.txt` („Neuigkeiten") neu schreiben.
+2. Mergen: Der Workflow **TestFlight** baut die neue Version.
+3. Workflow **App Store** mit `submit` = `einreichen` starten; er legt die Version in App Store Connect an, falls sie fehlt, und nimmt den neuesten Build.
+4. Nach Apples Freigabe von Hand veröffentlichen.
