@@ -14,6 +14,10 @@ on:
         description: TestFlight build number (empty = latest processed build)
         required: false
         default: ""
+      screenshots:
+        description: Take and upload fresh screenshots (off = keep the ones in App Store Connect)
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -24,13 +28,13 @@ concurrency:
 
 jobs:
   screenshots:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && inputs.screenshots
     uses: ./.github/workflows/screenshots.yml
 
   upload:
     needs: screenshots
-    # secrets must only reach main
-    if: github.ref == 'refs/heads/main'
+    # secrets must only reach main; also runs when screenshots were switched off
+    if: github.ref == 'refs/heads/main' && !failure() && !cancelled()
     runs-on: macos-26
     timeout-minutes: 30
     steps:
@@ -38,10 +42,12 @@ jobs:
         with:
           persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        if: inputs.screenshots
         with:
           pattern: screenshots-*
           path: ${{ runner.temp }}/screenshots
       - name: Arrange screenshots for deliver
+        if: inputs.screenshots
         run: |
           # Each artifact holds one folder per app language; each store listing gets the screenshots in its language.
           for pair in de:de-DE en:en-US fr:fr-FR es:es-ES it:it; do
