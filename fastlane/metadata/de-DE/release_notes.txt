@@ -1,1 +1,6 @@
 • Griffel Sudoku spricht jetzt auch Englisch, Französisch, Spanisch und Italienisch: Menüs, Tipps und VoiceOver folgen der Sprache deines Geräts.
+• Schreiben mit dem Apple Pencil verbessert: Ziffern aus mehreren Strichen werden erkannt, schnell hintereinander geschriebene Ziffern landen in der richtigen Zelle, und eine späte Erkennung überschreibt keine Eingabe mehr.
+• Mehrere Notizen auf einmal in eine Zelle schreiben.
+• Akzentfarbe frei wählbar.
+• Erneutes Tippen auf eine Zelle oder ein Tipp daneben hebt die Auswahl auf.
+• Ältere Spielstände werden zuverlässiger geladen.

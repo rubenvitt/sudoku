@@ -1,1 +1,6 @@
 • Griffel Sudoku ora parla italiano, inglese, francese e spagnolo oltre al tedesco: menu, aiuti e VoiceOver seguono la lingua del tuo dispositivo.
+• Scrittura con Apple Pencil migliorata: le cifre tracciate con più tratti vengono riconosciute, le cifre scritte in rapida successione finiscono nella casella giusta e un riconoscimento tardivo non sovrascrive più il tuo inserimento.
+• Scrivi più note in una casella in una volta sola.
+• Scegli liberamente il colore d’accento.
+• Tocca di nuovo una casella selezionata, o accanto alla griglia, per annullare la selezione.
+• Le partite salvate meno recenti si caricano in modo più affidabile.
