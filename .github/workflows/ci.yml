@@ -51,6 +51,8 @@ jobs:
             echo "No $DEVICE simulator available" >&2
             exit 1
           fi
+          # Boot first: a cold simulator can time out the first app launch in the UI tests
+          xcrun simctl bootstatus "$UDID" -b
           xcodebuild test -scheme Sudoku -destination "id=$UDID" -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
 
   # The main ruleset requires a check named "app"; it passes only when every device passed.
