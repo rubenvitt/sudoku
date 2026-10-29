@@ -1,6 +1,6 @@
 name: Screenshots
 
-# App Store screenshots in the sizes App Store Connect asks for (6.9" iPhone, 13" iPad).
+# App Store screenshots in the sizes App Store Connect asks for (6.9" iPhone, 13" iPad), one set per app language.
 # Start by hand for a look; the App Store workflow calls it and uploads the PNGs.
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ env:
 jobs:
   screenshots:
     runs-on: macos-26
-    timeout-minutes: 45
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -45,23 +45,35 @@ jobs:
           xcrun simctl bootstatus "$UDID"
           xcrun simctl status_bar "$UDID" override --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
             --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+      - name: Build for testing
+        run: xcodebuild build-for-testing -scheme Sudoku -destination "id=$UDID" -derivedDataPath "$RUNNER_TEMP/dd" CODE_SIGNING_ALLOWED=NO
       - name: Take screenshots
         env:
           TEST_RUNNER_SCREENSHOTS: "1"
+          LANGUAGES: de en fr es it # keep in step with the String Catalogs and the App Store workflow
         run: |
-          xcodebuild test -scheme Sudoku -destination "id=$UDID" \
-            -only-testing:SudokuUITests/SmokeTests/testAppStoreScreenshots \
-            -resultBundlePath "$RUNNER_TEMP/screenshots.xcresult" CODE_SIGNING_ALLOWED=NO
+          for language in $LANGUAGES; do
+            TEST_RUNNER_SCREENSHOT_LANGUAGE="$language" xcodebuild test-without-building -scheme Sudoku -destination "id=$UDID" \
+              -derivedDataPath "$RUNNER_TEMP/dd" -only-testing:SudokuUITests/SmokeTests/testAppStoreScreenshots \
+              -resultBundlePath "$RUNNER_TEMP/screenshots-$language.xcresult" CODE_SIGNING_ALLOWED=NO
+          done
       - name: Export PNGs
+        env:
+          LANGUAGES: de en fr es it
         run: |
-          OUT="$RUNNER_TEMP/screenshots"
-          xcrun xcresulttool export attachments --path "$RUNNER_TEMP/screenshots.xcresult" --output-path "$OUT"
-          cd "$OUT"
-          jq -r '.[].attachments[] | [.exportedFileName, .suggestedHumanReadableName] | @tsv' manifest.json |
-            while IFS=$'\t' read -r file name; do mv "$file" "$name"; done
-          ls -la
+          for language in $LANGUAGES; do
+            OUT="$RUNNER_TEMP/screenshots/$language"
+            xcrun xcresulttool export attachments --path "$RUNNER_TEMP/screenshots-$language.xcresult" --output-path "$OUT"
+            (
+              cd "$OUT"
+              jq -r '.[].attachments[] | [.exportedFileName, .suggestedHumanReadableName] | @tsv' manifest.json |
+                while IFS=$'\t' read -r file name; do mv "$file" "$name"; done
+              rm manifest.json
+            )
+          done
+          ls -laR "$RUNNER_TEMP/screenshots"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: screenshots-${{ matrix.name }}
-          path: ${{ runner.temp }}/screenshots/*.png
+          path: ${{ runner.temp }}/screenshots/*/*.png
           if-no-files-found: error

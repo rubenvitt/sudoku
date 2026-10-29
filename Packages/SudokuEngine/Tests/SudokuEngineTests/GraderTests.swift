@@ -64,7 +64,8 @@ final class GraderTests: XCTestCase {
         XCTAssertEqual(step?.placement?.cell, 28)
         XCTAssertEqual(step?.placement?.digit, 7)
         XCTAssertEqual(step?.focus, [28])
-        XCTAssertEqual(step?.explanation, "In Zeile 4 passt die 7 nur noch in Spalte 2.")
+        XCTAssertEqual(step?.explanation(language: "de"), "In Zeile 4 passt die 7 nur noch in Spalte 2.")
+        XCTAssertEqual(step?.explanation(language: "en"), "In row 4, the 7 only fits in column 2.")
     }
 
     func testEliminationsAreCorrect() throws {
@@ -82,14 +83,28 @@ final class GraderTests: XCTestCase {
                     XCTAssertNotEqual(Int(solution.cells[e.cell]), e.digit, step.explanation)
                 }
                 assertPlainGerman(step)
+                assertTranslated(step)
                 board.apply(step)
             }
         }
     }
 
+    /// Every other language has its own full sentence, with all placeholders filled in.
+    private func assertTranslated(_ step: Step, file: StaticString = #filePath, line: UInt = #line) {
+        let german = step.explanation(language: "de")
+        for language in ["en", "fr", "es", "it"] {
+            let text = step.explanation(language: language)
+            XCTAssertNotEqual(text, german, "\(language) falls back to German", file: file, line: line)
+            XCTAssertFalse(text.contains("%"), "\(language): \(text)", file: file, line: line)
+            XCTAssertFalse(text.contains("(null)"), "\(language): \(text)", file: file, line: line)
+            XCTAssertTrue(text.hasSuffix("."), "\(language): \(text)", file: file, line: line)
+            XCTAssertNotEqual(step.technique.title(language: language), "", file: file, line: line)
+        }
+    }
+
     /// One German sentence about fields: no "Z4S2" codes, no "Block", no "Kandidat".
     private func assertPlainGerman(_ step: Step, file: StaticString = #filePath, line: UInt = #line) {
-        let text = step.explanation
+        let text = step.explanation(language: "de")
         XCTAssertNil(text.range(of: "Z\\d+S\\d+", options: .regularExpression), text, file: file, line: line)
         XCTAssertFalse(text.contains("Block"), text, file: file, line: line)
         XCTAssertFalse(text.contains("Kandidat"), text, file: file, line: line)
@@ -103,16 +118,19 @@ final class GraderTests: XCTestCase {
         for cell in [6, 7, 8, 24, 25, 26] { masks[cell] &= ~(1 << 6) }
         let step = Grader.nextStep(Grid(String(repeating: ".", count: 81)), candidates: masks, in: .classic)
         XCTAssertEqual(step?.technique, .intersection)
-        XCTAssertEqual(step?.explanation, "Im Kasten oben rechts steht die 7 nur in Zeile 2, also fällt die 7 im Rest der Zeile 2 weg.")
+        XCTAssertEqual(step?.explanation(language: "de"), "Im Kasten oben rechts steht die 7 nur in Zeile 2, also fällt die 7 im Rest der Zeile 2 weg.")
+        XCTAssertEqual(step?.explanation(language: "en"),
+                       "In the top-right box, the 7 only appears in row 2, so the 7 drops out of the rest of row 2.")
     }
 
     func testTechniqueTitles() {
-        XCTAssertEqual(Technique.allCases.map(\.title), ["Nackter Einer", "Versteckter Einer", "Reihe-Kasten-Check", "Nacktes Paar",
+        XCTAssertEqual(Technique.allCases.map { $0.title(language: "de") }, ["Nackter Einer", "Versteckter Einer", "Reihe-Kasten-Check", "Nacktes Paar",
                                                          "Verstecktes Paar", "Nacktes Tripel", "X-Wing", "Schwertfisch", "XY-Wing"])
     }
 
     func testDifficultyTitles() {
-        XCTAssertEqual(Difficulty.allCases.map(\.title), ["Leicht", "Mittel", "Schwer", "Experte"])
+        XCTAssertEqual(Difficulty.allCases.map { $0.title(language: "de") }, ["Leicht", "Mittel", "Schwer", "Experte"])
+        XCTAssertEqual(Difficulty.allCases.map { $0.title(language: "en") }, ["Easy", "Medium", "Hard", "Expert"])
         XCTAssertEqual(Technique.hiddenSingle.difficulty, .easy)
         XCTAssertEqual(Technique.intersection.difficulty, .medium)
         XCTAssertEqual(Technique.nakedTriple.difficulty, .hard)

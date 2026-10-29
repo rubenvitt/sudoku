@@ -1,7 +1,5 @@
 Sudoku the way it should be: a calm board, endless puzzles and nothing to distract you.
 
-The app is in German. Sudoku needs no words, and the buttons carry symbols.
-
 WRITE LIKE ON PAPER
 On iPad, write digits straight into the cells with Apple Pencil. On iPhone, tap them in on a clear number pad that shows how many of each digit are still missing.
 

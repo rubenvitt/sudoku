@@ -193,7 +193,9 @@ struct GameView: View {
             apply(.clear(cell: cell))
         }
         ActionButton(title: "Notizen", symbol: "pencil", isOn: noteMode) { noteMode.toggle() }
+            .accessibilityIdentifier("notes")
         ActionButton(title: "Tipp", symbol: "lightbulb") { showHint() }
+            .accessibilityIdentifier("hint")
         ActionButton(title: "Prüfen", accessibilityTitle: "Überprüfen", symbol: "checkmark.circle") { check() }
     }
 
@@ -240,19 +242,19 @@ struct GameView: View {
     private func showHint() {
         switch game.hint() {
         case let .wrongEntry(row):
-            announce("In Zeile \(row) stimmt etwas nicht.")
+            announce(String(localized: "In Zeile \(row) stimmt etwas nicht."))
         case let .step(step):
             focus = Set(step.focus)
             announce("\(step.technique.title): \(step.explanation)")
         case nil:
-            announce("Für diese Stellung habe ich keinen Tipp.")
+            announce(String(localized: "Für diese Stellung habe ich keinen Tipp."))
         }
         save()
     }
 
     private func check() {
         let errors = game.check().count
-        announce(errors == 0 ? "Keine Fehler gefunden." : "\(errors) Fehler markiert.")
+        announce(errors == 0 ? String(localized: "Keine Fehler gefunden.") : String(localized: "\(errors) Fehler markiert."))
         save()
     }
 
@@ -269,8 +271,8 @@ struct GameView: View {
 
 /// Symbol above a short caption; `isOn` marks a toggle that is switched on.
 private struct ActionButton: View {
-    let title: String
-    var accessibilityTitle: String?
+    let title: LocalizedStringKey
+    var accessibilityTitle: LocalizedStringKey?
     let symbol: String
     var isOn: Bool?
     let action: () -> Void

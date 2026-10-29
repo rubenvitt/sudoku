@@ -42,6 +42,7 @@ struct ResultView: View {
                     .buttonStyle(.borderedProminent)
                     .disabled(starting)
                     .accessibilityLabel("Neues Spiel")
+                    .accessibilityIdentifier("newGame")
                     Button(action: onMenu) {
                         Text("Zum Menü").frame(maxWidth: .infinity)
                     }
@@ -61,7 +62,7 @@ struct ResultView: View {
         .onAppear { appeared = true }
     }
 
-    private func tile(_ title: String, _ value: String, _ symbol: String, _ color: Color) -> some View {
+    private func tile(_ title: LocalizedStringKey, _ value: String, _ symbol: String, _ color: Color) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Image(systemName: symbol)
                 .font(.headline)
@@ -78,6 +79,7 @@ struct ResultView: View {
         .padding(14)
         .background(Color(.tertiarySystemGroupedBackground), in: .rect(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(title): \(value)")
+        .accessibilityLabel(Text(title))
+        .accessibilityValue(value)
     }
 }
