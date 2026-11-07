@@ -14,39 +14,101 @@ public enum Solver {
     }
 
     public static func randomSolution(in variant: Variant, using rng: inout some RandomNumberGenerator) -> Grid {
-        var search = Search(Grid(cells: [UInt8](repeating: 0, count: 81)), variant, limit: 1)
-        search.run(shuffle: true, using: &rng)
-        return search.first!
+        randomSolution(in: variant, using: &rng, maxNodes: .max)!
     }
+
+    /// nil when the search gives up after `maxNodes` placements: some Jigsaw regions have no solution,
+    /// and proving that can take far longer than trying other regions.
+    static func randomSolution(in variant: Variant, using rng: inout some RandomNumberGenerator, maxNodes: Int) -> Grid? {
+        var search = Search(Grid(cells: [UInt8](repeating: 0, count: 81)), variant, limit: 1, maxNodes: maxNodes)
+        search.run(shuffle: true, using: &rng)
+        return search.first
+    }
+}
+
+/// Digit sets by size and sum: `combinations[k][s]` holds every mask of k distinct digits adding up to s.
+let digitCombinations: [[[CandidateMask]]] = {
+    var table = [[[CandidateMask]]](repeating: [[CandidateMask]](repeating: [], count: 46), count: 10)
+    for mask in CandidateMask(0)..<512 {
+        let sum = (1...9).filter { mask & 1 << ($0 - 1) != 0 }.reduce(0, +)
+        table[mask.nonzeroBitCount][sum].append(mask)
+    }
+    return table
+}()
+
+/// Whether `count` distinct digits from `available` can add up to `sum`.
+func canMake(_ sum: Int, count: Int, from available: CandidateMask) -> Bool {
+    guard count >= 0, count <= 9, sum >= 0, sum <= 45 else { return false }
+    return digitCombinations[count][sum].contains { $0 & ~available == 0 }
 }
 
 private struct Search {
     let limit: Int
+    let maxNodes: Int
+    var nodes = 0
     var cells: [UInt8]
     var found = 0
     var first: Grid?
     private let cellGroups: [[Int]]
     private var used: [CandidateMask]   // per group
+    private let cageOf: [Int]           // -1 = no cage
+    private let cageSum: [Int]
+    private var cageUsed: [CandidateMask]
+    private var cageTotal: [Int]
+    private var cageOpen: [Int]
     private var valid = true
 
-    init(_ grid: Grid, _ variant: Variant, limit: Int) {
+    init(_ grid: Grid, _ variant: Variant, limit: Int, maxNodes: Int = .max) {
         self.limit = limit
+        self.maxNodes = maxNodes
         cells = grid.cells
         let groups = variant.groups
         var membership = [[Int]](repeating: [], count: 81)
         for (g, group) in groups.enumerated() { for c in group { membership[c].append(g) } }
         cellGroups = membership
         used = [CandidateMask](repeating: 0, count: groups.count)
+        var cage = [Int](repeating: -1, count: 81)
+        for (k, c) in variant.cages.enumerated() { for cell in c.cells { cage[cell] = k } }
+        cageOf = cage
+        cageSum = variant.cages.map(\.sum)
+        cageUsed = [CandidateMask](repeating: 0, count: variant.cages.count)
+        cageTotal = [Int](repeating: 0, count: variant.cages.count)
+        cageOpen = variant.cages.map(\.cells.count)
         for cell in 0..<81 where cells[cell] != 0 {
             let bit: CandidateMask = 1 << (cells[cell] - 1)
-            if mask(cell) & bit == 0 { valid = false }
+            if groupMask(cell) & bit == 0 { valid = false }
             for g in cellGroups[cell] { used[g] |= bit }
+            let k = cageOf[cell]
+            if k >= 0 {
+                if cageUsed[k] & bit != 0 { valid = false }
+                cageUsed[k] |= bit
+                cageTotal[k] += Int(cells[cell])
+                cageOpen[k] -= 1
+            }
+        }
+        for k in cageSum.indices where !canMake(cageSum[k] - cageTotal[k], count: cageOpen[k], from: ~cageUsed[k] & 0x1FF) {
+            valid = false
         }
     }
 
-    private func mask(_ cell: Int) -> CandidateMask {
+    private func groupMask(_ cell: Int) -> CandidateMask {
         // candidates = digits unused in every group containing the cell
         ~cellGroups[cell].reduce(CandidateMask(0)) { $0 | used[$1] } & 0x1FF
+    }
+
+    /// Group candidates, minus digits that leave the cell's cage unable to reach its sum.
+    private func mask(_ cell: Int) -> CandidateMask {
+        let m = groupMask(cell)
+        let k = cageOf[cell]
+        guard k >= 0 else { return m }
+        let free = ~cageUsed[k] & 0x1FF
+        let rest = cageSum[k] - cageTotal[k]
+        var result: CandidateMask = 0
+        for d in 1...9 where m & free & 1 << (d - 1) != 0 {
+            let bit: CandidateMask = 1 << (d - 1)
+            if canMake(rest - d, count: cageOpen[k] - 1, from: free & ~bit) { result |= bit }
+        }
+        return result
     }
 
     mutating func run(shuffle: Bool, using rng: inout some RandomNumberGenerator) {
@@ -55,6 +117,8 @@ private struct Search {
     }
 
     private mutating func descend(shuffle: Bool, using rng: inout some RandomNumberGenerator) {
+        nodes += 1
+        guard nodes <= maxNodes else { return }
         var best = -1, bestMask: CandidateMask = 0, bestCount = 10
         for cell in 0..<81 where cells[cell] == 0 {
             let m = mask(cell)
@@ -71,14 +135,17 @@ private struct Search {
         }
         var digits = (1...9).filter { bestMask & 1 << ($0 - 1) != 0 }
         if shuffle { digits.shuffle(using: &rng) }
+        let k = cageOf[best]
         for d in digits {
             let bit: CandidateMask = 1 << (d - 1)
             cells[best] = UInt8(d)
             for g in cellGroups[best] { used[g] |= bit }
+            if k >= 0 { cageUsed[k] |= bit; cageTotal[k] += d; cageOpen[k] -= 1 }
             descend(shuffle: shuffle, using: &rng)
+            if k >= 0 { cageUsed[k] &= ~bit; cageTotal[k] -= d; cageOpen[k] += 1 }
             for g in cellGroups[best] { used[g] &= ~bit }
             cells[best] = 0
-            if found >= limit { return }
+            if found >= limit || nodes > maxNodes { return }
         }
     }
 }

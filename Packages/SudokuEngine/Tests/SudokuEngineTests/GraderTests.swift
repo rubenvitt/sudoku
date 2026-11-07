@@ -124,15 +124,18 @@ final class GraderTests: XCTestCase {
     }
 
     func testTechniqueTitles() {
-        XCTAssertEqual(Technique.allCases.map { $0.title(language: "de") }, ["Nackter Einer", "Versteckter Einer", "Reihe-Kasten-Check", "Nacktes Paar",
-                                                         "Verstecktes Paar", "Nacktes Tripel", "X-Wing", "Schwertfisch", "XY-Wing"])
+        XCTAssertEqual(Technique.allCases.map { $0.title(language: "de") }, ["Nackter Einer", "Versteckter Einer", "Käfigsumme", "Reihe-Kasten-Check",
+                                                         "45er-Regel", "Nacktes Paar", "Verstecktes Paar", "Nacktes Tripel",
+                                                         "X-Wing", "Schwertfisch", "XY-Wing"])
     }
 
     func testDifficultyTitles() {
         XCTAssertEqual(Difficulty.allCases.map { $0.title(language: "de") }, ["Leicht", "Mittel", "Schwer", "Experte"])
         XCTAssertEqual(Difficulty.allCases.map { $0.title(language: "en") }, ["Easy", "Medium", "Hard", "Expert"])
         XCTAssertEqual(Technique.hiddenSingle.difficulty, .easy)
+        XCTAssertEqual(Technique.cageSum.difficulty, .easy)
         XCTAssertEqual(Technique.intersection.difficulty, .medium)
+        XCTAssertEqual(Technique.rule45.difficulty, .medium)
         XCTAssertEqual(Technique.nakedTriple.difficulty, .hard)
         XCTAssertEqual(Technique.xyWing.difficulty, .expert)
     }

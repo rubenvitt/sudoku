@@ -1,1 +1,2 @@
+• Dos variantes nuevas: Jigsaw, con regiones irregulares en lugar de bloques, y Killer, con jaulas cuyas cifras suman un total dado. Las pistas también explican las sumas de las jaulas y la regla del 45.
 • El sudoku ahora también habla japonés, coreano, neerlandés y portugués (Brasil), con todas las explicaciones de las pistas.

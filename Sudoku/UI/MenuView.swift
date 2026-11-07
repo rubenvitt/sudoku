@@ -39,7 +39,7 @@ struct MenuView: View {
                 .navigationDestination(for: Session.self) { session in
                     // Leaving saves the game first, so reloading afterwards shows the current time.
                     GameView(game: session.game, store: store,
-                             onNewGame: { start($0, variant: session.game.puzzle.variant) },
+                             onNewGame: { start($0, variant: session.game.puzzle.variant.offered) },
                              onMenu: { path.removeAll() }, onLeave: { saved = store.loadGame() })
                         .id(session.id)
                 }
@@ -57,12 +57,8 @@ struct MenuView: View {
                         Text(variant.rule).font(.subheadline).foregroundStyle(.secondary)
                     }
                     .padding(.horizontal, 4)
-                    Picker("Spielart", selection: $variantID) {
-                        ForEach(Variant.all, id: \.id) { Text($0.title).tag($0.id) }
-                    }
-                    .pickerStyle(.segmented)
-                    .disabled(starting != nil)
-                    .accessibilityIdentifier("variant")
+                    VariantPicker(selection: $variantID)
+                        .disabled(starting != nil)
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 280), spacing: 12)], spacing: 12) {
                         ForEach(Difficulty.allCases, id: \.self) { difficulty in
                             difficultyButton(difficulty)
@@ -173,6 +169,45 @@ struct MenuView: View {
     }
 }
 
+/// One capsule per variant in a row that scrolls sideways, so every variant keeps its full name.
+private struct VariantPicker: View {
+    @Binding var selection: String
+    @Environment(\.accent) private var accent
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 8) {
+                ForEach(Variant.all, id: \.id) { variant in
+                    let isSelected = variant.id == selection
+                    Button { selection = variant.id } label: {
+                        Text(variant.title)
+                            .font(.subheadline.weight(.semibold))
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 9)
+                            .foregroundStyle(isSelected ? AnyShapeStyle(.white) : AnyShapeStyle(.primary))
+                            .background(isSelected ? AnyShapeStyle(accent) : AnyShapeStyle(Color(.secondarySystemGroupedBackground)),
+                                        in: .capsule)
+                            .contentShape(.capsule)
+                    }
+                    .buttonStyle(PressableStyle())
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
+                    .accessibilityIdentifier("variant-\(variant.id)")
+                }
+            }
+            .padding(.horizontal, 4)
+            .padding(.vertical, 2)
+        }
+        .scrollIndicators(.hidden)
+        .scrollClipDisabled()
+        .opacity(isEnabled ? 1 : 0.5)
+        .animation(.easeOut(duration: 0.15), value: selection)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Spielart")
+        .accessibilityIdentifier("variant")
+    }
+}
+
 /// Four bars, filled up to the difficulty's level.
 private struct DifficultyMeter: View {
     let level: Int
@@ -203,13 +238,7 @@ private struct BoardThumbnail: View {
                 let isGiven = game.puzzle.givens.cells[index] != 0
                 context.fill(Path(ellipseIn: rect), with: .color(.white.opacity(isGiven ? 0.95 : 0.55)))
             }
-            for i in [3, 6] {
-                let offset = CGFloat(i) * step
-                var path = Path()
-                path.move(to: CGPoint(x: offset, y: 0)); path.addLine(to: CGPoint(x: offset, y: size.height))
-                path.move(to: CGPoint(x: 0, y: offset)); path.addLine(to: CGPoint(x: size.width, y: offset))
-                context.stroke(path, with: .color(.white.opacity(0.35)), lineWidth: 1)
-            }
+            context.stroke(game.puzzle.variant.regionBorders(side: size.width), with: .color(.white.opacity(0.35)), lineWidth: 1)
         }
         .padding(8)
         .background(Color.white.opacity(0.15), in: .rect(cornerRadius: 14, style: .continuous))

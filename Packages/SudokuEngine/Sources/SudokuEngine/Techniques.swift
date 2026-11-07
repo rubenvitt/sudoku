@@ -6,6 +6,8 @@ struct Layout {
     let columnOf: [Int]
     let groupsOf: [UInt64]   // bit g = cell lies in groups[g]
     let isPeer: [Bool]       // [a * 81 + b]
+    /// Killer cages and what the rule of 45 derives from them; empty for every other variant.
+    let sumRules: [SumRule]
 
     init(_ variant: Variant) {
         self.variant = variant
@@ -22,6 +24,7 @@ struct Layout {
         var peer = [Bool](repeating: false, count: 81 * 81)
         for a in 0..<81 { for b in variant.peers(of: a) { peer[a * 81 + b] = true } }
         isPeer = peer
+        sumRules = SumRule.all(for: variant, isPeer: peer)
     }
 
     private static func boxName(_ position: Int, _ language: String?) -> String {
@@ -54,6 +57,7 @@ struct Layout {
         case let .row(n): localized("in Zeile \(n)", language)
         case let .column(n): localized("in Spalte \(n)", language)
         case let .box(position): localized("im Kasten \(Self.boxName(position, language))", language)
+        case let .area(cell): localized("im Gebiet ab Zeile \(rowOf[cell] + 1), Spalte \(columnOf[cell] + 1)", language)
         case let .extra(n):
             switch (variant.id, n) {
             case ("diagonal", 1): localized("in der Diagonale von links oben", language)
@@ -70,6 +74,7 @@ struct Layout {
         case let .row(n): localized("der Zeile \(n)", language)
         case let .column(n): localized("der Spalte \(n)", language)
         case let .box(position): localized("des Kastens \(Self.boxName(position, language))", language)
+        case let .area(cell): localized("des Gebiets ab Zeile \(rowOf[cell] + 1), Spalte \(columnOf[cell] + 1)", language)
         case let .extra(n):
             switch (variant.id, n) {
             case ("diagonal", 1): localized("der Diagonale von links oben", language)
@@ -80,8 +85,9 @@ struct Layout {
         }
     }
 
-    /// Rows, columns and extra groups count from 1; a box is named by its position 0…8 on the board.
-    private enum GroupKind { case row(Int), column(Int), box(Int), extra(Int) }
+    /// Rows, columns and extra groups count from 1; a box is named by its position 0…8 on the board,
+    /// an irregular Jigsaw region by its first cell in reading order.
+    private enum GroupKind { case row(Int), column(Int), box(Int), area(Int), extra(Int) }
 
     private func kind(of g: Int) -> GroupKind {
         var i = g
@@ -92,6 +98,7 @@ struct Layout {
         if i < variant.regions.count {
             // Named by where its top-left cell sits, so the name never depends on region order.
             let corner = variant.regions[i].min() ?? 0
+            if variant.id == Variant.jigsaw.id { return .area(corner) }
             return .box(rowOf[corner] / 3 * 3 + columnOf[corner] / 3)
         }
         return .extra(i - variant.regions.count + 1)

@@ -1,1 +1,2 @@
+• Two new variants: Jigsaw, with irregular regions instead of boxes, and Killer, with cages whose digits add up to a given sum. Hints also explain cage sums and the rule of 45.
 • Sudoku now also speaks Japanese, Korean, Dutch and Portuguese (Brazil), including every hint explanation.
