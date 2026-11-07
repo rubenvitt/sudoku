@@ -63,8 +63,8 @@ enum KillerGenerator {
         for _ in 0..<maxAttempts {
             let solution = Solver.randomSolution(in: .classic, using: &rng)
             let variant = Variant.killer.with(cages: cages(over: solution, sizes: sizes, using: &rng))
-            var givens = Grid(cells: [UInt8](repeating: 0, count: 81))
-            // A solve without guessing proves the solution unique. Where the logic stalls, one more given helps it on.
+            var givens = givensForLogic(in: variant, solution: solution, using: &rng)
+            // A solve without guessing proves the solution unique. Should a fresh solve stall after all, more givens help it on.
             var result = Grader.solve(givens, in: variant)
             while result.difficulty == nil {
                 let stalled = result.cells
@@ -86,6 +86,25 @@ enum KillerGenerator {
             }
         }
         return nil
+    }
+
+    /// Solves from an empty grid as far as the techniques go; where they stall, the solution's digit goes into a random
+    /// open cell and solving goes on. One pass instead of a fresh solve for every given added.
+    static func givensForLogic(in variant: Variant, solution: Grid, using rng: inout some RandomNumberGenerator) -> Grid {
+        var givens = Grid(cells: [UInt8](repeating: 0, count: 81))
+        var board = Board(givens, in: variant)
+        while board.cells.contains(0) {
+            if let step = board.nextStep() {
+                board.apply(step)
+                continue
+            }
+            let open = (0..<81).filter { board.cells[$0] == 0 }
+            guard let cell = open.randomElement(using: &rng) else { break }
+            let digit = Int(solution.cells[cell])
+            givens.cells[cell] = solution.cells[cell]
+            board.apply(Step(technique: .nakedSingle, placement: (cell, digit), eliminations: [], focus: []) { _ in "" })
+        }
+        return givens
     }
 
     /// Each cage grows from a free cell through neighbours whose digit it doesn't hold yet, to a size drawn from `sizes`.

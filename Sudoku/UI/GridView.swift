@@ -92,7 +92,7 @@ struct GridView: View, Equatable {
             label += ", " + String(localized: "Notizen \(notes.map(String.init).joined(separator: ", "))")
         }
         if let cage = game.puzzle.variant.cages.first(where: { $0.cells.contains(index) }) {
-            label += ", " + String(localized: "Käfig \(cage.sum)")
+            label += ", " + String(localized: "Käfigsumme \(cage.sum)")
         }
         if isGiven { label += ", " + String(localized: "vorgegeben") }
         if isWrong { label += ", " + String(localized: "falsch") }

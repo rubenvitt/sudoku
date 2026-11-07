@@ -1711,60 +1711,60 @@
         }
       }
     },
-    "Käfig %lld" : {
+    "Käfigsumme %lld" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Käfig %lld"
+            "value" : "Käfigsumme %lld"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "cage %lld"
+            "value" : "cage sum %lld"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "jaula %lld"
+            "value" : "suma de la jaula %lld"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "cage %lld"
+            "value" : "somme de la cage %lld"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "gabbia %lld"
+            "value" : "somma della gabbia %lld"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ケージ %lld"
+            "value" : "ケージの合計 %lld"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "케이지 %lld"
+            "value" : "케이지 합 %lld"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "kooi %lld"
+            "value" : "kooisom %lld"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "gaiola %lld"
+            "value" : "soma da gaiola %lld"
           }
         }
       }

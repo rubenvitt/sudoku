@@ -24,11 +24,21 @@ public enum Generator {
         }
         // Easy keeps more givens so not every easy puzzle is minimal.
         let minGivens = difficulty == .easy ? 36 : 0
+        // Jigsaw puzzles get their own regions. Some admit no solution at all, so the search gives up on them early;
+        // regions that work serve a few attempts, since finding them costs more than one attempt.
+        let isJigsaw = variant.id == Variant.jigsaw.id
+        var layout = variant
+        var attemptsLeftOnLayout = 0
         for _ in 0..<maxAttempts {
-            // Every Jigsaw puzzle gets its own regions. Some admit no solution at all, so the search may give up on them.
-            let isJigsaw = variant.id == Variant.jigsaw.id
-            let layout = isJigsaw ? variant.with(regions: JigsawRegions.make(using: &rng)) : variant
-            guard let solution = Solver.randomSolution(in: layout, using: &rng, maxNodes: isJigsaw ? 30_000 : .max) else { continue }
+            if isJigsaw && attemptsLeftOnLayout == 0 {
+                layout = variant.with(regions: JigsawRegions.make(using: &rng))
+                attemptsLeftOnLayout = 8
+            }
+            attemptsLeftOnLayout -= 1
+            guard let solution = Solver.randomSolution(in: layout, using: &rng, maxNodes: isJigsaw ? 30_000 : .max) else {
+                attemptsLeftOnLayout = 0
+                continue
+            }
             var givens = solution
             var count = 81
             for i in (0...40).shuffled(using: &rng) {
