@@ -102,9 +102,16 @@ struct Board {
     }
 
     func nextStep() -> Step? {
-        nakedSingle() ?? hiddenSingle() ?? sumRule(.cageSum) ?? intersection() ?? sumRule(.rule45)
-            ?? nakedSubset(size: 2, .nakedPair) ?? hiddenPair() ?? nakedSubset(size: 3, .nakedTriple)
-            ?? fish(size: 2, .xWing) ?? fish(size: 3, .swordfish) ?? xyWing()
+        // In enum order; the first that applies wins. Closures keep the type checker from timing out on one long `??` chain.
+        let techniques: [() -> Step?] = [
+            nakedSingle, hiddenSingle, { sumRule(.cageSum) }, intersection, { sumRule(.rule45) },
+            { nakedSubset(size: 2, .nakedPair) }, hiddenPair, { nakedSubset(size: 3, .nakedTriple) },
+            { fish(size: 2, .xWing) }, { fish(size: 3, .swordfish) }, xyWing,
+        ]
+        for technique in techniques {
+            if let step = technique() { return step }
+        }
+        return nil
     }
 
     mutating func apply(_ step: Step) {
