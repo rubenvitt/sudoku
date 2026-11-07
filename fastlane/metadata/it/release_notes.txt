@@ -1,1 +1,1 @@
-• Due nuove varianti: Sudoku diagonale, in cui anche le due diagonali contengono ogni cifra una volta, e Windoku con quattro finestre aggiuntive. Scegli la variante nel menu; le caselle aggiuntive sono colorate e gli aiuti spiegano anche diagonali e finestre.
+• Il sudoku ora parla anche giapponese, coreano, olandese e portoghese (Brasile), con tutte le spiegazioni degli aiuti.

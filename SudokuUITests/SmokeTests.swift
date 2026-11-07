@@ -116,9 +116,10 @@ final class SmokeTests: XCTestCase {
     /// The app in `language`; German by default, which the labels in these tests are written in.
     @MainActor
     private func launch(_ arguments: [String] = [], language: String = "de") -> XCUIApplication {
-        let regions = ["de": "DE", "en": "US", "fr": "FR", "es": "ES", "it": "IT"]
+        let locales = ["de": "de_DE", "en": "en_US", "fr": "fr_FR", "es": "es_ES", "it": "it_IT",
+                       "ja": "ja_JP", "ko": "ko_KR", "nl": "nl_NL", "pt-BR": "pt_BR"]
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", "\(language)_\(regions[language] ?? "DE")"]
+        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locales[language] ?? "de_DE"]
             + arguments
         app.launch()
         return app

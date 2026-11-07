@@ -1,1 +1,1 @@
-• Zwei neue Varianten: Diagonal-Sudoku, bei dem auch beide Diagonalen jede Ziffer einmal enthalten, und Windoku mit vier zusätzlichen Fenstern. Die Variante wählst du im Menü, die Zusatzfelder sind farbig markiert, und die Tipps erklären auch Diagonalen und Fenster.
+• Sudoku spricht jetzt auch Japanisch, Koreanisch, Niederländisch und Portugiesisch (Brasilien), samt allen Tipp-Erklärungen.

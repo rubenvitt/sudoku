@@ -16,6 +16,7 @@ VOTRE PARTIE VOUS ATTEND
 Chaque coup est enregistré aussitôt. Fermez l’app quand vous voulez et reprenez exactement là où vous vous étiez arrêté.
 
 ET AUSSI
+• Trois variantes : classique, diagonal et Windoku
 • Notes pour les candidats, les chiffres identiques sont mis en évidence
 • Annuler et rétablir, aussi d’un toucher à deux doigts
 • Bilan avec le temps, les indices et les erreurs trouvées

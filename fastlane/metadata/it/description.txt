@@ -16,6 +16,7 @@ LA TUA PARTITA TI ASPETTA
 Ogni mossa viene salvata subito. Chiudi l’app quando vuoi e riprendi esattamente da dove avevi lasciato.
 
 INOLTRE
+• Tre varianti: classico, diagonale e Windoku
 • Note per i candidati, le cifre uguali vengono evidenziate
 • Annulla e ripeti, anche con un tocco a due dita
 • Riepilogo con tempo, aiuti ed errori trovati

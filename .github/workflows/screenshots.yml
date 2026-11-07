@@ -15,7 +15,7 @@ env:
 jobs:
   screenshots:
     runs-on: macos-26
-    timeout-minutes: 90
+    timeout-minutes: 150
     strategy:
       fail-fast: false
       matrix:
@@ -50,7 +50,7 @@ jobs:
       - name: Take screenshots
         env:
           TEST_RUNNER_SCREENSHOTS: "1"
-          LANGUAGES: de en fr es it # keep in step with the String Catalogs and the App Store workflow
+          LANGUAGES: de en fr es it ja ko nl pt-BR # keep in step with the String Catalogs and the App Store workflow
         run: |
           for language in $LANGUAGES; do
             TEST_RUNNER_SCREENSHOT_LANGUAGE="$language" xcodebuild test-without-building -scheme Sudoku -destination "id=$UDID" \
@@ -59,7 +59,7 @@ jobs:
           done
       - name: Export PNGs
         env:
-          LANGUAGES: de en fr es it
+          LANGUAGES: de en fr es it ja ko nl pt-BR
         run: |
           for language in $LANGUAGES; do
             OUT="$RUNNER_TEMP/screenshots/$language"

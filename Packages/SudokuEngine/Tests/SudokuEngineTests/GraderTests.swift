@@ -92,12 +92,12 @@ final class GraderTests: XCTestCase {
     /// Every other language has its own full sentence, with all placeholders filled in.
     private func assertTranslated(_ step: Step, file: StaticString = #filePath, line: UInt = #line) {
         let german = step.explanation(language: "de")
-        for language in ["en", "fr", "es", "it"] {
+        for language in ["en", "fr", "es", "it", "ja", "ko", "nl", "pt-BR"] {
             let text = step.explanation(language: language)
             XCTAssertNotEqual(text, german, "\(language) falls back to German", file: file, line: line)
             XCTAssertFalse(text.contains("%"), "\(language): \(text)", file: file, line: line)
             XCTAssertFalse(text.contains("(null)"), "\(language): \(text)", file: file, line: line)
-            XCTAssertTrue(text.hasSuffix("."), "\(language): \(text)", file: file, line: line)
+            XCTAssertTrue(text.hasSuffix(".") || text.hasSuffix("。"), "\(language): \(text)", file: file, line: line)
             XCTAssertNotEqual(step.technique.title(language: language), "", file: file, line: line)
         }
     }
