@@ -255,6 +255,74 @@
         }
       }
     },
+    "Auch beide Diagonalen enthalten 1 bis 9." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auch beide Diagonalen enthalten 1 bis 9."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Both diagonals hold 1 to 9 as well."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las dos diagonales también contienen del 1 al 9."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les deux diagonales contiennent aussi 1 à 9."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anche le due diagonali contengono da 1 a 9."
+          }
+        }
+      }
+    },
+    "Auch die vier grauen Fenster enthalten 1 bis 9." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auch die vier grauen Fenster enthalten 1 bis 9."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The four grey windows hold 1 to 9 as well."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los cuatro recuadros grises también contienen del 1 al 9."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les quatre fenêtres grises contiennent aussi 1 à 9."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anche le quattro finestre grigie contengono da 1 a 9."
+          }
+        }
+      }
+    },
     "Bernstein" : {
       "localizations" : {
         "de" : {
@@ -319,6 +387,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La partita in corso andrà persa."
+          }
+        }
+      }
+    },
+    "Diagonal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagonal"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagonal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagonal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagonal"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagonale"
           }
         }
       }
@@ -629,6 +731,40 @@
         }
       }
     },
+    "Jede Zeile, Spalte und jeder Kasten enthält 1 bis 9." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jede Zeile, Spalte und jeder Kasten enthält 1 bis 9."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every row, column and box holds 1 to 9."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada fila, columna y bloque contiene del 1 al 9."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque ligne, colonne et bloc contient 1 à 9."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ogni riga, colonna e riquadro contiene da 1 a 9."
+          }
+        }
+      }
+    },
     "Kakao" : {
       "localizations" : {
         "de" : {
@@ -697,36 +833,36 @@
         }
       }
     },
-    "Klassisch · 9 × 9" : {
+    "Klassisch" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Klassisch · 9 × 9"
+            "value" : "Klassisch"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Classic · 9 × 9"
+            "value" : "Classic"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clásico · 9 × 9"
+            "value" : "Clásico"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Classique · 9 × 9"
+            "value" : "Classique"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Classico · 9 × 9"
+            "value" : "Classico"
           }
         }
       }
@@ -1413,6 +1549,40 @@
         }
       }
     },
+    "Spielart" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spielart"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variant"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variante"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variante"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variante"
+          }
+        }
+      }
+    },
     "Tipp" : {
       "comment" : "Short caption under the hint button.",
       "localizations" : {
@@ -1615,6 +1785,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ripeti"
+          }
+        }
+      }
+    },
+    "Windoku" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windoku"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windoku"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windoku"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windoku"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windoku"
           }
         }
       }

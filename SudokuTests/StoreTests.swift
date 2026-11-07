@@ -55,4 +55,16 @@ final class StoreTests: XCTestCase {
         try store.saveStock([.easy: Self.puzzle])
         XCTAssertEqual(store.loadStock()[.easy], Self.puzzle)
     }
+
+    /// Classic keeps `stock.json` from before variants, so updating doesn't throw its ready puzzles away.
+    func testVariantStocksAreKeptApart() throws {
+        let store = Store(directory: dir)
+        let diagonal = Puzzle(variant: .diagonal, givens: Self.puzzle.givens, solution: Self.puzzle.solution, difficulty: .easy)
+        try store.saveStock([.easy: Self.puzzle])
+        try store.saveStock([.easy: diagonal], variant: .diagonal)
+        XCTAssertEqual(store.loadStock()[.easy], Self.puzzle)
+        XCTAssertEqual(store.loadStock(.diagonal)[.easy], diagonal)
+        XCTAssertTrue(store.loadStock(.windoku).isEmpty)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: dir.appendingPathComponent("stock.json").path))
+    }
 }

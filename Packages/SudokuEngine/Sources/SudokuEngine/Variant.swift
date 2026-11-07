@@ -63,4 +63,26 @@ public struct Variant: Codable, Hashable, Sendable {
         },
         extras: []
     )
+
+    /// Classic plus both main diagonals: top-left to bottom-right, then top-right to bottom-left.
+    public static let diagonal = Variant(
+        id: "diagonal",
+        rows: classic.rows, columns: classic.columns, regions: classic.regions,
+        extras: [(0..<9).map { $0 * 10 }, (0..<9).map { ($0 + 1) * 8 }]
+    )
+
+    /// Classic plus four shaded 3×3 windows, each one cell in from a corner of the board.
+    public static let windoku = Variant(
+        id: "windoku",
+        rows: classic.rows, columns: classic.columns, regions: classic.regions,
+        extras: [(1, 1), (1, 5), (5, 1), (5, 5)].map { top, left in
+            (0..<9).map { (top + $0 / 3) * 9 + left + $0 % 3 }
+        }
+    )
+
+    /// Every variant the app offers, in menu order.
+    public static let all: [Variant] = [.classic, .diagonal, .windoku]
+
+    /// The offered variant with this id, if any.
+    public static func named(_ id: String) -> Variant? { all.first { $0.id == id } }
 }

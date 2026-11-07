@@ -22,6 +22,15 @@ final class PuzzleStockTests: XCTestCase {
         XCTAssertFalse(stock.isGenerating(.easy))
     }
 
+    func testTakeServesTheAskedVariant() async {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let stock = PuzzleStock(store: Store(directory: dir))
+        let puzzle = await stock.take(.easy, variant: .windoku)
+        XCTAssertEqual(puzzle.variant, .windoku)
+        XCTAssertEqual(puzzle.difficulty, .easy)
+    }
+
     func testFixedPuzzleIgnoresDifficulty() async {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: dir) }

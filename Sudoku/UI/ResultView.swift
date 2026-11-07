@@ -20,7 +20,7 @@ struct ResultView: View {
                     Text("Gelöst!")
                         .font(.system(.largeTitle, design: .rounded, weight: .bold))
                         .accessibilityAddTraits(.isHeader)
-                    Text("\(game.puzzle.difficulty.title) in \(game.elapsed.clock)")
+                    Text("\(game.puzzle.label) in \(game.elapsed.clock)")
                         .font(.title3.monospacedDigit())
                         .foregroundStyle(.secondary)
                 }

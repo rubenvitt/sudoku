@@ -102,7 +102,7 @@ struct GameView: View {
 
     private var title: some View {
         VStack(spacing: 0) {
-            Text(game.puzzle.difficulty.title)
+            Text(game.puzzle.label)
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
@@ -111,7 +111,7 @@ struct GameView: View {
                 .contentTransition(.numericText())
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(game.puzzle.difficulty.title), Zeit \(game.elapsed.clock)")
+        .accessibilityLabel("\(game.puzzle.label), Zeit \(game.elapsed.clock)")
     }
 
     private var board: some View {

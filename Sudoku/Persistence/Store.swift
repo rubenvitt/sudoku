@@ -14,7 +14,10 @@ struct Store: Sendable {
     }
 
     private var gameURL: URL { directory.appending(path: "game.json") }
-    private var stockURL: URL { directory.appending(path: "stock.json") }
+    /// Classic keeps the file name from before variants existed, so its stock survives the update.
+    private func stockURL(_ variant: Variant) -> URL {
+        directory.appending(path: variant == .classic ? "stock.json" : "stock-\(variant.id).json")
+    }
     private var inkURL: URL { directory.appending(path: "ink.json") }
 
     /// Missing and corrupt files both mean "no saved game".
@@ -36,9 +39,13 @@ struct Store: Sendable {
         }
     }
 
-    func loadStock() -> [Difficulty: Puzzle] { load([Difficulty: Puzzle].self, from: stockURL) ?? [:] }
+    func loadStock(_ variant: Variant = .classic) -> [Difficulty: Puzzle] {
+        load([Difficulty: Puzzle].self, from: stockURL(variant)) ?? [:]
+    }
 
-    func saveStock(_ stock: [Difficulty: Puzzle]) throws { try write(stock, to: stockURL) }
+    func saveStock(_ stock: [Difficulty: Puzzle], variant: Variant = .classic) throws {
+        try write(stock, to: stockURL(variant))
+    }
 
     private func load<T: Decodable>(_ type: T.Type, from url: URL) -> T? {
         guard let data = try? Data(contentsOf: url) else { return nil }
