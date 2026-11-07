@@ -16,6 +16,7 @@ TU PARTIDA TE ESPERA
 Cada jugada se guarda al instante. Cierra la app cuando quieras y continúa justo donde lo dejaste.
 
 ADEMÁS
+• Tres variantes: clásico, diagonal y Windoku
 • Notas para los candidatos, las cifras iguales se resaltan
 • Deshacer y rehacer, también con un toque de dos dedos
 • Resumen con tiempo, pistas y errores encontrados

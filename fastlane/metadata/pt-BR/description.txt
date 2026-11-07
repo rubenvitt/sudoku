@@ -1,0 +1,26 @@
+Sudoku do jeito que deve ser: um tabuleiro tranquilo, desafios sem fim e nada para distrair você.
+
+ESCREVA COMO NO PAPEL
+No iPad, escreva os números direto nas casas com o Apple Pencil. No iPhone, toque em um teclado numérico claro que mostra quantas vezes cada número ainda falta.
+
+DESAFIOS SEM FIM
+Cada jogo é gerado no seu aparelho e tem exatamente uma solução. Quatro níveis (Fácil, Médio, Difícil e Especialista) seguem as técnicas necessárias para resolvê-los. Você nunca precisa chutar.
+
+DICAS QUE EXPLICAM
+Travou? A dica mostra o próximo passo lógico e explica por quê, de um solitário simples até X-Wing e Peixe-espada. Você aprende algo a cada jogo.
+
+ERROS SÓ QUANDO VOCÊ PEDE
+O app não diz nada sem você perguntar. Números errados só são marcados quando você toca em Verificar.
+
+SEU JOGO FICA ONDE ESTÁ
+Cada jogada é salva na hora. Feche o app quando quiser e continue exatamente de onde parou.
+
+E MAIS
+• Três variantes: clássico, diagonal e Windoku
+• Notas para candidatos, números iguais ficam destacados
+• Desfazer e refazer, também com toque de dois dedos
+• Resumo com tempo, dicas e erros encontrados
+• Modo claro e escuro, suporte a VoiceOver
+• Funciona totalmente offline
+
+Compre uma vez e tenha tudo: sem anúncios, sem compras dentro do app, sem conta, sem coleta de dados.

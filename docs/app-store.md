@@ -10,8 +10,8 @@ Was im Repo vorbereitet ist und was nur in App Store Connect geht.
 | Version (`MARKETING_VERSION`), Kategorie Rätselspiele | `project.yml` |
 | Datenschutz-Manifest (keine Daten, kein Tracking) | `Sudoku/PrivacyInfo.xcprivacy` |
 | Exportkontrolle: keine Verschlüsselung | `ITSAppUsesNonExemptEncryption = NO` in `project.yml` |
-| Texte Deutsch, Englisch, Französisch, Spanisch, Italienisch (Name, Untertitel, Beschreibung, Schlüsselwörter, Werbetext, URLs) | `fastlane/metadata/de-DE`, `en-US`, `fr-FR`, `es-ES`, `it` |
-| App-Texte in denselben fünf Sprachen (String Catalogs) | `Sudoku/Localizable.xcstrings`, `Sudoku/InfoPlist.xcstrings`, Tipp-Texte in `Packages/SudokuEngine/Sources/SudokuEngine/Localizable.xcstrings` |
+| Texte Deutsch, Englisch, Französisch, Spanisch, Italienisch, Japanisch, Koreanisch, Niederländisch, Portugiesisch (Brasilien) (Name, Untertitel, Beschreibung, Schlüsselwörter, Werbetext, URLs) | `fastlane/metadata/de-DE`, `en-US`, `fr-FR`, `es-ES`, `it`, `ja`, `ko`, `nl-NL`, `pt-BR` |
+| App-Texte in denselben neun Sprachen (String Catalogs) | `Sudoku/Localizable.xcstrings`, `Sudoku/InfoPlist.xcstrings`, Tipp-Texte in `Packages/SudokuEngine/Sources/SudokuEngine/Localizable.xcstrings` |
 | Notiz an das Prüfteam | `fastlane/metadata/review_information/notes.txt` |
 | Screenshots 6,9″ iPhone und 13″ iPad, je Sprache | Workflow **Screenshots**, läuft auch im Workflow **App Store** mit |
 | Build | Workflow **TestFlight** bei jedem Push auf `main` |
@@ -58,9 +58,9 @@ Kein Login, keine Demo-Daten nötig. Die Notiz an das Prüfteam steht in `fastla
 
 ## Sprachen
 
-Entwicklungssprache ist Deutsch: Die Schlüssel in den String Catalogs sind die deutschen Texte im Code. Übersetzt sind Englisch, Französisch, Spanisch und Italienisch.
+Entwicklungssprache ist Deutsch: Die Schlüssel in den String Catalogs sind die deutschen Texte im Code. Übersetzt sind Englisch, Französisch, Spanisch, Italienisch, Japanisch, Koreanisch, Niederländisch und Portugiesisch (Brasilien).
 
 - **Neuer oder geänderter Text:** In Xcode bauen, dann füllt Xcode den Katalog mit dem neuen Schlüssel; die Übersetzungen im Katalog-Editor ergänzen. Fehlt eine Übersetzung, zeigt die App den deutschen Text.
 - **Tipp-Texte** setzt der Rechenkern aus Bausteinen zusammen (Zeile, Kasten, Ziffernliste). Die Engine-Tests (in CI per `xcodebuild`, weil `swift test` den Katalog nicht übersetzt) prüfen für jede Sprache, dass jeder Tipp ein ganzer Satz ohne leere Platzhalter ist.
-- **Neue Sprache:** in allen drei Katalogen ergänzen, `fastlane/metadata/<locale>` anlegen und die Sprache in `.github/workflows/screenshots.yml` (`LANGUAGES`) und `.github/workflows/app-store.yml` (Zuordnung zur App-Store-Locale) eintragen.
+- **Neue Sprache:** in allen drei Katalogen ergänzen, `fastlane/metadata/<locale>` anlegen und die Sprache in `.github/workflows/screenshots.yml` (`LANGUAGES`) und `.github/workflows/app-store.yml` (Zuordnung zur App-Store-Locale) eintragen, außerdem in `SudokuUITests/SmokeTests.swift` (Locale für den Screenshot-Start) und in `GraderTests.assertTranslated`.
 - UI-Tests starten die App immer auf Deutsch; nur der Screenshot-Test läuft je Sprache und findet die Bedienelemente über `accessibilityIdentifier`.

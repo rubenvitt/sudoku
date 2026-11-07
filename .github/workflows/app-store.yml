@@ -36,7 +36,7 @@ jobs:
     # secrets must only reach main; also runs when screenshots were switched off
     if: github.ref == 'refs/heads/main' && !failure() && !cancelled()
     runs-on: macos-26
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -50,7 +50,7 @@ jobs:
         if: inputs.screenshots
         run: |
           # Each artifact holds one folder per app language; each store listing gets the screenshots in its language.
-          for pair in de:de-DE en:en-US fr:fr-FR es:es-ES it:it; do
+          for pair in de:de-DE en:en-US fr:fr-FR es:es-ES it:it ja:ja ko:ko nl:nl-NL pt-BR:pt-BR; do
             language="${pair%%:*}" locale="${pair#*:}"
             mkdir -p "fastlane/screenshots/$locale"
             for dir in "$RUNNER_TEMP"/screenshots/screenshots-*; do

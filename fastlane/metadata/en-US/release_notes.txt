@@ -1,1 +1,1 @@
-• Two new variants: Diagonal Sudoku, where both diagonals also contain every digit once, and Windoku with four extra windows. Pick the variant in the menu; the extra cells are tinted, and hints cover diagonals and windows too.
+• Sudoku now also speaks Japanese, Korean, Dutch and Portuguese (Brazil), including every hint explanation.

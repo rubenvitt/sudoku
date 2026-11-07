@@ -32,6 +32,30 @@
             "state" : "translated",
             "value" : "%1$@ per le tre caselle segnate restano solo %2$@, quindi %3$@ vanno tolti dalle altre caselle %4$@."
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@では、印の付いた3つのマスに入るのは%2$@だけなので、%4$@の残りのマスから%3$@が消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에서 표시된 세 칸에는 %2$@만 남으므로, %4$@의 나머지 칸에서 %3$@ 후보가 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ blijven voor de drie gemarkeerde vakjes alleen %2$@ over, dus vallen %3$@ af in de andere vakjes %4$@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, para as três casas marcadas só restam %2$@, então %3$@ saem das demais casas %4$@."
+          }
         }
       }
     },
@@ -65,6 +89,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ per le due caselle segnate restano solo %2$@, quindi %3$@ vanno tolti dalle altre caselle %4$@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@では、印の付いた2つのマスに入るのは%2$@だけなので、%4$@の残りのマスから%3$@が消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에서 표시된 두 칸에는 %2$@만 남으므로, %4$@의 나머지 칸에서 %3$@ 후보가 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ blijven voor de twee gemarkeerde vakjes alleen %2$@ over, dus vallen %3$@ af in de andere vakjes %4$@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, para as duas casas marcadas só restam %2$@, então %3$@ saem das demais casas %4$@."
           }
         }
       }
@@ -100,6 +148,30 @@
             "state" : "translated",
             "value" : "Nella %1$@ c'è %2$lld o %3$lld, e in ogni caso una delle altre caselle segnate diventa %4$lld, quindi la cifra %5$lld va tolta da tutte le caselle che le vedono entrambe."
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@は%2$lldか%3$lldで、どちらの場合も印の付いた他のマスのどれかが%4$lldになるので、その両方から見えるすべてのマスから%5$lldが消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@의 값은 %2$lld 또는 %3$lld 중 하나이고, 어느 쪽이든 표시된 다른 칸 중 하나는 반드시 %4$lld 값을 가지므로, 그 두 칸을 모두 보는 모든 칸에서 %5$lld 후보가 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In %1$@ staat een %2$lld of een %3$lld, en hoe dan ook wordt een van de andere gemarkeerde vakjes een %4$lld, dus valt de %5$lld af in alle vakjes die ze allebei zien."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na %1$@ há um %2$lld ou um %3$lld, e de qualquer forma uma das outras casas marcadas vira %4$lld, então o %5$lld sai de todas as casas que veem as duas."
+          }
         }
       }
     },
@@ -133,6 +205,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ le cifre %2$lld e %3$lld possono stare solo nelle due caselle segnate, quindi lì vanno tolte tutte le altre cifre."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@では、%2$lldと%3$lldは印の付いた2つのマスにしか入らないので、そこから他の数字はすべて消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에서 숫자 %2$lld, %3$lld의 자리는 표시된 두 칸뿐이므로, 그 칸에서 다른 숫자 후보는 모두 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ passen de %2$lld en de %3$lld alleen in de twee gemarkeerde vakjes, dus vallen daar alle andere cijfers af."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, o %2$lld e o %3$lld só cabem nas duas casas marcadas, então todos os outros números saem delas."
           }
         }
       }
@@ -168,6 +264,30 @@
             "state" : "translated",
             "value" : "%1$@ la cifra %2$lld può ormai stare solo nella %3$@."
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@では、%2$lldが入るのは%3$@だけです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에서 숫자 %2$lld의 자리는 %3$@뿐입니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ past de %2$lld alleen nog in %3$@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, o %2$lld só cabe na %3$@."
+          }
         }
       }
     },
@@ -202,6 +322,30 @@
             "state" : "translated",
             "value" : "%1$@ la cifra %2$lld sta solo %3$@, quindi la cifra %4$lld va tolta dal resto %5$@."
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@では、%2$lldは%3$@にしかないので、%5$@の残りのマスから%4$lldが消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에서 숫자 %2$lld의 자리는 %3$@에만 있으므로, %5$@의 나머지 칸에서 %4$lld 후보가 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ staat de %2$lld alleen %3$@, dus valt de %4$lld af in de rest %5$@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, o %2$lld só aparece %3$@, então o %4$lld sai do resto %5$@."
+          }
         }
       }
     },
@@ -233,6 +377,30 @@
           }
         },
         "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ e %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@と%2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ en %2$@"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ e %2$@"
@@ -271,6 +439,30 @@
             "state" : "translated",
             "value" : "Esperto"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エキスパート"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전문가"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expert"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Especialista"
+          }
         }
       }
     },
@@ -304,6 +496,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nella %1$@ è ormai possibile solo la cifra %2$lld."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@に入るのは、もう%2$lldだけです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에는 이제 숫자 %2$lld만 들어갈 수 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In %1$@ is alleen nog de %2$lld mogelijk."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na %1$@ só o %2$lld ainda é possível."
           }
         }
       }
@@ -339,6 +555,30 @@
             "state" : "translated",
             "value" : "Nelle colonne %1$@ la cifra %2$lld può stare solo nelle righe %3$@, quindi la cifra %4$lld va tolta dal resto di queste righe."
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@列目では、%2$lldは%3$@行目にしか入らないので、これらの行の残りのマスから%4$lldが消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@열에서 숫자 %2$lld의 자리는 %3$@행뿐이므로, 이 행들의 나머지 칸에서 %4$lld 후보가 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In de kolommen %1$@ past de %2$lld alleen in de rijen %3$@, dus valt de %4$lld af in de rest van die rijen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nas colunas %1$@, o %2$lld só cabe nas linhas %3$@, então o %4$lld sai do resto dessas linhas."
+          }
         }
       }
     },
@@ -372,6 +612,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nelle righe %1$@ la cifra %2$lld può stare solo nelle colonne %3$@, quindi la cifra %4$lld va tolta dal resto di queste colonne."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@行目では、%2$lldは%3$@列目にしか入らないので、これらの列の残りのマスから%4$lldが消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@행에서 숫자 %2$lld의 자리는 %3$@열뿐이므로, 이 열들의 나머지 칸에서 %4$lld 후보가 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In de rijen %1$@ past de %2$lld alleen in de kolommen %3$@, dus valt de %4$lld af in de rest van die kolommen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nas linhas %1$@, o %2$lld só cabe nas colunas %3$@, então o %4$lld sai do resto dessas colunas."
           }
         }
       }
@@ -407,6 +671,30 @@
             "state" : "translated",
             "value" : "Facile"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "かんたん"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쉬움"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Makkelijk"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fácil"
+          }
         }
       }
     },
@@ -440,6 +728,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ふつう"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보통"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemiddeld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Médio"
           }
         }
       }
@@ -475,6 +787,30 @@
             "state" : "translated",
             "value" : "Singolo nudo"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ネイキッドシングル"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네이키드 싱글"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naakte single"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solitário nu"
+          }
         }
       }
     },
@@ -508,6 +844,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Coppia nuda"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ネイキッドペア"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네이키드 페어"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naakt paar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par nu"
           }
         }
       }
@@ -543,6 +903,30 @@
             "state" : "translated",
             "value" : "Terna nuda"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ネイキッドトリプル"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네이키드 트리플"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naakt drietal"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trio nu"
+          }
         }
       }
     },
@@ -576,6 +960,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Incrocio riga-riquadro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ボックス・ライン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "박스-라인 교차"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lijn-blokcheck"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interação linha-bloco"
           }
         }
       }
@@ -611,6 +1019,30 @@
             "state" : "translated",
             "value" : "Difficile"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "むずかしい"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어려움"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moeilijk"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Difícil"
+          }
         }
       }
     },
@@ -644,6 +1076,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pesce spada"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ソードフィッシュ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소드피시"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwaardvis"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peixe-espada"
           }
         }
       }
@@ -680,6 +1136,30 @@
             "state" : "translated",
             "value" : "colonna %lld"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld列目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld열"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kolom %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "coluna %lld"
+          }
         }
       }
     },
@@ -713,6 +1193,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Singolo nascosto"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヒドゥンシングル"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "히든 싱글"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verborgen single"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solitário oculto"
           }
         }
       }
@@ -748,6 +1252,30 @@
             "state" : "translated",
             "value" : "Coppia nascosta"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヒドゥンペア"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "히든 페어"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verborgen paar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par oculto"
+          }
         }
       }
     },
@@ -782,6 +1310,30 @@
             "state" : "translated",
             "value" : "X-Wing"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xウイング"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X-윙"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X-Wing"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X-Wing"
+          }
         }
       }
     },
@@ -812,6 +1364,30 @@
           }
         },
         "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "XY-Wing"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "XYウイング"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "XY-윙"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "XY-Wing"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "XY-Wing"
@@ -851,6 +1427,30 @@
             "state" : "translated",
             "value" : "riga %lld"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld行目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld행"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rij %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "linha %lld"
+          }
         }
       }
     },
@@ -886,6 +1486,30 @@
             "state" : "translated",
             "value" : "casella in riga %1$lld, colonna %2$lld"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld行%2$lld列のマス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld행 %2$lld열"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "het vakje in rij %1$lld, kolom %2$lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "casa da linha %1$lld, coluna %2$lld"
+          }
         }
       }
     },
@@ -919,6 +1543,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "della diagonale che parte in alto a sinistra"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左上から始まる対角線"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼쪽 위에서 시작하는 대각선"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van de diagonaal vanaf linksboven"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "da diagonal que começa no canto superior esquerdo"
           }
         }
       }
@@ -954,6 +1602,30 @@
             "state" : "translated",
             "value" : "della diagonale che parte in alto a destra"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右上から始まる対角線"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오른쪽 위에서 시작하는 대각선"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van de diagonaal vanaf rechtsboven"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "da diagonal que começa no canto superior direito"
+          }
         }
       }
     },
@@ -987,6 +1659,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "della colonna %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld列目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld열"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van kolom %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "da coluna %lld"
           }
         }
       }
@@ -1022,6 +1718,30 @@
             "state" : "translated",
             "value" : "della riga %lld"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld行目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld행"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van rij %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "da linha %lld"
+          }
         }
       }
     },
@@ -1055,6 +1775,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "del gruppo aggiuntivo %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加グループ%lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 그룹 %lld"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van extra groep %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "do grupo extra %lld"
           }
         }
       }
@@ -1090,6 +1834,30 @@
             "state" : "translated",
             "value" : "della finestra %@"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の窓"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 창"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van het venster %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "do quadro cinza %@"
+          }
         }
       }
     },
@@ -1123,6 +1891,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "del riquadro %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のブロック"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 상자"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van het blok %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "do bloco %@"
           }
         }
       }
@@ -1159,6 +1951,30 @@
             "state" : "translated",
             "value" : "%lld"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "o %lld"
+          }
         }
       }
     },
@@ -1192,6 +2008,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nella finestra %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の窓"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 창"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in het venster %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no quadro cinza %@"
           }
         }
       }
@@ -1227,6 +2067,30 @@
             "state" : "translated",
             "value" : "nel riquadro %@"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のブロック"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 상자"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in het blok %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no bloco %@"
+          }
         }
       }
     },
@@ -1260,6 +2124,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nella colonna %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld列目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld열"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in kolom %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "na coluna %lld"
           }
         }
       }
@@ -1295,6 +2183,30 @@
             "state" : "translated",
             "value" : "nella riga %lld"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld行目"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld행"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in rij %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "na linha %lld"
+          }
         }
       }
     },
@@ -1328,6 +2240,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nel gruppo aggiuntivo %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加グループ%lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 그룹 %lld"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in extra groep %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no grupo extra %lld"
           }
         }
       }
@@ -1363,6 +2299,30 @@
             "state" : "translated",
             "value" : "nella diagonale che parte in alto a sinistra"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左上から始まる対角線"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼쪽 위에서 시작하는 대각선"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in de diagonaal vanaf linksboven"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "na diagonal que começa no canto superior esquerdo"
+          }
         }
       }
     },
@@ -1396,6 +2356,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nella diagonale che parte in alto a destra"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右上から始まる対角線"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오른쪽 위에서 시작하는 대각선"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in de diagonaal vanaf rechtsboven"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "na diagonal que começa no canto superior direito"
           }
         }
       }
@@ -1431,6 +2415,30 @@
             "state" : "translated",
             "value" : "al centro"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中央"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가운데"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in het midden"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "central"
+          }
         }
       }
     },
@@ -1464,6 +2472,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "al centro a sinistra"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左中央"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가운데 왼쪽"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "middenlinks"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "central esquerdo"
           }
         }
       }
@@ -1499,6 +2531,30 @@
             "state" : "translated",
             "value" : "al centro a destra"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右中央"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가운데 오른쪽"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "middenrechts"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "central direito"
+          }
         }
       }
     },
@@ -1532,6 +2588,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "in alto al centro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上中央"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위 가운데"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "middenboven"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "superior central"
           }
         }
       }
@@ -1567,6 +2647,30 @@
             "state" : "translated",
             "value" : "in alto a sinistra"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左上"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼쪽 위"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "linksboven"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "superior esquerdo"
+          }
         }
       }
     },
@@ -1600,6 +2704,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "in alto a destra"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右上"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오른쪽 위"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rechtsboven"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "superior direito"
           }
         }
       }
@@ -1635,6 +2763,30 @@
             "state" : "translated",
             "value" : "in basso al centro"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下中央"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아래 가운데"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "middenonder"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inferior central"
+          }
         }
       }
     },
@@ -1669,6 +2821,30 @@
             "state" : "translated",
             "value" : "in basso a sinistra"
           }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左下"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼쪽 아래"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "linksonder"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inferior esquerdo"
+          }
         }
       }
     },
@@ -1702,6 +2878,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "in basso a destra"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右下"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오른쪽 아래"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rechtsonder"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inferior direito"
           }
         }
       }
