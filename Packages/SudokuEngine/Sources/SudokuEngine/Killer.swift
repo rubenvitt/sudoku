@@ -54,6 +54,7 @@ struct SumRule: Sendable {
 /// Killer puzzles: random cages over a random solution, with as few givens as the logic needs.
 enum KillerGenerator {
     static func make(_ difficulty: Difficulty, using rng: inout some RandomNumberGenerator, maxAttempts: Int) -> Puzzle? {
+        guard Variant.killer.difficulties.contains(difficulty) else { return nil }
         // Bigger cages leave more combinations open, which makes harder puzzles likelier.
         let sizes = switch difficulty {
         case .easy: [2, 2, 2, 3, 3, 3, 4]
@@ -73,6 +74,16 @@ enum KillerGenerator {
                 result = Grader.solve(givens, in: variant)
             }
             guard var grade = result.difficulty else { continue }
+            // Hard puzzles lose every given the logic can do without; about half of them then need hard steps.
+            if difficulty == .hard {
+                for cell in (0..<81).filter({ givens.cells[$0] != 0 }).shuffled(using: &rng) {
+                    let trial = givens.setting(cell, to: 0)
+                    if case let hardest? = Grader.solve(trial, in: variant).difficulty {
+                        givens = trial
+                        grade = hardest
+                    }
+                }
+            }
             // Easy puzzles get more givens until only easy steps remain.
             while difficulty == .easy && grade != .easy {
                 guard let cell = (0..<81).filter({ givens.cells[$0] == 0 }).randomElement(using: &rng),

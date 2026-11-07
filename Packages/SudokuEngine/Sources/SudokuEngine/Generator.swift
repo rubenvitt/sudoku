@@ -46,7 +46,12 @@ public enum Generator {
                 guard count - pair.count >= minGivens else { break }
                 var trial = givens
                 for cell in pair { trial.cells[cell] = 0 }
-                if Solver.countSolutions(trial, in: layout, limit: 2) == 1 {
+                // Jigsaw keeps only puzzles the techniques solve, which proves them unique too: removal down to a bare
+                // unique grid would leave most of them needing guesses, and counting solutions takes long there.
+                let keeps = isJigsaw
+                    ? Grader.solve(trial, in: layout).difficulty != nil
+                    : Solver.countSolutions(trial, in: layout, limit: 2) == 1
+                if keeps {
                     givens = trial
                     count -= pair.count
                 }

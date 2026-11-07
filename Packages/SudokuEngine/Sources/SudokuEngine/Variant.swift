@@ -120,4 +120,8 @@ public struct Variant: Codable, Hashable, Sendable {
 
     /// The menu entry this puzzle's variant belongs to: a Jigsaw puzzle's own regions lead back to `.jigsaw`.
     public var offered: Variant { Variant.named(id) ?? self }
+
+    /// The difficulties offered for this variant. Killer stops at hard: cage sums and the rule of 45 settle what
+    /// X-Wing and the like would, so expert Killer puzzles practically never come up.
+    public var difficulties: [Difficulty] { id == Variant.killer.id ? [.easy, .medium, .hard] : Difficulty.allCases }
 }

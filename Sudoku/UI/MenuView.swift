@@ -60,7 +60,7 @@ struct MenuView: View {
                     VariantPicker(selection: $variantID)
                         .disabled(starting != nil)
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 280), spacing: 12)], spacing: 12) {
-                        ForEach(Difficulty.allCases, id: \.self) { difficulty in
+                        ForEach(variant.difficulties, id: \.self) { difficulty in
                             difficultyButton(difficulty)
                         }
                     }

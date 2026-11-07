@@ -54,7 +54,10 @@ final class KillerTests: XCTestCase {
     private let solution = Grid("534678912672195348198342567859761423426853791713924856961537284287419635345286179")
 
     func testGeneratedPuzzlesFollowTheCages() throws {
-        for d in Difficulty.allCases {
+        XCTAssertEqual(Variant.killer.difficulties, [.easy, .medium, .hard])
+        var expertRNG = SplitMix64(seed: 5)
+        XCTAssertNil(Generator.make(.expert, variant: .killer, using: &expertRNG))
+        for d in Variant.killer.difficulties {
             var rng = SplitMix64(seed: 5)
             let p = try XCTUnwrap(Generator.make(d, variant: .killer, using: &rng), "\(d)")
             XCTAssertEqual(p.variant.offered, .killer)
