@@ -16,6 +16,7 @@ Was im Repo vorbereitet ist und was nur in App Store Connect geht.
 | Screenshots 6,9″ iPhone und 13″ iPad, je Sprache | Workflow **Screenshots**, läuft auch im Workflow **App Store** mit |
 | Build | Workflow **TestFlight** bei jedem Push auf `main` |
 | Texte und Screenshots hochladen, optional einreichen | Workflow **App Store** (von Hand starten, nur auf `main`) |
+| Freigegebene Version veröffentlichen | Workflow **Release** (von Hand starten, nur auf `main`) |
 
 ## Workflow „App Store"
 
@@ -54,7 +55,7 @@ Kein Login, keine Demo-Daten nötig. Die Notiz an das Prüfteam steht in `fastla
 1. `MARKETING_VERSION` in `project.yml` erhöhen und `fastlane/metadata/*/release_notes.txt` („Neuigkeiten") neu schreiben.
 2. Mergen: Der Workflow **TestFlight** baut die neue Version.
 3. Workflow **App Store** mit `submit` = `einreichen` starten; er legt die Version in App Store Connect an, falls sie fehlt, und nimmt den neuesten Build.
-4. Nach Apples Freigabe von Hand veröffentlichen.
+4. Nach Apples Freigabe veröffentlichen: Workflow **Release** mit `confirm` = `veröffentlichen` starten (oder in App Store Connect auf „Veröffentlichen“). Er bricht ab, wenn die Version aus `project.yml` noch nicht freigegeben oder schon veröffentlicht ist.
 
 ## Sprachen
 
