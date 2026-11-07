@@ -15,7 +15,8 @@ public enum Difficulty: String, Codable, CaseIterable, Sendable {
 }
 
 public enum Technique: Int, Comparable, CaseIterable, Sendable {
-    case nakedSingle, hiddenSingle, intersection, nakedPair, hiddenPair, nakedTriple, xWing, swordfish, xyWing
+    // Ordered by difficulty: grading keeps the hardest technique used, by this order.
+    case nakedSingle, hiddenSingle, cageSum, intersection, rule45, nakedPair, hiddenPair, nakedTriple, xWing, swordfish, xyWing
 
     public var title: String { title(language: nil) }
 
@@ -24,6 +25,8 @@ public enum Technique: Int, Comparable, CaseIterable, Sendable {
         switch self {
         case .nakedSingle: localized("Nackter Einer", language)
         case .hiddenSingle: localized("Versteckter Einer", language)
+        case .cageSum: localized("Käfigsumme", language)
+        case .rule45: localized("45er-Regel", language)
         case .intersection: localized("Reihe-Kasten-Check", language)
         case .nakedPair: localized("Nacktes Paar", language)
         case .hiddenPair: localized("Verstecktes Paar", language)
@@ -38,8 +41,8 @@ public enum Technique: Int, Comparable, CaseIterable, Sendable {
 
     public var difficulty: Difficulty {
         switch self {
-        case .nakedSingle, .hiddenSingle: .easy
-        case .intersection: .medium
+        case .nakedSingle, .hiddenSingle, .cageSum: .easy
+        case .intersection, .rule45: .medium
         case .nakedPair, .hiddenPair, .nakedTriple: .hard
         case .xWing, .swordfish, .xyWing: .expert
         }
@@ -67,15 +70,18 @@ public enum Grader {
     }
 
     /// nil = not solvable without guessing.
-    public static func grade(_ puzzle: Grid, in variant: Variant) -> Difficulty? {
+    public static func grade(_ puzzle: Grid, in variant: Variant) -> Difficulty? { solve(puzzle, in: variant).difficulty }
+
+    /// Solves as far as the techniques reach: the difficulty (nil if they stall) and the cells filled by then.
+    static func solve(_ puzzle: Grid, in variant: Variant) -> (difficulty: Difficulty?, cells: [UInt8]) {
         var board = Board(puzzle, in: variant)
         var hardest = Technique.nakedSingle
         while board.cells.contains(0) {
-            guard let step = board.nextStep() else { return nil }
+            guard let step = board.nextStep() else { return (nil, board.cells) }
             hardest = max(hardest, step.technique)
             board.apply(step)
         }
-        return hardest.difficulty
+        return (hardest.difficulty, board.cells)
     }
 }
 
@@ -96,9 +102,16 @@ struct Board {
     }
 
     func nextStep() -> Step? {
-        nakedSingle() ?? hiddenSingle() ?? intersection()
-            ?? nakedSubset(size: 2, .nakedPair) ?? hiddenPair() ?? nakedSubset(size: 3, .nakedTriple)
-            ?? fish(size: 2, .xWing) ?? fish(size: 3, .swordfish) ?? xyWing()
+        // In enum order; the first that applies wins. Closures keep the type checker from timing out on one long `??` chain.
+        let techniques: [() -> Step?] = [
+            nakedSingle, hiddenSingle, { sumRule(.cageSum) }, intersection, { sumRule(.rule45) },
+            { nakedSubset(size: 2, .nakedPair) }, hiddenPair, { nakedSubset(size: 3, .nakedTriple) },
+            { fish(size: 2, .xWing) }, { fish(size: 3, .swordfish) }, xyWing,
+        ]
+        for technique in techniques {
+            if let step = technique() { return step }
+        }
+        return nil
     }
 
     mutating func apply(_ step: Step) {

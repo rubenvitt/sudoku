@@ -27,7 +27,7 @@ final class PuzzleStock {
     }
 
     func fillAll(_ variant: Variant = .classic) {
-        for difficulty in Difficulty.allCases { fill(Kind(variant: variant, difficulty: difficulty)) }
+        for difficulty in variant.difficulties { fill(Kind(variant: variant, difficulty: difficulty)) }
     }
 
     func take(_ difficulty: Difficulty, variant: Variant = .classic) async -> Puzzle {

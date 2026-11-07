@@ -32,6 +32,7 @@ struct GridView: View, Equatable {
             }
             .background { shading }
             .overlay { lines.allowsHitTesting(false) }
+            .overlay { cages.allowsHitTesting(false) }
         }
         .clipShape(.rect(cornerRadius: 12, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(Color(.label).opacity(0.8), lineWidth: 2))
@@ -65,6 +66,10 @@ struct GridView: View, Equatable {
                         .font(.system(size: size * 0.58, weight: isGiven ? .semibold : .medium, design: .rounded))
                         .foregroundStyle(isWrong ? Color.red : isGiven ? Color.primary : accent)
                         .contentTransition(.numericText())
+                } else if game.puzzle.variant.cages.contains(where: { $0.labelCell == index }) {
+                    // Smaller and moved off the corner that shows the cage's sum.
+                    notes(game.notes[index], size: size * 0.86, highlight: selectedValue)
+                        .offset(x: size * 0.05, y: size * 0.07)
                 } else {
                     notes(game.notes[index], size: size, highlight: selectedValue)
                 }
@@ -85,6 +90,9 @@ struct GridView: View, Equatable {
         let notes = (1...9).filter { game.notes[index] & (1 << ($0 - 1)) != 0 }
         if value == 0 && !notes.isEmpty {
             label += ", " + String(localized: "Notizen \(notes.map(String.init).joined(separator: ", "))")
+        }
+        if let cage = game.puzzle.variant.cages.first(where: { $0.cells.contains(index) }) {
+            label += ", " + String(localized: "Käfigsumme \(cage.sum)")
         }
         if isGiven { label += ", " + String(localized: "vorgegeben") }
         if isWrong { label += ", " + String(localized: "falsch") }
@@ -135,16 +143,41 @@ struct GridView: View, Equatable {
         }
     }
 
+    /// Thin lines between all cells; thick ones where regions meet, so Jigsaw regions show their shape.
     private var lines: some View {
-        Canvas { context, size in
+        let variant = game.puzzle.variant
+        return Canvas { context, size in
             let step = size.width / 9
+            var thin = Path()
             for i in 1..<9 {
                 let offset = CGFloat(i) * step
-                var path = Path()
-                path.move(to: CGPoint(x: offset, y: 0)); path.addLine(to: CGPoint(x: offset, y: size.height))
-                path.move(to: CGPoint(x: 0, y: offset)); path.addLine(to: CGPoint(x: size.width, y: offset))
-                let isBox = i % 3 == 0
-                context.stroke(path, with: .color(isBox ? Color(.label).opacity(0.8) : Color(.separator)), lineWidth: isBox ? 1.5 : 0.5)
+                thin.move(to: CGPoint(x: offset, y: 0)); thin.addLine(to: CGPoint(x: offset, y: size.height))
+                thin.move(to: CGPoint(x: 0, y: offset)); thin.addLine(to: CGPoint(x: size.width, y: offset))
+            }
+            context.stroke(thin, with: .color(Color(.separator)), lineWidth: 0.5)
+            context.stroke(variant.regionBorders(side: size.width), with: .color(Color(.label).opacity(0.8)),
+                           style: StrokeStyle(lineWidth: 1.5, lineCap: .square))
+        }
+    }
+
+    /// Killer cages: a dashed outline inside the cells, the sum in the corner of the first cell.
+    private var cages: some View {
+        let cages = game.puzzle.variant.cages
+        return Canvas { context, size in
+            let step = size.width / 9
+            let inset = step * 0.08
+            for cage in cages {
+                let text = context.resolve(Text(verbatim: String(cage.sum))
+                    .font(.system(size: step * 0.2, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color(.secondaryLabel)))
+                let textSize = text.measure(in: CGSize(width: step, height: step))
+                let corner = CGPoint(x: CGFloat(cage.labelCell % 9) * step + step * 0.05,
+                                     y: CGFloat(cage.labelCell / 9) * step + step * 0.02)
+                context.draw(text, at: corner, anchor: .topLeading)
+                // The outline starts just past the sum, measured from the cell's corner.
+                let label = CGSize(width: step * 0.07 + textSize.width, height: step * 0.04 + textSize.height)
+                context.stroke(cage.outline(step: step, inset: inset, label: label), with: .color(Color(.label).opacity(0.55)),
+                               style: StrokeStyle(lineWidth: 1, dash: [step * 0.07, step * 0.05]))
             }
         }
     }

@@ -1,6 +1,64 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
+    "%@ %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@%2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
     "%@ bleiben für die drei markierten Felder nur %@, also fallen %@ in den übrigen Feldern %@ weg." : {
       "localizations" : {
         "de" : {
@@ -117,6 +175,122 @@
         }
       }
     },
+    "%@ ergeben alle Ziffern zusammen 45 und die Käfige ganz darin %lld, also ergeben die markierten Felder zusammen %lld." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ergeben alle Ziffern zusammen 45 und die Käfige ganz darin %lld, also ergeben die markierten Felder zusammen %lld."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, all digits add up to 45 and the cages entirely inside add up to %2$lld, so the marked cells add up to %3$lld."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, todas las cifras suman 45 y las jaulas que están completamente dentro suman %2$lld, así que las casillas marcadas suman %3$lld."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, tous les chiffres font 45 au total et les cages entièrement à l’intérieur %2$lld, donc les cases marquées font %3$lld au total."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ tutte le cifre fanno in totale 45 e le gabbie interamente all’interno %2$lld, quindi le caselle segnate fanno in totale %3$lld."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@では、すべての数字の合計が45で、その中に完全に収まるケージの合計が%2$lldなので、印の付いたマスの合計は%3$lldです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에서 모든 숫자의 합은 45, 그 안에 완전히 들어 있는 케이지의 합은 %2$lld입니다. 따라서 표시된 칸의 합은 %3$lld입니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ tellen alle cijfers op tot 45 en de kooien die er helemaal in liggen tot %2$lld, dus tellen de gemarkeerde vakjes op tot %3$lld."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, todos os dígitos somam 45 e as gaiolas totalmente dentro somam %2$lld, então as casas marcadas somam %3$lld."
+          }
+        }
+      }
+    },
+    "%@ ergeben alle Ziffern zusammen 45 und die Käfige, die hineinreichen, %lld, also ergeben die markierten Felder außerhalb zusammen %lld." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ergeben alle Ziffern zusammen 45 und die Käfige, die hineinreichen, %lld, also ergeben die markierten Felder außerhalb zusammen %lld."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, all digits add up to 45 and the cages reaching into it add up to %2$lld, so the marked cells outside add up to %3$lld."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, todas las cifras suman 45 y las jaulas que entran allí suman %2$lld, así que las casillas marcadas de fuera suman %3$lld."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, tous les chiffres font 45 au total et les cages qui y entrent %2$lld, donc les cases marquées à l’extérieur font %3$lld au total."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ tutte le cifre fanno in totale 45 e le gabbie che vi entrano %2$lld, quindi le caselle segnate all’esterno fanno in totale %3$lld."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@では、すべての数字の合計が45で、そこにかかるケージの合計が%2$lldなので、外側にある印の付いたマスの合計は%3$lldです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@에서 모든 숫자의 합은 45, 그 안으로 걸쳐 들어오는 케이지의 합은 %2$lld입니다. 따라서 바깥쪽의 표시된 칸의 합은 %3$lld입니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ tellen alle cijfers op tot 45 en de kooien die erin doorlopen tot %2$lld, dus tellen de gemarkeerde vakjes erbuiten op tot %3$lld."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, todos os dígitos somam 45 e as gaiolas que chegam ali somam %2$lld, então as casas marcadas de fora somam %3$lld."
+          }
+        }
+      }
+    },
     "%@ ist %lld oder %lld, und so oder so wird eines der anderen markierten Felder zur %lld, also fällt die %lld in allen Feldern weg, die beide sehen." : {
       "localizations" : {
         "de" : {
@@ -171,6 +345,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na %1$@ há um %2$lld ou um %3$lld, e de qualquer forma uma das outras casas marcadas vira %4$lld, então o %5$lld sai de todas as casas que veem as duas."
+          }
+        }
+      }
+    },
+    "%@ oder %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ oder %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ or %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ o %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ou %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ o %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@または%2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 또는 %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ of %2$@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ou %2$@"
           }
         }
       }
@@ -408,6 +640,238 @@
         }
       }
     },
+    "45er-Regel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "45er-Regel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rule of 45"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regla del 45"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Règle des 45"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regola del 45"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "45のルール"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "45 규칙"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "45-regel"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regra do 45"
+          }
+        }
+      }
+    },
+    "Also fällt dort weg, was zu keiner möglichen Summe passt." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Also fällt dort weg, was zu keiner möglichen Summe passt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So whatever fits no possible sum drops out there."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Así que se elimina allí lo que no encaja en ninguna suma posible."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donc ce qui ne correspond à aucune somme possible disparaît de ces cases."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quindi lì va tolto ciò che non rientra in nessuna somma possibile."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どの組み合わせでも合計に合わない候補は、そこから消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "따라서 가능한 어떤 합에도 맞지 않는 후보는 거기서 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dus valt daar weg wat bij geen enkele mogelijke som past."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Então sai dali o que não se encaixa em nenhuma soma possível."
+          }
+        }
+      }
+    },
+    "Das geht nur noch mit %@, also fällt dort weg, was nicht dazu passt." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das geht nur noch mit %@, also fällt dort weg, was nicht dazu passt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "That only works with %@, so whatever doesn’t fit drops out there."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eso solo es posible con %@, así que se elimina allí lo que no encaja."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce n’est possible qu’avec %@, donc ce qui n’y correspond pas disparaît de ces cases."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo è possibile solo con %@, quindi lì va tolto ciò che non ci sta."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "それができるのは%@だけなので、合わない候補はそこから消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이것은 %@ 조합으로만 가능하므로, 맞지 않는 후보는 거기서 빠집니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dat kan alleen nog met %@, dus valt daar weg wat er niet bij past."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isso só é possível com %@, então sai dali o que não se encaixa."
+          }
+        }
+      }
+    },
+    "Die markierten Felder ergeben zusammen %lld." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die markierten Felder ergeben zusammen %lld."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The marked cells add up to %lld."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las casillas marcadas suman %lld."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les cases marquées font %lld au total."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le caselle segnate fanno in totale %lld."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "印の付いたマスの合計は%lldです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "표시된 칸의 합은 %lld입니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De gemarkeerde vakjes tellen op tot %lld."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As casas marcadas somam %lld."
+          }
+        }
+      }
+    },
     "Experte" : {
       "localizations" : {
         "de" : {
@@ -636,6 +1100,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nas linhas %1$@, o %2$lld só cabe nas colunas %3$@, então o %4$lld sai do resto dessas colunas."
+          }
+        }
+      }
+    },
+    "Käfigsumme" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käfigsumme"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cage sum"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suma de jaula"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Somme de cage"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Somma della gabbia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ケージの合計"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "케이지 합"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kooisom"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soma da gaiola"
           }
         }
       }
@@ -1861,6 +2383,64 @@
         }
       }
     },
+    "des Gebiets ab Zeile %lld, Spalte %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "des Gebiets ab Zeile %lld, Spalte %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "of the region starting at row %1$lld, column %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de la región que empieza en la fila %1$lld, columna %2$lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de la zone qui commence ligne %1$lld, colonne %2$lld"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "della zona che inizia in riga %1$lld, colonna %2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld行%2$lld列から始まる領域"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld행 %2$lld열에서 시작하는 영역"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "van het gebied vanaf rij %1$lld, kolom %2$lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "da região que começa na linha %1$lld, coluna %2$lld"
+          }
+        }
+      }
+    },
     "des Kastens %@" : {
       "localizations" : {
         "de" : {
@@ -2032,6 +2612,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "no quadro cinza %@"
+          }
+        }
+      }
+    },
+    "im Gebiet ab Zeile %lld, Spalte %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "im Gebiet ab Zeile %lld, Spalte %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in the region starting at row %1$lld, column %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en la región que empieza en la fila %1$lld, columna %2$lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dans la zone qui commence ligne %1$lld, colonne %2$lld"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nella zona che inizia in riga %1$lld, colonna %2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld行%2$lld列から始まる領域"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld행 %2$lld열에서 시작하는 영역"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in het gebied vanaf rij %1$lld, kolom %2$lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "na região que começa na linha %1$lld, coluna %2$lld"
           }
         }
       }

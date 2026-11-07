@@ -1,1 +1,2 @@
+• Due nuove varianti: Jigsaw, con zone irregolari al posto dei riquadri, e Killer, con gabbie le cui cifre fanno in totale una somma data. Gli aiuti spiegano anche le somme delle gabbie e la regola del 45.
 • Il sudoku ora parla anche giapponese, coreano, olandese e portoghese (Brasile), con tutte le spiegazioni degli aiuti.

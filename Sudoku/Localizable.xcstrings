@@ -725,6 +725,64 @@
         }
       }
     },
+    "Die Ziffern jedes Käfigs ergeben seine kleine Zahl und wiederholen sich darin nicht." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Ziffern jedes Käfigs ergeben seine kleine Zahl und wiederholen sich darin nicht."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The digits in each cage add up to its small number and never repeat within it."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las cifras de cada jaula suman su número pequeño y no se repiten dentro de ella."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les chiffres de chaque cage font son petit nombre au total et ne s’y répètent pas."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le cifre di ogni gabbia fanno in totale il suo numero piccolo e non vi si ripetono."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "各ケージの数字の合計は小さな数と同じで、ケージの中で同じ数字は使えません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "각 케이지의 숫자를 더하면 작은 수가 되고, 케이지 안에서 숫자는 반복되지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De cijfers in elke kooi tellen op tot het kleine getal en komen er niet dubbel in voor."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os dígitos de cada gaiola somam o seu número pequeno e não se repetem nela."
+          }
+        }
+      }
+    },
     "Fertig" : {
       "localizations" : {
         "de" : {
@@ -1305,6 +1363,64 @@
         }
       }
     },
+    "Jigsaw" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jigsaw"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jigsaw"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jigsaw"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jigsaw"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jigsaw"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ジグソー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직소"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jigsaw"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jigsaw"
+          }
+        }
+      }
+    },
     "Kakao" : {
       "localizations" : {
         "de" : {
@@ -1421,6 +1537,64 @@
         }
       }
     },
+    "Killer" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Killer"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Killer"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Killer"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Killer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Killer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キラー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "킬러"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Killer"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Killer"
+          }
+        }
+      }
+    },
     "Klassisch" : {
       "localizations" : {
         "de" : {
@@ -1533,6 +1707,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Coral"
+          }
+        }
+      }
+    },
+    "Käfigsumme %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käfigsumme %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cage sum %lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "suma de la jaula %lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "somme de la cage %lld"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "somma della gabbia %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ケージの合計 %lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "케이지 합 %lld"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kooisom %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "soma da gaiola %lld"
           }
         }
       }
@@ -2695,6 +2927,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Variante"
+          }
+        }
+      }
+    },
+    "Statt Kästen gibt es neun verwinkelte Gebiete, jedes enthält 1 bis 9." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statt Kästen gibt es neun verwinkelte Gebiete, jedes enthält 1 bis 9."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instead of boxes there are nine irregular regions, each holding 1 to 9."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En lugar de bloques hay nueve regiones irregulares, y cada una contiene del 1 al 9."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À la place des blocs, neuf zones irrégulières contiennent chacune 1 à 9."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al posto dei riquadri ci sono nove zone irregolari, ognuna contiene da 1 a 9."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロックの代わりに形の不規則な9つの領域があり、どの領域にも1〜9が1つずつ入ります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상자 대신 모양이 불규칙한 영역 아홉 개가 있고, 각 영역에 1부터 9까지 들어갑니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In plaats van blokken zijn er negen grillige gebieden, en elk bevat 1 tot en met 9."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Em vez de blocos há nove regiões irregulares, e cada uma contém de 1 a 9."
           }
         }
       }
