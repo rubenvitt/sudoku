@@ -86,6 +86,7 @@ final class SmokeTests: XCTestCase {
                           fill: jigsawGivens.indices.filter { jigsawGivens[$0] == "." }.prefix(18), select: 40)
 
         let app = launch(["-uiTestFixedPuzzle"], language: language)
+        app.buttons["variant-classic"].tap() // the app remembers the last variant across launches
         app.buttons["difficulty-easy"].tap()
 
         func cell(_ index: Int) -> XCUIElement { app.buttons["cell-\(index)"] }
@@ -133,6 +134,7 @@ final class SmokeTests: XCTestCase {
         for _ in 0..<3 where !variant.isHittable {
             app.descendants(matching: .any)["variant"].firstMatch.swipeLeft()
         }
+        XCTAssertTrue(variant.isHittable, "variant-\(id) is not reachable in the picker")
         variant.tap()
         app.buttons["difficulty-easy"].tap()
         for index in fill {
