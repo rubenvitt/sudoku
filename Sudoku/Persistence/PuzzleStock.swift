@@ -12,14 +12,17 @@ final class PuzzleStock {
 
     private let store: Store
     private let fixed: Puzzle?
+    private let fixedVariants: [Puzzle]
     /// Per variant id; a variant's file is read the first time that variant is asked for.
     private var stock: [String: [Difficulty: Puzzle]] = [:]
     private var tasks: [Kind: Task<Void, Never>] = [:]
 
-    /// `fixed` is the UI-test hook: every `take` returns it and nothing is generated.
-    init(store: Store, fixed: Puzzle? = nil) {
+    /// `fixed` is the UI-test hook: every `take` returns it and nothing is generated. A puzzle in `fixedVariants`
+    /// takes its place for games of that puzzle's variant.
+    init(store: Store, fixed: Puzzle? = nil, fixedVariants: [Puzzle] = []) {
         self.store = store
         self.fixed = fixed
+        self.fixedVariants = fixedVariants
     }
 
     func isGenerating(_ difficulty: Difficulty, variant: Variant = .classic) -> Bool {
@@ -31,7 +34,7 @@ final class PuzzleStock {
     }
 
     func take(_ difficulty: Difficulty, variant: Variant = .classic) async -> Puzzle {
-        if let fixed { return fixed }
+        if let fixed { return fixedVariants.first { $0.variant.id == variant.id } ?? fixed }
         let kind = Kind(variant: variant, difficulty: difficulty)
         while true {
             loadIfNeeded(variant)

@@ -75,8 +75,17 @@ final class SmokeTests: XCTestCase {
         let givens = Array("53..7....6..195....98....6.8...6...34..8.3..17...2...6.6....28....419..5....8..79")
         let solution = Array("534678912672195348198342567859761423426853791713924856961537284287419635345286179")
         let empty = givens.indices.filter { givens[$0] == "." }
+        let language = environment["SCREENSHOT_LANGUAGE"] ?? "de"
         XCUIDevice.shared.orientation = .portrait
-        let app = launch(["-uiTestFixedPuzzle"], language: environment["SCREENSHOT_LANGUAGE"] ?? "de")
+
+        // The variants new in 1.4, each in a fresh launch with an empty store.
+        variantScreenshot("killer", "2-Killer", language: language, solution: solution,
+                          fill: [0, 9, 10, 1, 2, 3, 4, 13, 14, 22, 23, 12, 21, 18, 27, 19, 28, 36, 37, 38], select: 31)
+        let jigsawGivens = Array(JigsawFixture.givens)
+        variantScreenshot("jigsaw", "3-Jigsaw", language: language, solution: Array(JigsawFixture.solution),
+                          fill: jigsawGivens.indices.filter { jigsawGivens[$0] == "." }.prefix(18), select: 40)
+
+        let app = launch(["-uiTestFixedPuzzle"], language: language)
         app.buttons["difficulty-easy"].tap()
 
         func cell(_ index: Int) -> XCUIElement { app.buttons["cell-\(index)"] }
@@ -100,17 +109,39 @@ final class SmokeTests: XCTestCase {
 
         app.buttons["hint"].tap()
         sleep(1)
-        attachScreenshot("2-Tipp")
+        attachScreenshot("4-Tipp")
 
         app.navigationBars.buttons.firstMatch.tap()
         XCTAssertTrue(app.buttons["continue"].waitForExistence(timeout: 5))
-        attachScreenshot("3-Menü")
+        attachScreenshot("5-Menü")
 
         app.buttons["continue"].tap()
         fill(empty.dropFirst(24))
         XCTAssertTrue(app.buttons["newGame"].waitForExistence(timeout: 5))
         sleep(1)
-        attachScreenshot("4-Auswertung")
+        attachScreenshot("6-Auswertung")
+    }
+
+    /// Starts an easy game of the variant `id`, enters the solution's digit in the cells `fill`, selects `select`,
+    /// takes the screenshot `name` and quits.
+    @MainActor
+    private func variantScreenshot(_ id: String, _ name: String, language: String, solution: [Character],
+                                   fill: some Sequence<Int>, select: Int) {
+        let app = launch(["-uiTestFixedPuzzle"], language: language)
+        let variant = app.buttons["variant-\(id)"]
+        XCTAssertTrue(variant.waitForExistence(timeout: 5))
+        for _ in 0..<3 where !variant.isHittable {
+            app.descendants(matching: .any)["variant"].firstMatch.swipeLeft()
+        }
+        variant.tap()
+        app.buttons["difficulty-easy"].tap()
+        for index in fill {
+            app.buttons["cell-\(index)"].tap()
+            app.buttons["digit-\(solution[index])"].tap()
+        }
+        app.buttons["cell-\(select)"].tap()
+        attachScreenshot(name)
+        app.terminate()
     }
 
     /// The app in `language`; German by default, which the labels in these tests are written in.
@@ -156,4 +187,10 @@ final class SmokeTests: XCTestCase {
         app.buttons["Zeile 1, Spalte 3, 4"].twoFingerTap()
         XCTAssertTrue(app.buttons["Zeile 1, Spalte 3, leer"].waitForExistence(timeout: 2))
     }
+}
+
+/// The Jigsaw puzzle of `UITestFixtures.jigsaw` in the app, which the UI tests can't import.
+private enum JigsawFixture {
+    static let givens = "61...832...9.2....18.6...7.....3529........4..94.6.1....18.2.5.2..41.....7.3.6.12"
+    static let solution = "617958324359724861182643579748135296923581647594267138461872953236419785875396412"
 }
