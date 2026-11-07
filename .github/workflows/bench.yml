@@ -1,0 +1,23 @@
+name: Bench (temporary)
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+
+jobs:
+  bench:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - run: |
+          TEST_RUNNER_BENCH=1 xcodebuild test -scheme SudokuEngine -destination 'platform=macOS' -configuration Release \
+            ENABLE_TESTABILITY=YES CODE_SIGNING_ALLOWED=NO -only-testing:SudokuEngineTests/BenchTests 2>&1 | grep -E "BENCH|error|passed|failed"
+        working-directory: Packages/SudokuEngine
