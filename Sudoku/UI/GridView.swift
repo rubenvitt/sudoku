@@ -30,6 +30,7 @@ struct GridView: View, Equatable {
                     }
                 }
             }
+            .background { shading }
             .overlay { lines.allowsHitTesting(false) }
         }
         .clipShape(.rect(cornerRadius: 12, style: .continuous))
@@ -116,9 +117,22 @@ struct GridView: View, Equatable {
         if selected == index { return accent.opacity(0.3) }
         let selectedValue = Int(game.entries.cells[selected])
         if selectedValue != 0 && value == selectedValue { return accent.opacity(0.18) }
-        let sameBox = selected / 27 == index / 27 && selected % 9 / 3 == index % 9 / 3
-        if selected / 9 == index / 9 || selected % 9 == index % 9 || sameBox { return accent.opacity(0.07) }
+        // Peers follow the variant, so a diagonal or window lights up along with row, column and box.
+        if game.puzzle.variant.peers(of: selected).contains(index) { return accent.opacity(0.07) }
         return .clear
+    }
+
+    /// Cells of the variant's extra groups (diagonals, windows) are tinted, so the extra rule is visible
+    /// without lines crossing the handwriting.
+    private var shading: some View {
+        let cells = Set(game.puzzle.variant.extras.joined())
+        return Canvas { context, size in
+            let step = size.width / 9
+            for index in cells {
+                let rect = CGRect(x: CGFloat(index % 9) * step, y: CGFloat(index / 9) * step, width: step, height: step)
+                context.fill(Path(rect), with: .color(Color(.tertiarySystemFill)))
+            }
+        }
     }
 
     private var lines: some View {

@@ -38,13 +38,29 @@ struct Layout {
         }
     }
 
+    /// Windoku's windows 1…4 in reading order.
+    private static func windowName(_ n: Int, _ language: String?) -> String {
+        switch n {
+        case 1: localized("oben links", language)
+        case 2: localized("oben rechts", language)
+        case 3: localized("unten links", language)
+        default: localized("unten rechts", language)
+        }
+    }
+
     /// "in Zeile 4", "im Kasten oben rechts"
     func inGroup(_ g: Int, _ language: String?) -> String {
         switch kind(of: g) {
         case let .row(n): localized("in Zeile \(n)", language)
         case let .column(n): localized("in Spalte \(n)", language)
         case let .box(position): localized("im Kasten \(Self.boxName(position, language))", language)
-        case let .extra(n): localized("in Zusatzgruppe \(n)", language)
+        case let .extra(n):
+            switch (variant.id, n) {
+            case ("diagonal", 1): localized("in der Diagonale von links oben", language)
+            case ("diagonal", 2): localized("in der Diagonale von rechts oben", language)
+            case ("windoku", _): localized("im Fenster \(Self.windowName(n, language))", language)
+            default: localized("in Zusatzgruppe \(n)", language)
+            }
         }
     }
 
@@ -54,7 +70,13 @@ struct Layout {
         case let .row(n): localized("der Zeile \(n)", language)
         case let .column(n): localized("der Spalte \(n)", language)
         case let .box(position): localized("des Kastens \(Self.boxName(position, language))", language)
-        case let .extra(n): localized("der Zusatzgruppe \(n)", language)
+        case let .extra(n):
+            switch (variant.id, n) {
+            case ("diagonal", 1): localized("der Diagonale von links oben", language)
+            case ("diagonal", 2): localized("der Diagonale von rechts oben", language)
+            case ("windoku", _): localized("des Fensters \(Self.windowName(n, language))", language)
+            default: localized("der Zusatzgruppe \(n)", language)
+            }
         }
     }
 

@@ -10,6 +10,7 @@ struct MenuView: View {
     @State private var pendingDiscard: Difficulty?
     @State private var starting: Difficulty?
     @State private var choosingAccent = false
+    @AppStorage("variant") private var variantID = Variant.classic.id
     @Environment(\.accent) private var accent
 
     struct Session: Hashable {
@@ -37,7 +38,8 @@ struct MenuView: View {
                 }
                 .navigationDestination(for: Session.self) { session in
                     // Leaving saves the game first, so reloading afterwards shows the current time.
-                    GameView(game: session.game, store: store, onNewGame: start,
+                    GameView(game: session.game, store: store,
+                             onNewGame: { start($0, variant: session.game.puzzle.variant) },
                              onMenu: { path.removeAll() }, onLeave: { saved = store.loadGame() })
                         .id(session.id)
                 }
@@ -52,9 +54,15 @@ struct MenuView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Neues Spiel").font(.title2.bold()).accessibilityAddTraits(.isHeader)
-                        Text("Klassisch · 9 × 9").font(.subheadline).foregroundStyle(.secondary)
+                        Text(variant.rule).font(.subheadline).foregroundStyle(.secondary)
                     }
                     .padding(.horizontal, 4)
+                    Picker("Spielart", selection: $variantID) {
+                        ForEach(Variant.all, id: \.id) { Text($0.title).tag($0.id) }
+                    }
+                    .pickerStyle(.segmented)
+                    .disabled(starting != nil)
+                    .accessibilityIdentifier("variant")
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 280), spacing: 12)], spacing: 12) {
                         ForEach(Difficulty.allCases, id: \.self) { difficulty in
                             difficultyButton(difficulty)
@@ -70,10 +78,11 @@ struct MenuView: View {
         }
         .background(Color(.systemGroupedBackground))
         .onAppear { saved = store.loadGame() }
+        .onChange(of: variantID, initial: true) { stock.fillAll(variant) }
         .confirmationDialog("Aktuelles Spiel verwerfen?", isPresented: .init(
             get: { pendingDiscard != nil }, set: { if !$0 { pendingDiscard = nil } }
         ), titleVisibility: .visible, presenting: pendingDiscard) { difficulty in
-            Button("Verwerfen und \(difficulty.title) starten", role: .destructive) { start(difficulty) }
+            Button("Verwerfen und \(difficulty.title) starten", role: .destructive) { start(difficulty, variant: variant) }
         } message: { _ in
             Text("Dein laufendes Spiel geht dabei verloren.")
         }
@@ -86,7 +95,7 @@ struct MenuView: View {
                     .frame(width: 92, height: 92)
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Weiterspielen").font(.title2.bold())
-                    Text("\(game.puzzle.difficulty.title) · \(game.elapsed.clock)")
+                    Text("\(game.puzzle.label) · \(game.elapsed.clock)")
                         .font(.subheadline.monospacedDigit())
                         .opacity(0.85)
                     ProgressView(value: game.progress)
@@ -110,12 +119,12 @@ struct MenuView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Weiterspielen")
         .accessibilityIdentifier("continue")
-        .accessibilityValue("\(game.puzzle.difficulty.title), \(game.elapsed.clock)")
+        .accessibilityValue("\(game.puzzle.label), \(game.elapsed.clock)")
     }
 
     private func difficultyButton(_ difficulty: Difficulty) -> some View {
         Button {
-            if saved != nil { pendingDiscard = difficulty } else { start(difficulty) }
+            if saved != nil { pendingDiscard = difficulty } else { start(difficulty, variant: variant) }
         } label: {
             HStack(spacing: 16) {
                 Image(systemName: difficulty.symbol)
@@ -148,11 +157,14 @@ struct MenuView: View {
         .accessibilityIdentifier("difficulty-\(difficulty.rawValue)")
     }
 
-    private func start(_ difficulty: Difficulty) {
+    /// The variant picked in the menu; an unknown stored id falls back to classic.
+    private var variant: Variant { Variant.named(variantID) ?? .classic }
+
+    private func start(_ difficulty: Difficulty, variant: Variant) {
         guard starting == nil else { return } // one tap, one puzzle
         starting = difficulty
         Task {
-            let game = Game(puzzle: await stock.take(difficulty))
+            let game = Game(puzzle: await stock.take(difficulty, variant: variant))
             try? store.save(game) // a failed save only loses the resume option
             starting = nil
             saved = game

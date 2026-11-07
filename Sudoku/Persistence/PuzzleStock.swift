@@ -2,57 +2,73 @@ import Foundation
 import Observation
 import SudokuEngine
 
+/// One ready puzzle per variant and difficulty, so a new game starts without waiting.
 @MainActor @Observable
 final class PuzzleStock {
+    private struct Kind: Hashable {
+        let variant: Variant
+        let difficulty: Difficulty
+    }
+
     private let store: Store
     private let fixed: Puzzle?
-    private var stock: [Difficulty: Puzzle]
-    private var tasks: [Difficulty: Task<Void, Never>] = [:]
+    /// Per variant id; a variant's file is read the first time that variant is asked for.
+    private var stock: [String: [Difficulty: Puzzle]] = [:]
+    private var tasks: [Kind: Task<Void, Never>] = [:]
 
     /// `fixed` is the UI-test hook: every `take` returns it and nothing is generated.
     init(store: Store, fixed: Puzzle? = nil) {
         self.store = store
         self.fixed = fixed
-        stock = store.loadStock()
     }
 
-    func isGenerating(_ difficulty: Difficulty) -> Bool { tasks[difficulty] != nil }
-
-    func fillAll() {
-        for difficulty in Difficulty.allCases { fill(difficulty) }
+    func isGenerating(_ difficulty: Difficulty, variant: Variant = .classic) -> Bool {
+        tasks[Kind(variant: variant, difficulty: difficulty)] != nil
     }
 
-    func take(_ difficulty: Difficulty) async -> Puzzle {
+    func fillAll(_ variant: Variant = .classic) {
+        for difficulty in Difficulty.allCases { fill(Kind(variant: variant, difficulty: difficulty)) }
+    }
+
+    func take(_ difficulty: Difficulty, variant: Variant = .classic) async -> Puzzle {
         if let fixed { return fixed }
+        let kind = Kind(variant: variant, difficulty: difficulty)
         while true {
-            if let puzzle = stock.removeValue(forKey: difficulty) {
-                persist()
-                fill(difficulty)
+            loadIfNeeded(variant)
+            if let puzzle = stock[variant.id]?.removeValue(forKey: difficulty) {
+                persist(variant)
+                fill(kind)
                 return puzzle
             }
-            fill(difficulty)
-            await tasks[difficulty]?.value
+            fill(kind)
+            await tasks[kind]?.value
         }
     }
 
-    private func fill(_ difficulty: Difficulty) {
-        guard fixed == nil, stock[difficulty] == nil, tasks[difficulty] == nil else { return }
-        tasks[difficulty] = Task {
-            let puzzle = await Task.detached { Self.generate(difficulty) }.value
-            stock[difficulty] = puzzle
-            tasks[difficulty] = nil
-            persist()
+    private func loadIfNeeded(_ variant: Variant) {
+        if stock[variant.id] == nil { stock[variant.id] = store.loadStock(variant) }
+    }
+
+    private func fill(_ kind: Kind) {
+        guard fixed == nil else { return }
+        loadIfNeeded(kind.variant)
+        guard stock[kind.variant.id]?[kind.difficulty] == nil, tasks[kind] == nil else { return }
+        tasks[kind] = Task {
+            let puzzle = await Task.detached { Self.generate(kind) }.value
+            stock[kind.variant.id, default: [:]][kind.difficulty] = puzzle
+            tasks[kind] = nil
+            persist(kind.variant)
         }
     }
 
-    private func persist() {
-        try? store.saveStock(stock) // a lost stock file only costs regeneration
+    private func persist(_ variant: Variant) {
+        try? store.saveStock(stock[variant.id] ?? [:], variant: variant) // a lost stock file only costs regeneration
     }
 
-    nonisolated private static func generate(_ difficulty: Difficulty) -> Puzzle {
+    nonisolated private static func generate(_ kind: Kind) -> Puzzle {
         var rng = SystemRandomNumberGenerator()
         while true {
-            if let puzzle = Generator.make(difficulty, using: &rng) { return puzzle }
+            if let puzzle = Generator.make(kind.difficulty, variant: kind.variant, using: &rng) { return puzzle }
         }
     }
 }
