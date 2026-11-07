@@ -55,7 +55,7 @@ Kein Login, keine Demo-Daten nötig. Die Notiz an das Prüfteam steht in `fastla
 1. `MARKETING_VERSION` in `project.yml` erhöhen und `fastlane/metadata/*/release_notes.txt` („Neuigkeiten") neu schreiben.
 2. Mergen: Der Workflow **TestFlight** baut die neue Version.
 3. Workflow **App Store** mit `submit` = `einreichen` starten; er legt die Version in App Store Connect an, falls sie fehlt, und nimmt den neuesten Build.
-4. Nach Apples Freigabe veröffentlichen: Workflow **Release** mit `confirm` = `veröffentlichen` starten (oder in App Store Connect auf „Veröffentlichen“). Er bricht ab, wenn die Version aus `project.yml` noch nicht freigegeben oder schon veröffentlicht ist.
+4. Nach Apples Freigabe veröffentlichen: Workflow **Release** mit `confirm` = `veröffentlichen` starten (oder in App Store Connect auf „Veröffentlichen“). Er bricht ab, wenn die Version aus `project.yml` noch nicht freigegeben oder schon veröffentlicht ist. Ist `main` schon auf die nächste Version gesprungen, die freigegebene Version in `version` eintragen (z. B. `1.3`).
 
 ## Sprachen
 

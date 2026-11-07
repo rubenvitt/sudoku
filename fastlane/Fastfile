@@ -48,17 +48,19 @@ platform :ios do
     ).compact)
   end
 
-  desc "Release the version from project.yml once Apple has approved it (state: pending developer release)"
-  lane :release do
+  desc "Release an approved version (state: pending developer release); version: defaults to project.yml"
+  lane :release do |options|
+    wanted = options[:version].to_s.strip
+    wanted = marketing_version if wanted.empty?
     asc_api_key
     app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
     UI.user_error!("App #{APP_IDENTIFIER} not found in App Store Connect") unless app
     version = app.get_pending_release_app_store_version(platform: Spaceship::ConnectAPI::Platform::IOS)
-    unless version && version.version_string == marketing_version
-      UI.user_error!("Version #{marketing_version} is not waiting for release (not approved yet, or already released)")
+    unless version && version.version_string == wanted
+      UI.user_error!("Version #{wanted} is not waiting for release (not approved yet, or already released)")
     end
     version.create_app_store_version_release_request
-    UI.success("Version #{marketing_version} released; it reaches the store within the next hours")
+    UI.success("Version #{wanted} released; it reaches the store within the next hours")
   end
 end
 

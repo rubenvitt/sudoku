@@ -1,6 +1,6 @@
 name: Release
 
-# Releases the approved App Store version from project.yml to customers.
+# Releases an approved App Store version to customers (default: the version in project.yml).
 # Only works once Apple has approved it and it waits for a manual release.
 on:
   workflow_dispatch:
@@ -8,6 +8,10 @@ on:
       confirm:
         description: Type "veröffentlichen" to release the approved version
         required: true
+      version:
+        description: Version to release, e.g. 1.3 (empty = MARKETING_VERSION from project.yml)
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -36,12 +40,17 @@ jobs:
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          RELEASE_VERSION: ${{ inputs.version }}
           FASTLANE_SKIP_UPDATE_CHECK: "1"
           LC_ALL: en_US.UTF-8
           LANG: en_US.UTF-8
         run: |
           export ASC_KEY_PATH="$RUNNER_TEMP/asc_key.p8"
-          fastlane release
+          if [ -n "$RELEASE_VERSION" ]; then
+            fastlane release version:"$RELEASE_VERSION"
+          else
+            fastlane release
+          fi
       - name: Remove App Store Connect key
         if: always()
         run: rm -f "$RUNNER_TEMP/asc_key.p8"
