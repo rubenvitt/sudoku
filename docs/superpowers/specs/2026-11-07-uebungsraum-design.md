@@ -169,23 +169,32 @@ Prüfung:
 
 - Gilt als **geschafft**, sobald die gesetzte Ziffer bzw. die gestrichenen
   Notizen eine der gültigen Anwendungen aus `Board.steps(of: T)` vollständig
-  enthalten. Eine andere gültige Stelle als die des Beispiels zählt genauso.
-- Streicht man eine Notiz, die keine Anwendung von T streicht, oder setzt eine
-  falsche Ziffer, wird die Zelle kurz rot markiert und die Änderung bleibt
-  rückgängig machbar. Kein Strafzähler.
+  enthalten **und** keine Fehleingabe mehr auf dem Feld steht. Eine andere
+  gültige Stelle als die des Beispiels zählt genauso.
+- Eine **Fehleingabe** (eine gestrichene Notiz, die keine Anwendung von T
+  streicht, oder eine falsche Ziffer) wird sofort zurückgenommen: Die Zelle
+  blinkt kurz rot, die Notiz bzw. das leere Feld ist wieder da. So kann man
+  sich nicht durch Ausprobieren zum Erfolg streichen, und es bleibt nie ein
+  Fehler stehen, den man erst suchen müsste. Kein Strafzähler.
 - **Gestufte Hilfe** über den Tipp-Knopf: 1. Kernsatz der Technik, 2. die
   Gruppe(n) markieren, in denen es passiert, 3. die tragenden Felder
   markieren, 4. auflösen (Schritt wird gezeigt, Übung zählt nicht als
   geschafft).
 
-Nach dem Schaffen: kurze Bestätigung mit dem Tipp-Satz zur gefundenen Stelle,
-Knöpfe „Nächste Übung“ und „Zurück“. Kein Ergebnisbildschirm mit Zeit.
+Nach dem Schaffen wie nach dem Auflösen: kurze Bestätigung mit dem Tipp-Satz
+zur Stelle („Geschafft“ bzw. „So geht es“), Knöpfe „Nächste Übung“ und
+„Zurück“ zur Technikseite. Kein Ergebnisbildschirm mit Zeit.
 
 ### 6.4 Barrierefreiheit
 
 Übung und Beispiel sagen per VoiceOver dasselbe wie der Tipp (`announce`);
 markierte Felder bekommen eine Beschriftung („trägt den Schluss“, „hier fällt
 die 7 weg“). Die Ziffernleiste reicht für alle Übungen, Pencil ist nie Pflicht.
+
+Die Rückmeldung zur Eingabe wird ebenfalls angesagt, nicht nur gezeigt: bei
+einer Fehleingabe „Passt nicht, die 7 bleibt“ (bzw. „Die 4 passt hier nicht“),
+beim Schaffen „Geschafft“ plus Tipp-Satz, beim Auflösen der Tipp-Satz. Dazu
+dieselbe Haptik wie im Spiel.
 
 ## 7. Brücke zum Spiel (optional, eigener kleiner Schritt)
 
@@ -198,10 +207,20 @@ Vorschlag **(Claude, Ruben entscheidet, §9)**:
 - Im Hinweis-Banner ein Link „Technik üben“, der die Technikseite öffnet; der
   Spielstand ist dabei schon gespeichert.
 - `hintsUsed` zählt einen Schritt einmal, egal wie oft man drückt.
+- **Falsche Ziffer im Gitter:** Liefert `Game.hint()` `.wrongEntry`, bleibt es
+  beim heutigen Satz („In Zeile 4 stimmt etwas nicht.“), ohne Stufen und ohne
+  Link „Technik üben“.
 
-Die Engine liefert dafür schon alles (`Step.technique`, `focus`,
-`explanation`). Neu ist nur, dass `Game` sich den zuletzt gezeigten Schritt
-merkt.
+Wie der halbe Tipp gespeichert wird: Heute trägt `hint()` die Streichungen des
+Schritts sofort in `hintEliminations` ein, damit der nächste Tipp darauf
+aufbaut. Beim ersten Druck passiert das **nicht**; `Game` merkt sich nur die
+genannte Technik (`announcedTechnique`, Codable, optional, damit alte
+Spielstände laden) und vergisst sie bei jeder Änderung am Gitter. Erst der
+zweite Druck rechnet den Schritt neu aus (`nextStep` ist für denselben Stand
+deterministisch), zeigt ihn und trägt die Streichungen ein. So baut ein Tipp
+nie auf Streichungen auf, die der Spieler nicht gesehen hat, auch nicht nach
+App-Neustart. Sonst liefert die Engine schon alles (`Step.technique`,
+`focus`, `explanation`).
 
 ## 8. Bau und Aufwand
 
