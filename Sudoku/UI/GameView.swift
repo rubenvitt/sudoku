@@ -260,7 +260,7 @@ struct GameView: View {
         focus = []
         if game.isSolved {
             try? store.deleteGame() // a leftover save only offers a finished game once more
-            isBestTime = store.updateStatistics { $0.recordSolve(game) }
+            isBestTime = store.updateStatistics { $0.recordSolve(game) } ?? false // no badge for a record that wasn't kept
             return
         }
         if game.isFull { game.markErrors() }

@@ -53,12 +53,12 @@ struct Store: Sendable {
 
     func saveStatistics(_ statistics: Statistics) throws { try write(statistics, to: statisticsURL) }
 
-    /// Reads, changes and writes the statistics; a failed write only loses this one game in them.
+    /// Reads, changes and writes the statistics. Nil if the write failed: that game is then missing from them.
     @discardableResult
-    func updateStatistics<T>(_ change: (inout Statistics) -> T) -> T {
+    func updateStatistics<T>(_ change: (inout Statistics) -> T) -> T? {
         var statistics = loadStatistics()
         let result = change(&statistics)
-        try? saveStatistics(statistics)
+        do { try saveStatistics(statistics) } catch { return nil }
         return result
     }
 
