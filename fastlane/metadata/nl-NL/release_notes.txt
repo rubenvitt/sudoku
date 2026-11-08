@@ -1,2 +1,2 @@
-• Twee nieuwe varianten: Jigsaw, met grillige gebieden in plaats van blokken, en Killer, met kooien waarvan de cijfers optellen tot een gegeven som. De tips leggen ook kooisommen en de 45-regel uit.
+• Vier nieuwe varianten: Jigsaw, met grillige gebieden in plaats van blokken; Killer, met kooien waarvan de cijfers optellen tot een gegeven som; Thermo, met thermometers waarlangs de cijfers stijgen; en Kropki, met witte en zwarte stippen tussen buurvakjes. De tips leggen ook kooisommen, de 45-regel, thermometers en stippen uit.
 • Griffel Sudoku is nu ook in het Nederlands beschikbaar, inclusief alle uitleg bij de tips.

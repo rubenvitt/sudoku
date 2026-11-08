@@ -10,6 +10,29 @@ public struct Cage: Codable, Hashable, Sendable {
     }
 }
 
+/// A Kropki dot between two cells sharing an edge. White: the digits follow each other (3 and 4).
+/// Black: one digit is twice the other (3 and 6). Between 1 and 2 either dot can stand.
+public struct Dot: Codable, Hashable, Sendable {
+    public enum Kind: String, Codable, Sendable { case white, black }
+
+    /// Sorted: the left or upper cell first.
+    public let cells: [Int]
+    public let kind: Kind
+
+    public init(_ a: Int, _ b: Int, _ kind: Kind) {
+        cells = [min(a, b), max(a, b)]
+        self.kind = kind
+    }
+
+    /// Whether digits `x` and `y` fit the dot, in either order.
+    public func allows(_ x: Int, _ y: Int) -> Bool {
+        switch kind {
+        case .white: abs(x - y) == 1
+        case .black: x == 2 * y || y == 2 * x
+        }
+    }
+}
+
 public struct Variant: Codable, Hashable, Sendable {
     public let id: String
     public let rows: [[Int]]
@@ -18,19 +41,27 @@ public struct Variant: Codable, Hashable, Sendable {
     public let extras: [[Int]]
     /// Killer cages. Not groups: a cage holds fewer than nine digits, so "the 5 fits only here" never holds in one.
     public let cages: [Cage]
+    /// Thermometers, bulb first: the digits rise along each one. Cells of a thermometer never repeat a digit,
+    /// but they aren't peers either: only the order rules them.
+    public let thermos: [[Int]]
+    /// Kropki dots. Only the dots shown count; two neighbours without a dot may still follow each other.
+    public let dots: [Dot]
     private let peerTable: [[Int]]
 
     public var groups: [[Int]] { rows + columns + regions + extras }
 
     public func peers(of cell: Int) -> [Int] { peerTable[cell] }
 
-    public init(id: String, rows: [[Int]], columns: [[Int]], regions: [[Int]], extras: [[Int]], cages: [Cage] = []) {
+    public init(id: String, rows: [[Int]], columns: [[Int]], regions: [[Int]], extras: [[Int]], cages: [Cage] = [],
+                thermos: [[Int]] = [], dots: [Dot] = []) {
         self.id = id
         self.rows = rows
         self.columns = columns
         self.regions = regions
         self.extras = extras
         self.cages = cages
+        self.thermos = thermos
+        self.dots = dots
         var sets = [Set<Int>](repeating: [], count: 81)
         for group in rows + columns + regions + extras + cages.map(\.cells) {
             for cell in group { sets[cell].formUnion(group) }
@@ -38,12 +69,13 @@ public struct Variant: Codable, Hashable, Sendable {
         peerTable = sets.enumerated().map { cell, set in set.subtracting([cell]).sorted() }
     }
 
-    /// The same rules on new regions or with new cages; Jigsaw and Killer puzzles each bring their own.
-    func with(regions: [[Int]]? = nil, cages: [Cage]? = nil) -> Variant {
-        Variant(id: id, rows: rows, columns: columns, regions: regions ?? self.regions, extras: extras, cages: cages ?? self.cages)
+    /// The same rules on new regions, cages, thermometers or dots; Jigsaw, Killer, Thermo and Kropki puzzles each bring their own.
+    func with(regions: [[Int]]? = nil, cages: [Cage]? = nil, thermos: [[Int]]? = nil, dots: [Dot]? = nil) -> Variant {
+        Variant(id: id, rows: rows, columns: columns, regions: regions ?? self.regions, extras: extras, cages: cages ?? self.cages,
+                thermos: thermos ?? self.thermos, dots: dots ?? self.dots)
     }
 
-    private enum CodingKeys: String, CodingKey { case id, rows, columns, regions, extras, cages }
+    private enum CodingKeys: String, CodingKey { case id, rows, columns, regions, extras, cages, thermos, dots }
 
     /// A corrupt save must throw: `init` and the grader index by cell and keep group sets in 64 bits, and the hints name
     /// rows, columns and boxes of a 9×9 board (a tenth row would point past the box names).
@@ -55,6 +87,9 @@ public struct Variant: Codable, Hashable, Sendable {
         let extras = try c.decode([[Int]].self, forKey: .extras)
         // Saves from before Killer have no cages.
         let cages = try c.decodeIfPresent([Cage].self, forKey: .cages) ?? []
+        // Saves from before Thermo and Kropki have neither.
+        let thermos = try c.decodeIfPresent([[Int]].self, forKey: .thermos) ?? []
+        let dots = try c.decodeIfPresent([Dot].self, forKey: .dots) ?? []
         let groups = rows + columns + regions + extras
         /// Nine groups of nine cells that together cover the board once.
         func partitions(_ lines: [[Int]]) -> Bool {
@@ -63,11 +98,22 @@ public struct Variant: Codable, Hashable, Sendable {
         guard groups.count <= 64, groups.joined().allSatisfy((0..<81).contains),
               partitions(rows), partitions(columns), regions.allSatisfy({ $0.count == 9 }), regions.count <= 9,
               cages.allSatisfy({ (1...9).contains($0.cells.count) && Set($0.cells).count == $0.cells.count && (1...45).contains($0.sum) }),
-              cages.flatMap(\.cells).allSatisfy((0..<81).contains), Set(cages.flatMap(\.cells)).count == cages.flatMap(\.cells).count else {
+              cages.flatMap(\.cells).allSatisfy((0..<81).contains), Set(cages.flatMap(\.cells)).count == cages.flatMap(\.cells).count,
+              thermos.allSatisfy(Self.isThermometer), Set(thermos.joined()).count == thermos.joined().count,
+              dots.allSatisfy({ $0.cells.count == 2 && $0.cells.allSatisfy((0..<81).contains) && neighbours($0.cells[0]).contains($0.cells[1]) })
+        else {
             throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Variant has invalid groups"))
         }
         self.init(id: try c.decode(String.self, forKey: .id), rows: rows, columns: columns, regions: regions, extras: extras,
-                  cages: cages)
+                  cages: cages, thermos: thermos, dots: dots)
+    }
+
+    /// Two to nine cells on the board, each touching the one before, sideways or diagonally.
+    static func isThermometer(_ cells: [Int]) -> Bool {
+        guard (2...9).contains(cells.count), cells.allSatisfy((0..<81).contains), Set(cells).count == cells.count else { return false }
+        return zip(cells, cells.dropFirst()).allSatisfy { a, b in
+            a != b && abs(a / 9 - b / 9) <= 1 && abs(a % 9 - b % 9) <= 1
+        }
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -78,6 +124,8 @@ public struct Variant: Codable, Hashable, Sendable {
         try c.encode(regions, forKey: .regions)
         try c.encode(extras, forKey: .extras)
         if !cages.isEmpty { try c.encode(cages, forKey: .cages) }
+        if !thermos.isEmpty { try c.encode(thermos, forKey: .thermos) }
+        if !dots.isEmpty { try c.encode(dots, forKey: .dots) }
     }
 
     public static let classic = Variant(
@@ -112,8 +160,14 @@ public struct Variant: Codable, Hashable, Sendable {
     /// Cages with sums on top of the classic rules. This is the menu's entry; every puzzle gets its own cages.
     public static let killer = Variant(id: "killer", rows: classic.rows, columns: classic.columns, regions: classic.regions, extras: [])
 
+    /// Thermometers whose digits rise from the bulb, on top of the classic rules. The menu's entry; every puzzle gets its own.
+    public static let thermo = Variant(id: "thermo", rows: classic.rows, columns: classic.columns, regions: classic.regions, extras: [])
+
+    /// White and black dots between neighbours, on top of the classic rules. The menu's entry; every puzzle gets its own.
+    public static let kropki = Variant(id: "kropki", rows: classic.rows, columns: classic.columns, regions: classic.regions, extras: [])
+
     /// Every variant the app offers, in menu order.
-    public static let all: [Variant] = [.classic, .diagonal, .windoku, .jigsaw, .killer]
+    public static let all: [Variant] = [.classic, .diagonal, .windoku, .jigsaw, .killer, .thermo, .kropki]
 
     /// The offered variant with this id, if any.
     public static func named(_ id: String) -> Variant? { all.first { $0.id == id } }
@@ -121,7 +175,9 @@ public struct Variant: Codable, Hashable, Sendable {
     /// The menu entry this puzzle's variant belongs to: a Jigsaw puzzle's own regions lead back to `.jigsaw`.
     public var offered: Variant { Variant.named(id) ?? self }
 
-    /// The difficulties offered for this variant. Killer stops at hard: cage sums and the rule of 45 settle what
-    /// X-Wing and the like would, so expert Killer puzzles practically never come up.
-    public var difficulties: [Difficulty] { id == Variant.killer.id ? [.easy, .medium, .hard] : Difficulty.allCases }
+    /// The difficulties offered for this variant. Killer, Thermo and Kropki stop at hard: cage sums, thermometers and dots
+    /// settle what X-Wing and the like would, so expert puzzles of theirs practically never come up.
+    public var difficulties: [Difficulty] {
+        [Variant.killer.id, Variant.thermo.id, Variant.kropki.id].contains(id) ? [.easy, .medium, .hard] : Difficulty.allCases
+    }
 }

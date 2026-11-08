@@ -124,7 +124,7 @@ final class GraderTests: XCTestCase {
     }
 
     func testTechniqueTitles() {
-        XCTAssertEqual(Technique.allCases.map { $0.title(language: "de") }, ["Nackter Einer", "Versteckter Einer", "Käfigsumme", "Reihe-Kasten-Check",
+        XCTAssertEqual(Technique.allCases.map { $0.title(language: "de") }, ["Nackter Einer", "Versteckter Einer", "Käfigsumme", "Thermometer", "Kropki-Punkt", "Reihe-Kasten-Check",
                                                          "45er-Regel", "Nacktes Paar", "Verstecktes Paar", "Nacktes Tripel",
                                                          "X-Wing", "Schwertfisch", "XY-Wing"])
     }
