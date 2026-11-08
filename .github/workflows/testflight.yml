@@ -80,6 +80,24 @@ jobs:
           CHANGELOG="$(git log -1 --pretty=%s)"
           export CHANGELOG
           fastlane beta
+      - name: Revoke this runner's development certificate
+        # Archiving with cloud signing creates a new Apple Development certificate on every fresh runner. The team may
+        # only hold a few, so without this the archive step soon fails with "maximum number of certificates".
+        if: always()
+        continue-on-error: true
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          FASTLANE_SKIP_UPDATE_CHECK: "1"
+          LC_ALL: en_US.UTF-8
+          LANG: en_US.UTF-8
+        run: |
+          export ASC_KEY_PATH="$RUNNER_TEMP/asc_key.p8"
+          if [ ! -f "$ASC_KEY_PATH" ]; then
+            echo "No App Store Connect key, nothing to revoke"
+            exit 0
+          fi
+          fastlane revoke_runner_certificates
       - name: Remove App Store Connect key
         if: always()
         run: rm -f "$RUNNER_TEMP/asc_key.p8"
