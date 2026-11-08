@@ -63,7 +63,11 @@ struct TechniqueList: View {
     private func row(_ technique: Technique) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(technique.title)
+                if let english = technique.englishName { // the common name, to find it in other books and apps
+                    Text(technique.title) + Text(verbatim: " (\(english))").foregroundStyle(.secondary)
+                } else {
+                    Text(technique.title)
+                }
                 Text(technique.summary)
                     .font(.footnote)
                     .foregroundStyle(.secondary)

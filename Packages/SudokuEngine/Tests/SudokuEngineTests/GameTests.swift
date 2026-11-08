@@ -103,7 +103,7 @@ final class GameTests: XCTestCase {
         var noted = makeGame()
         noted.toggleNote(9, at: 2)
         noted.toggleNote(1, at: 3)
-        guard case .step(let a)? = plain.hint(), case .step(let b)? = noted.hint() else { return XCTFail("expected steps") }
+        guard case .step(let a)? = plain.fullHint(), case .step(let b)? = noted.fullHint() else { return XCTFail("expected steps") }
         XCTAssertEqual(a.explanation, b.explanation)
         XCTAssertEqual(a.placement?.cell, b.placement?.cell)
     }
@@ -127,9 +127,35 @@ final class GameTests: XCTestCase {
         XCTAssertNotNil(step)
         XCTAssertNil(step?.placement)
         var game = Game(puzzle: Puzzle(variant: .classic, givens: grid, solution: solved, difficulty: .medium))
-        guard case .step(let first)? = game.hint(), case .step(let second)? = game.hint() else { return XCTFail("expected steps") }
+        guard case .step(let first)? = game.fullHint(), case .step(let second)? = game.fullHint() else { return XCTFail("expected steps") }
         XCTAssertNil(first.placement)
         XCTAssertNotEqual(first.explanation, second.explanation)
+    }
+
+    func testHintNamesTheTechniqueFirst() throws {
+        var game = makeGame()
+        guard case .technique(let named)? = game.hint() else { return XCTFail("expected the technique first") }
+        XCTAssertEqual(game.hintsUsed, 1)
+        XCTAssertEqual(game.hintEliminations, [CandidateMask](repeating: 0, count: 81), "nothing crossed out yet")
+        // The announcement survives a save, so the next press after a relaunch shows the step.
+        var reloaded = try JSONDecoder().decode(Game.self, from: JSONEncoder().encode(game))
+        guard case .step(let step)? = reloaded.hint() else { return XCTFail("expected the step second") }
+        XCTAssertEqual(step.technique, named)
+        XCTAssertEqual(reloaded.hintsUsed, 1, "one step counts once")
+        XCTAssertNil(reloaded.announcedTechnique)
+        guard case .technique? = reloaded.hint() else { return XCTFail("the next step starts again with its technique") }
+        XCTAssertEqual(reloaded.hintsUsed, 2)
+    }
+
+    func testChangingAnEntryForgetsTheAnnouncedTechnique() {
+        var game = makeGame()
+        guard case .technique? = game.hint() else { return XCTFail("expected the technique") }
+        game.toggleNote(9, at: 2)
+        XCTAssertNotNil(game.announcedTechnique, "notes do not change the step")
+        let cell = (0..<81).first { game.puzzle.givens.cells[$0] == 0 }!
+        game.setDigit(Int(game.puzzle.solution.cells[cell]), at: cell)
+        XCTAssertNil(game.announcedTechnique)
+        guard case .technique? = game.hint() else { return XCTFail("a changed position starts with the technique again") }
     }
 
     func testDecodingRejectsWrongSizes() throws {
@@ -204,5 +230,14 @@ final class GameTests: XCTestCase {
         XCTAssertEqual(decoded.notes, game.notes)
         XCTAssertEqual(decoded.canUndo, game.canUndo)
         XCTAssertEqual(decoded.canRedo, game.canRedo)
+    }
+}
+
+private extension Game {
+    /// Presses hint until it shows more than the technique.
+    mutating func fullHint() -> Hint? {
+        let first = hint()
+        if case .technique? = first { return hint() }
+        return first
     }
 }

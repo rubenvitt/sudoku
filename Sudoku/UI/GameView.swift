@@ -16,6 +16,10 @@ struct GameView: View {
     /// Handwriting per cell; shown instead of the typeset digit while the cell holds the digit it was written as.
     @State private var ink: [Int: Ink]
     @State private var banner: String?
+    /// The technique the banner names, when the practice room has a page for it.
+    @State private var bannerTechnique: Technique?
+    /// The technique page opened from the banner; the clock stops while it is open.
+    @State private var practising: Technique?
     /// Edits per cell that did not come from the pencil; see `ScribbleLayer.revisions`.
     @State private var revisions: [Int: Int] = [:]
     @State private var showsRule = false
@@ -89,8 +93,21 @@ struct GameView: View {
         .sensoryFeedback(.impact(weight: .light), trigger: game.entries)
         .sensoryFeedback(.selection, trigger: noteMode)
         .sensoryFeedback(.success, trigger: game.isSolved) { _, solved in solved }
-        .task(id: scenePhase) {
-            guard scenePhase == .active else { return }
+        .sheet(isPresented: Binding(get: { practising != nil }, set: { if !$0 { practising = nil } })) {
+            if let practising {
+                NavigationStack {
+                    TechniquePage(technique: practising)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Zurück zum Spiel") { self.practising = nil }
+                                    .accessibilityIdentifier("backToGame")
+                            }
+                        }
+                }
+            }
+        }
+        .task(id: ClockState(phase: scenePhase, isPractising: practising != nil)) {
+            guard scenePhase == .active, practising == nil else { return }
             while !game.isSolved {
                 do { try await Task.sleep(for: .seconds(1)) } catch { return }
                 if game.isSolved { return } // solved during the sleep: the result shows the final time
@@ -173,23 +190,39 @@ struct GameView: View {
             // (and the Scribble layer laid over it) never changes when it appears.
             Color.clear.frame(height: 0).overlay(alignment: .bottom) {
                 if let banner {
-                    Button { self.banner = nil } label: {
-                        HStack(alignment: .firstTextBaseline, spacing: 12) {
-                            Image(systemName: "lightbulb.max.fill")
-                                .foregroundStyle(.yellow)
-                                .accessibilityHidden(true)
-                            Text(banner)
-                                .multilineTextAlignment(.leading)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                    VStack(alignment: .leading, spacing: 10) {
+                        Button { self.banner = nil } label: {
+                            HStack(alignment: .firstTextBaseline, spacing: 12) {
+                                Image(systemName: "lightbulb.max.fill")
+                                    .foregroundStyle(.yellow)
+                                    .accessibilityHidden(true)
+                                Text(banner)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .contentShape(.rect)
                         }
-                        .font(.callout)
-                        .padding(.horizontal, 18).padding(.vertical, 14)
-                        .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
-                        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
+                        .buttonStyle(.plain)
+                        .accessibilityHint("Schließt den Hinweis")
+                        if let bannerTechnique {
+                            Button {
+                                save()
+                                practising = bannerTechnique
+                            } label: {
+                                Label("Technik üben", systemImage: "graduationcap")
+                                    .font(.callout.weight(.semibold))
+                            }
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.capsule)
+                            .padding(.leading, 30) // under the text, past the bulb
+                            .accessibilityIdentifier("practiseTechnique")
+                        }
                     }
-                    .buttonStyle(.plain)
+                    .font(.callout)
+                    .padding(.horizontal, 18).padding(.vertical, 14)
+                    .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
+                    .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
                     .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityHint("Schließt den Hinweis")
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
@@ -268,9 +301,12 @@ struct GameView: View {
         switch game.hint() {
         case let .wrongEntry(row):
             announce(String(localized: "In Zeile \(row) stimmt etwas nicht."))
+        case let .technique(technique):
+            announce(String(localized: "Hier hilft „\(technique.title)“. Tippe noch einmal auf Tipp, dann zeige ich dir die Stelle."),
+                     technique: technique)
         case let .step(step):
             focus = Set(step.focus)
-            announce("\(step.technique.title): \(step.explanation)")
+            announce("\(step.technique.title): \(step.explanation)", technique: step.technique)
         case nil:
             announce(String(localized: "Für diese Stellung habe ich keinen Tipp."))
         }
@@ -283,8 +319,10 @@ struct GameView: View {
         save()
     }
 
-    private func announce(_ text: String) {
+    /// Shows `text` in the banner, with a way into the practice room when `technique` has a page there.
+    private func announce(_ text: String, technique: Technique? = nil) {
         banner = text
+        bannerTechnique = technique.flatMap { Exercises.techniques.contains($0) ? $0 : nil }
         AccessibilityNotification.Announcement(text).post()
     }
 
@@ -292,6 +330,12 @@ struct GameView: View {
         guard !game.isSolved else { return } // the save was deleted on solve; never bring it back
         try? store.save(game, ink: ink) // nothing to offer the player beyond retrying on the next move
     }
+}
+
+/// What the clock depends on: it runs only while the app is active and no technique page covers the game.
+private struct ClockState: Equatable {
+    let phase: ScenePhase
+    let isPractising: Bool
 }
 
 /// Symbol above a short caption; `isOn` marks a toggle that is switched on.

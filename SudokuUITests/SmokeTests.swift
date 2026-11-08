@@ -134,7 +134,8 @@ final class SmokeTests: XCTestCase {
         cell(0).tap() // the given 5: highlights every 5
         attachScreenshot("1-Spiel")
 
-        app.buttons["hint"].tap()
+        app.buttons["hint"].tap() // names the technique
+        app.buttons["hint"].tap() // shows the step
         sleep(1)
         attachScreenshot("4-Tipp")
 
@@ -210,6 +211,22 @@ final class SmokeTests: XCTestCase {
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    /// The first hint names the technique and leads into the practice room; the second shows the step.
+    @MainActor
+    func testStagedHintOpensThePracticePage() {
+        let app = launch(["-uiTestFixedPuzzle"])
+        app.buttons["Leicht"].tap()
+        app.buttons["hint"].tap()
+        let practise = app.buttons["practiseTechnique"]
+        XCTAssertTrue(practise.waitForExistence(timeout: 5))
+        practise.tap()
+        XCTAssertTrue(app.buttons["try"].waitForExistence(timeout: 5), "the technique page did not open")
+        app.buttons["backToGame"].tap()
+        XCTAssertTrue(app.buttons["try"].waitForNonExistence(timeout: 5))
+        app.buttons["hint"].tap()
+        XCTAssertTrue(app.buttons["practiseTechnique"].waitForExistence(timeout: 5))
     }
 
     @MainActor
