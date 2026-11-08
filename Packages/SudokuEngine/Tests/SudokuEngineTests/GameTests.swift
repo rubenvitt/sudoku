@@ -142,7 +142,15 @@ final class GameTests: XCTestCase {
         guard case .step(let step)? = reloaded.hint() else { return XCTFail("expected the step second") }
         XCTAssertEqual(step.technique, named)
         XCTAssertEqual(reloaded.hintsUsed, 1, "one step counts once")
-        XCTAssertNil(reloaded.announcedTechnique)
+        if let placement = step.placement {
+            // Until the digit is entered, pressing again shows the same step, uncounted.
+            guard case .step(let again)? = reloaded.hint() else { return XCTFail("expected the same step again") }
+            XCTAssertEqual(again.explanation, step.explanation)
+            XCTAssertEqual(reloaded.hintsUsed, 1)
+            reloaded.setDigit(placement.digit, at: placement.cell)
+        } else {
+            XCTAssertNil(reloaded.announcedTechnique)
+        }
         guard case .technique? = reloaded.hint() else { return XCTFail("the next step starts again with its technique") }
         XCTAssertEqual(reloaded.hintsUsed, 2)
     }

@@ -26,7 +26,8 @@ public struct Game: Codable, Sendable {
     private var countedErrors: Set<Int> = []
     /// Candidates already ruled out by shown hints; kept outside the undo history so repeated hints advance.
     public private(set) var hintEliminations = [CandidateMask](repeating: 0, count: 81)
-    /// The technique the last hint named without showing its step; forgotten on any change to the entries.
+    /// The technique the last hint named. While it is set, the next press shows its step without counting again;
+    /// forgotten on any change to the entries and once a shown step has crossed something out.
     public private(set) var announcedTechnique: Technique?
     private var undoStack: [Snapshot] = []
     private var redoStack: [Snapshot] = []
@@ -178,7 +179,9 @@ public struct Game: Codable, Sendable {
             hintsUsed += 1
             return .technique(step.technique)
         }
-        announcedTechnique = nil
+        // A placement changes nothing until the player enters it, so pressing again shows the same step again,
+        // uncounted. Crossing-outs advance to a new step, which starts with its technique again.
+        if !step.eliminations.isEmpty { announcedTechnique = nil }
         for e in step.eliminations { hintEliminations[e.cell] |= digitBit(e.digit) }
         return .step(step)
     }

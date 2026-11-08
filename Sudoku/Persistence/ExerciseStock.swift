@@ -20,6 +20,7 @@ final class ExerciseStock {
         self.store = store
         pool = store.loadExercises()
         solved = store.loadPractice()
+        Task.detached(priority: .utility) { _ = Exercises.starters } // solves nine boards once, off the main actor
     }
 
     func isPractised(_ technique: Technique) -> Bool { solved["\(technique)", default: 0] >= Self.practisedAfter }

@@ -219,6 +219,9 @@ final class SmokeTests: XCTestCase {
         let app = launch(["-uiTestFixedPuzzle"])
         app.buttons["Leicht"].tap()
         app.buttons["hint"].tap()
+        let announcement = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label BEGINSWITH 'Hier hilft'")).firstMatch
+        XCTAssertTrue(announcement.waitForExistence(timeout: 5), "the first hint names the technique")
         let practise = app.buttons["practiseTechnique"]
         XCTAssertTrue(practise.waitForExistence(timeout: 5))
         practise.tap()
@@ -226,7 +229,8 @@ final class SmokeTests: XCTestCase {
         app.buttons["backToGame"].tap()
         XCTAssertTrue(app.buttons["try"].waitForNonExistence(timeout: 5))
         app.buttons["hint"].tap()
-        XCTAssertTrue(app.buttons["practiseTechnique"].waitForExistence(timeout: 5))
+        XCTAssertTrue(announcement.waitForNonExistence(timeout: 5), "the second hint shows the step")
+        XCTAssertTrue(app.buttons["practiseTechnique"].exists)
     }
 
     @MainActor

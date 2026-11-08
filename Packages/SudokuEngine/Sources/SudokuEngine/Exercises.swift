@@ -31,9 +31,12 @@ public struct Exercise: Codable, Hashable, Sendable {
     }
 
     /// Every application of the technique here. Any of them solves the exercise, not just the one the grader picked.
-    public var applications: [Step] {
-        Board(layout: Layout(.classic), cells: cells.cells, cand: candidates).steps(of: technique)
-    }
+    public var applications: [Step] { board.steps(of: technique) }
+
+    /// The application the grader would show first; stops searching once it is found.
+    public var firstApplication: Step? { board.first(technique) }
+
+    private var board: Board { Board(layout: Layout(.classic), cells: cells.cells, cand: candidates) }
 
     /// The same exercise in disguise: digits renamed, rows swapped within their band and bands swapped, the same for
     /// columns, and maybe mirrored along the diagonal. Every technique works on it just as before.

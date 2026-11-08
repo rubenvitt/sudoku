@@ -106,7 +106,7 @@ struct TechniquePage: View {
                     Text(technique.details).foregroundStyle(.secondary)
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                if let example, let step = example.applications.first {
+                if let example, let step = example.firstApplication {
                     exampleSection(example, step: step)
                 }
                 NavigationLink {
@@ -245,7 +245,7 @@ struct PracticeView: View {
     }
 
     private func board(_ exercise: Exercise, game: Game) -> some View {
-        let hinted = exercise.applications.first
+        let hinted = exercise.firstApplication
         let focus: Set<Int> = outcome?.focus ?? (helpLevel >= 3 ? Set(hinted?.focus ?? []) : [])
         let area: Set<Int> = helpLevel == 2 ? hinted.map(Self.area) ?? [] : []
         return GridView(game: game, selection: $selection, focus: focus, ink: ink, area: area,
@@ -407,7 +407,7 @@ struct PracticeView: View {
 
     /// Four steps of help, each a little more: the key sentence, the groups, the cells, then the solution.
     private func help() {
-        guard let exercise, let step = exercise.applications.first else { return }
+        guard let exercise, let step = exercise.firstApplication else { return }
         helpLevel += 1
         switch helpLevel {
         case 1: announce(technique.summary)
