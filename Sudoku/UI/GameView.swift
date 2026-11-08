@@ -70,6 +70,21 @@ struct GameView: View {
                 .padding(24)
             }
         }
+        // Above everything and inside the game's bounds, so the banner's buttons get their taps:
+        // it sits right above the action keys and grows upward over the grid.
+        .overlayPreferenceValue(BannerSlot.self) { slot in
+            GeometryReader { proxy in
+                if let slot, let banner {
+                    let rect = proxy[slot]
+                    bannerView(banner)
+                        .frame(width: rect.width)
+                        .padding(.leading, rect.minX)
+                        .padding(.bottom, max(0, proxy.size.height - rect.minY))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+        }
         // Taps that land beside the grid and the keys clear the selection, and with it the highlighted digit.
         .background {
             Color.clear
@@ -119,6 +134,44 @@ struct GameView: View {
         }
         .onChange(of: scenePhase) { if scenePhase != .active && !game.isSolved { save() } }
         .onDisappear { save(); onLeave() }
+    }
+
+    /// The hint, with a way into the practice room when it names a technique that has a page there.
+    private func bannerView(_ text: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Button { self.banner = nil } label: {
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Image(systemName: "lightbulb.max.fill")
+                        .foregroundStyle(.yellow)
+                        .accessibilityHidden(true)
+                    Text(text)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Schließt den Hinweis")
+            if let bannerTechnique {
+                Button {
+                    save()
+                    practising = bannerTechnique
+                } label: {
+                    Label("Technik üben", systemImage: "graduationcap")
+                        .font(.callout.weight(.semibold))
+                }
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .padding(.leading, 30) // under the text, past the bulb
+                .accessibilityIdentifier("practiseTechnique")
+            }
+        }
+        .font(.callout)
+        .padding(.horizontal, 18).padding(.vertical, 14)
+        .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
+        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
+        .fixedSize(horizontal: false, vertical: true)
+        .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { bannerFrame = $0 }
     }
 
     /// Variant, difficulty and time. Tapping it shows the variant's rule, for a first Killer or Jigsaw game.
@@ -192,47 +245,10 @@ struct GameView: View {
 
     private func controls(actionColumns: Int, digitColumns: Int, keyHeight: CGFloat) -> some View {
         VStack(spacing: 14) {
-            // Zero-height anchor: the banner grows upward over free space, so the grid's size
-            // (and the Scribble layer laid over it) never changes when it appears.
-            Color.clear.frame(height: 0).overlay(alignment: .bottom) {
-                if let banner {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Button { self.banner = nil } label: {
-                            HStack(alignment: .firstTextBaseline, spacing: 12) {
-                                Image(systemName: "lightbulb.max.fill")
-                                    .foregroundStyle(.yellow)
-                                    .accessibilityHidden(true)
-                                Text(banner)
-                                    .multilineTextAlignment(.leading)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            .contentShape(.rect)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityHint("Schließt den Hinweis")
-                        if let bannerTechnique {
-                            Button {
-                                save()
-                                practising = bannerTechnique
-                            } label: {
-                                Label("Technik üben", systemImage: "graduationcap")
-                                    .font(.callout.weight(.semibold))
-                            }
-                            .buttonStyle(.bordered)
-                            .buttonBorderShape(.capsule)
-                            .padding(.leading, 30) // under the text, past the bulb
-                            .accessibilityIdentifier("practiseTechnique")
-                        }
-                    }
-                    .font(.callout)
-                    .padding(.horizontal, 18).padding(.vertical, 14)
-                    .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
-                    .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { bannerFrame = $0 }
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-            }
+            // Zero-height anchor for the hint banner, which is laid over the whole game (see `body`),
+            // so the grid's size (and the Scribble layer laid over it) never changes when it appears.
+            Color.clear.frame(height: 0)
+                .anchorPreference(key: BannerSlot.self, value: .bounds) { $0 }
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: actionColumns), spacing: 8) {
                 actions
             }
@@ -336,6 +352,14 @@ struct GameView: View {
     private func save() {
         guard !game.isSolved else { return } // the save was deleted on solve; never bring it back
         try? store.save(game, ink: ink) // nothing to offer the player beyond retrying on the next move
+    }
+}
+
+/// Where the hint banner goes: right above the action keys.
+private struct BannerSlot: PreferenceKey {
+    static var defaultValue: Anchor<CGRect>? { nil }
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = value ?? nextValue()
     }
 }
 

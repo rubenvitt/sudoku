@@ -224,6 +224,9 @@ final class SmokeTests: XCTestCase {
         XCTAssertTrue(announcement.waitForExistence(timeout: 5), "the first hint names the technique")
         let practise = app.buttons["practiseTechnique"]
         XCTAssertTrue(practise.waitForExistence(timeout: 5))
+        // Frames in the log, so a tap that misses can be traced without the result bundle.
+        XCTContext.runActivity(named: "practise \(practise.frame), hittable \(practise.isHittable), "
+                                   + "last cell \(app.buttons["cell-80"].frame)") { _ in }
         practise.tap()
         XCTAssertTrue(app.buttons["try"].waitForExistence(timeout: 5), "the technique page did not open")
         app.buttons["backToGame"].tap()
