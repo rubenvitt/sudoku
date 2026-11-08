@@ -1,2 +1,5 @@
 • Vier neue Varianten: Jigsaw mit verwinkelten Gebieten statt Kästen, Killer mit Käfigen, deren Ziffern eine vorgegebene Summe ergeben, Thermo mit Thermometern, auf denen die Ziffern ansteigen, und Kropki mit weißen und schwarzen Punkten zwischen Nachbarfeldern. Die Tipps erklären auch Käfigsummen, die 45er-Regel, Thermometer und Punkte.
+• Techniken üben: Jede Lösungstechnik lässt sich jetzt in kurzen Übungen gezielt trainieren, direkt erreichbar auch aus einem Tipp heraus.
+• Statistik: Gelöste Rätsel, Zeiten und Bestzeiten je Spielart und Stufe auf einen Blick.
+• Neue Auswahl der Spielart im Menü, und im Spiel erklärt ein Tipp auf das Info-Symbol jederzeit die Regel.
 • Sudoku spricht jetzt auch Japanisch, Koreanisch, Niederländisch und Portugiesisch (Brasilien), samt allen Tipp-Erklärungen.

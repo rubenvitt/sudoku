@@ -17,6 +17,8 @@ Every move is saved instantly. Close the app whenever you like and pick up exact
 
 ALSO
 • Seven variants: classic, Diagonal, Windoku, Jigsaw, Killer, Thermo and Kropki
+• Practice room: train every solving technique on its own
+• Statistics with times and best times for each variant
 • Notes for candidates, matching digits are highlighted
 • Undo and redo, also with a two-finger tap
 • Summary with time, hints and mistakes found

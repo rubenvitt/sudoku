@@ -1,2 +1,5 @@
 • Quatro novas variantes: Jigsaw, com regiões irregulares em vez de blocos; Killer, com gaiolas cujos dígitos somam um total dado; Thermo, com termômetros ao longo dos quais os dígitos sobem; e Kropki, com pontos brancos e pretos entre casas vizinhas. As dicas também explicam as somas das gaiolas, a regra do 45, os termômetros e os pontos.
+• Praticar técnicas: cada técnica de resolução agora pode ser treinada em exercícios curtos, inclusive direto de uma dica.
+• Estatísticas: quebra-cabeças resolvidos, tempos e melhores tempos por variante e nível, num só olhar.
+• Nova escolha de variante no menu, e durante o jogo o botão de informação explica a regra a qualquer momento.
 • O Griffel Sudoku agora está em português, incluindo todas as explicações das dicas.

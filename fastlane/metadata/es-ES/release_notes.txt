@@ -1,2 +1,5 @@
 • Cuatro variantes nuevas: Jigsaw, con regiones irregulares en lugar de bloques; Killer, con jaulas cuyas cifras suman un total dado; Thermo, con termómetros en los que las cifras suben; y Kropki, con puntos blancos y negros entre casillas vecinas. Las pistas también explican las sumas de las jaulas, la regla del 45, los termómetros y los puntos.
+• Practicar técnicas: cada técnica de resolución se puede entrenar ahora con ejercicios breves, también directamente desde una pista.
+• Estadísticas: sudokus resueltos, tiempos y mejores tiempos por variante y nivel de un vistazo.
+• Nueva selección de variante en el menú; durante la partida, el botón de información explica la regla en cualquier momento.
 • El sudoku ahora también habla japonés, coreano, neerlandés y portugués (Brasil), con todas las explicaciones de las pistas.

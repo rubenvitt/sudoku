@@ -17,6 +17,8 @@ Elke zet wordt meteen bewaard. Sluit de app wanneer je wilt en ga later precies 
 
 VERDER
 • Zeven varianten: klassiek, diagonaal, Windoku, Jigsaw, Killer, Thermo en Kropki
+• Oefenruimte: elke oplostechniek apart trainen
+• Statistieken met tijden en beste tijden per variant
 • Notities voor kandidaten, gelijke cijfers worden gemarkeerd
 • Herstel en opnieuw, ook met een tik met twee vingers
 • Overzicht met tijd, tips en gevonden fouten

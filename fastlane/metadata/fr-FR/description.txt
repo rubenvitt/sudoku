@@ -17,6 +17,8 @@ Chaque coup est enregistré aussitôt. Fermez l’app quand vous voulez et repre
 
 ET AUSSI
 • Sept variantes : classique, diagonal, Windoku, Jigsaw, Killer, Thermo et Kropki
+• Salle d'entraînement : chaque technique de résolution à part
+• Statistiques avec temps et meilleurs temps par variante
 • Notes pour les candidats, les chiffres identiques sont mis en évidence
 • Annuler et rétablir, aussi d’un toucher à deux doigts
 • Bilan avec le temps, les indices et les erreurs trouvées

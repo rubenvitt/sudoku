@@ -17,6 +17,8 @@ Cada jugada se guarda al instante. Cierra la app cuando quieras y continúa just
 
 ADEMÁS
 • Siete variantes: clásico, diagonal, Windoku, Jigsaw, Killer, Thermo y Kropki
+• Sala de práctica: entrena cada técnica de resolución por separado
+• Estadísticas con tiempos y mejores tiempos por variante
 • Notas para los candidatos, las cifras iguales se resaltan
 • Deshacer y rehacer, también con un toque de dos dedos
 • Resumen con tiempo, pistas y errores encontrados
