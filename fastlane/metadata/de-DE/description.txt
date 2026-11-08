@@ -17,6 +17,8 @@ Jeder Zug wird sofort gespeichert. Schließ die App, wann du willst – beim nä
 
 AUSSERDEM
 • Sieben Varianten: klassisch, Diagonal, Windoku, Jigsaw, Killer, Thermo und Kropki
+• Übungsraum: jede Lösungstechnik gezielt üben
+• Statistik mit Zeiten und Bestzeiten je Spielart
 • Notizen für Kandidaten, passende Ziffern werden hervorgehoben
 • Rückgängig und Wiederholen, auch per Zwei-Finger-Tipp
 • Auswertung mit Zeit, Tipps und gefundenen Fehlern

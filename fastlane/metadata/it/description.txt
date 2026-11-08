@@ -17,6 +17,8 @@ Ogni mossa viene salvata subito. Chiudi l’app quando vuoi e riprendi esattamen
 
 INOLTRE
 • Sette varianti: classico, diagonale, Windoku, Jigsaw, Killer, Thermo e Kropki
+• Palestra: allena ogni tecnica risolutiva da sola
+• Statistiche con tempi e tempi migliori per variante
 • Note per i candidati, le cifre uguali vengono evidenziate
 • Annulla e ripeti, anche con un tocco a due dita
 • Riepilogo con tempo, aiuti ed errori trovati

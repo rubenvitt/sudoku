@@ -1,2 +1,5 @@
 • Quattro nuove varianti: Jigsaw, con zone irregolari al posto dei riquadri; Killer, con gabbie le cui cifre fanno in totale una somma data; Thermo, con termometri lungo i quali le cifre salgono; e Kropki, con punti bianchi e neri tra celle vicine. Gli aiuti spiegano anche le somme delle gabbie, la regola del 45, i termometri e i punti.
+• Esercitati sulle tecniche: ogni tecnica risolutiva ora si allena con brevi esercizi, anche direttamente da un aiuto.
+• Statistiche: sudoku risolti, tempi e tempi migliori per variante e livello a colpo d'occhio.
+• Nuova scelta della variante nel menu; durante la partita il pulsante info spiega la regola in qualsiasi momento.
 • Il sudoku ora parla anche giapponese, coreano, olandese e portoghese (Brasile), con tutte le spiegazioni degli aiuti.

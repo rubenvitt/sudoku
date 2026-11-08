@@ -1,2 +1,5 @@
 • Four new variants: Jigsaw, with irregular regions instead of boxes; Killer, with cages whose digits add up to a given sum; Thermo, with thermometers along which the digits rise; and Kropki, with white and black dots between neighbouring cells. Hints also explain cage sums, the rule of 45, thermometers and dots.
+• Practise techniques: every solving technique can now be trained in short exercises, also straight from a hint.
+• Statistics: solved puzzles, times and best times for each variant and level at a glance.
+• A new variant picker in the menu, and in a game the info button explains the rule at any time.
 • Sudoku now also speaks Japanese, Korean, Dutch and Portuguese (Brazil), including every hint explanation.
