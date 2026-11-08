@@ -20,6 +20,9 @@ struct GameView: View {
     @State private var bannerTechnique: Technique?
     /// The technique page opened from the banner; the clock stops while it is open.
     @State private var practising: Technique?
+    /// Where the grid and the hint banner are on screen, so the handwriting layer leaves the banner's taps alone.
+    @State private var gridFrame: CGRect = .zero
+    @State private var bannerFrame: CGRect = .null
     /// Edits per cell that did not come from the pencil; see `ScribbleLayer.revisions`.
     @State private var revisions: [Int: Int] = [:]
     @State private var showsRule = false
@@ -160,10 +163,13 @@ struct GameView: View {
         GridView(game: game, selection: $selection, focus: focus, ink: ink)
             .equatable()
             .aspectRatio(1, contentMode: .fit)
+            .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { gridFrame = $0 }
             // Before `.frame`, so the layer covers exactly the grid and shares its coordinates.
             .overlay {
                 ScribbleLayer(givens: givens, noteMode: noteMode, onInput: apply, inkColor: accent,
-                              onSelect: toggleSelection, onUndo: { history { $0.undo() } }, revisions: revisions)
+                              onSelect: toggleSelection, onUndo: { history { $0.undo() } }, revisions: revisions,
+                              excluded: banner == nil ? .null
+                                  : bannerFrame.offsetBy(dx: -gridFrame.minX, dy: -gridFrame.minY))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -223,6 +229,7 @@ struct GameView: View {
                     .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
                     .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
                     .fixedSize(horizontal: false, vertical: true)
+                    .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { bannerFrame = $0 }
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }

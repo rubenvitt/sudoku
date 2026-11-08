@@ -19,6 +19,9 @@ struct ScribbleLayer: UIViewRepresentable {
     /// Counts, per cell, the edits that did not come from the pencil (keypad, erase, undo). Text still being recognized for a
     /// cell is dropped once its count moves, so a late result never overwrites what was entered there in the meantime.
     var revisions: [Int: Int] = [:]
+    /// Part of the layer covered by SwiftUI content (the hint banner), in the layer's coordinates. Touches there are
+    /// left to that content; the layer's tap recognizer would otherwise take them from its buttons.
+    var excluded: CGRect = .null
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -28,6 +31,7 @@ struct ScribbleLayer: UIViewRepresentable {
         view.accessibilityElementsHidden = true // VoiceOver keeps reaching the cell buttons below
         view.addInteraction(UIIndirectScribbleInteraction(delegate: context.coordinator))
         context.coordinator.view = view
+        view.excluded = excluded
 
         let tap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.select))
         tap.allowedTouchTypes = [UITouch.TouchType.direct, .pencil, .indirectPointer].map { $0.rawValue as NSNumber }
@@ -45,6 +49,7 @@ struct ScribbleLayer: UIViewRepresentable {
     /// Runs every second (timer tick): only refresh the values the coordinator reads.
     func updateUIView(_ view: LayerView, context: Context) {
         context.coordinator.parent = self
+        view.excluded = excluded
     }
 
     static func dismantleUIView(_ view: LayerView, coordinator: Coordinator) {
@@ -56,6 +61,8 @@ struct ScribbleLayer: UIViewRepresentable {
     final class LayerView: UIView {
         /// Strokes of cells still waiting for a further stroke, so the handwriting never vanishes while it waits.
         let preview = CAShapeLayer()
+        /// See `ScribbleLayer.excluded`.
+        var excluded: CGRect = .null
 
         override init(frame: CGRect) {
             super.init(frame: frame)
@@ -68,7 +75,7 @@ struct ScribbleLayer: UIViewRepresentable {
         required init?(coder: NSCoder) { fatalError("init(coder:) is not used") }
 
         override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-            self.point(inside: point, with: event) ? self : nil
+            self.point(inside: point, with: event) && !excluded.contains(point) ? self : nil
         }
     }
 
