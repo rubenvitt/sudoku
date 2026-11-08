@@ -3,6 +3,8 @@ import Foundation
 public enum Hint: Sendable {
     /// 1-based row of the first wrong entry.
     case wrongEntry(row: Int)
+    /// The first press on a step: only the technique that helps; the next press shows the step itself.
+    case technique(Technique)
     case step(Step)
 }
 
@@ -24,12 +26,15 @@ public struct Game: Codable, Sendable {
     private var countedErrors: Set<Int> = []
     /// Candidates already ruled out by shown hints; kept outside the undo history so repeated hints advance.
     public private(set) var hintEliminations = [CandidateMask](repeating: 0, count: 81)
+    /// The technique the last hint named. While it is set, the next press shows its step without counting again;
+    /// forgotten on any change to the entries and once a shown step has crossed something out.
+    public private(set) var announcedTechnique: Technique?
     private var undoStack: [Snapshot] = []
     private var redoStack: [Snapshot] = []
 
     private enum CodingKeys: String, CodingKey {
         case puzzle, entries, notes, errorMarks, elapsed, hintsUsed, checksUsed, errorsFound
-        case hintEliminations, undoStack, redoStack, countedErrors
+        case hintEliminations, undoStack, redoStack, countedErrors, announcedTechnique
     }
 
     /// A corrupt save must throw, never crash later on an out-of-range index.
@@ -47,6 +52,7 @@ public struct Game: Codable, Sendable {
         countedErrors = try c.decodeIfPresent(Set<Int>.self, forKey: .countedErrors) ?? []
         hintEliminations = try c.decodeIfPresent([CandidateMask].self, forKey: .hintEliminations)
             ?? [CandidateMask](repeating: 0, count: 81)
+        announcedTechnique = try c.decodeIfPresent(Technique.self, forKey: .announcedTechnique)
         undoStack = try c.decodeIfPresent([Snapshot].self, forKey: .undoStack) ?? []
         redoStack = try c.decodeIfPresent([Snapshot].self, forKey: .redoStack) ?? []
         let snapshots = undoStack + redoStack
@@ -65,6 +71,14 @@ public struct Game: Codable, Sendable {
         notes = [CandidateMask](repeating: 0, count: 81)
     }
 
+    /// A game whose notes are already filled in, as a practice exercise starts.
+    public init(puzzle: Puzzle, notes: [CandidateMask]) {
+        precondition(notes.count == 81, "one note mask per cell")
+        self.puzzle = puzzle
+        entries = puzzle.givens
+        self.notes = notes
+    }
+
     public var canUndo: Bool { !undoStack.isEmpty }
     public var canRedo: Bool { !redoStack.isEmpty }
     public var isFull: Bool { entries.isComplete }
@@ -78,6 +92,7 @@ public struct Game: Codable, Sendable {
         let before = Snapshot(entries: entries, notes: notes)
         change(&self)
         guard entries != before.entries || notes != before.notes else { return }
+        if entries != before.entries { announcedTechnique = nil }
         errorMarks.remove(cell)
         undoStack.append(before)
         redoStack.removeAll()
@@ -125,6 +140,7 @@ public struct Game: Codable, Sendable {
         for cell in 0..<81 where entries.cells[cell] != s.entries.cells[cell] || notes[cell] != s.notes[cell] {
             errorMarks.remove(cell)
         }
+        if entries != s.entries { announcedTechnique = nil }
         entries = s.entries
         notes = s.notes
     }
@@ -147,6 +163,9 @@ public struct Game: Codable, Sendable {
         return errorMarks
     }
 
+    /// Staged: the first press names the technique, the second on the same position shows the step and
+    /// records its crossings-out, so a later hint never builds on crossings-out the player has not seen.
+    /// A step counts as one hint however often it is asked for. A wrong entry is always reported at once.
     public mutating func hint() -> Hint? {
         guard !isSolved else { return nil }
         if let first = wrongCells.first {
@@ -155,8 +174,15 @@ public struct Game: Codable, Sendable {
         }
         let masks = candidates(for: entries, in: puzzle.variant).enumerated().map { $0.element & ~hintEliminations[$0.offset] }
         guard let step = Grader.nextStep(entries, candidates: masks, in: puzzle.variant) else { return nil }
+        guard announcedTechnique == step.technique else {
+            announcedTechnique = step.technique
+            hintsUsed += 1
+            return .technique(step.technique)
+        }
+        // A placement changes nothing until the player enters it, so pressing again shows the same step again,
+        // uncounted. Crossing-outs advance to a new step, which starts with its technique again.
+        if !step.eliminations.isEmpty { announcedTechnique = nil }
         for e in step.eliminations { hintEliminations[e.cell] |= digitBit(e.digit) }
-        hintsUsed += 1
         return .step(step)
     }
 }

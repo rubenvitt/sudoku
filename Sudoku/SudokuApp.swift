@@ -4,6 +4,7 @@ import SudokuEngine
 @main
 struct SudokuApp: App {
     @State private var stock: PuzzleStock
+    @State private var exercises: ExerciseStock
     @AppStorage(AccentTheme.storageKey) private var accent: AccentTheme = .ocean
     private let store: Store
 
@@ -27,6 +28,7 @@ struct SudokuApp: App {
         let stock = PuzzleStock(store: store, fixed: fixed, fixedVariants: fixedVariants)
         stock.fillAll()
         _stock = State(initialValue: stock)
+        _exercises = State(initialValue: ExerciseStock(store: store))
         self.store = store
     }
 
@@ -34,6 +36,7 @@ struct SudokuApp: App {
         WindowGroup {
             MenuView(store: store)
                 .environment(stock)
+                .environment(exercises)
                 .environment(\.accent, accent.color)
                 .tint(accent.color)
         }

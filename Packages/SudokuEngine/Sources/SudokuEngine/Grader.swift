@@ -87,6 +87,9 @@ public enum Grader {
     }
 }
 
+/// Receives one application of a technique; returning true stops the search.
+typealias Visit = (Step) -> Bool
+
 /// Solving state: digits plus the candidates left after all applied steps.
 struct Board {
     let layout: Layout
@@ -103,17 +106,44 @@ struct Board {
         self.init(layout: Layout(variant), cells: puzzle.cells, cand: candidates(for: puzzle, in: variant))
     }
 
+    /// The first step in enum order: the easiest technique that applies, and its first application.
     func nextStep() -> Step? {
-        // In enum order; the first that applies wins. Closures keep the type checker from timing out on one long `??` chain.
-        let techniques: [() -> Step?] = [
-            nakedSingle, hiddenSingle, { sumRule(.cageSum) }, thermo, kropki, intersection, { sumRule(.rule45) },
-            { nakedSubset(size: 2, .nakedPair) }, hiddenPair, { nakedSubset(size: 3, .nakedTriple) },
-            { fish(size: 2, .xWing) }, { fish(size: 3, .swordfish) }, xyWing,
-        ]
-        for technique in techniques {
-            if let step = technique() { return step }
+        for technique in Technique.allCases {
+            if let step = first(technique) { return step }
         }
         return nil
+    }
+
+    func first(_ technique: Technique) -> Step? {
+        var found: Step?
+        each(technique) { found = $0; return true }
+        return found
+    }
+
+    /// Every application of `technique` here, not just the first: a practice exercise counts any of them.
+    func steps(of technique: Technique) -> [Step] {
+        var all: [Step] = []
+        each(technique) { all.append($0); return false }
+        return all
+    }
+
+    /// Hands each application of `technique` to `visit`, in search order, until `visit` returns true.
+    func each(_ technique: Technique, _ visit: Visit) {
+        switch technique {
+        case .nakedSingle: nakedSingle(visit)
+        case .hiddenSingle: hiddenSingle(visit)
+        case .cageSum: sumRule(.cageSum, visit)
+        case .thermo: thermo(visit)
+        case .kropki: kropki(visit)
+        case .intersection: intersection(visit)
+        case .rule45: sumRule(.rule45, visit)
+        case .nakedPair: nakedSubset(size: 2, .nakedPair, visit)
+        case .hiddenPair: hiddenPair(visit)
+        case .nakedTriple: nakedSubset(size: 3, .nakedTriple, visit)
+        case .xWing: fish(size: 2, .xWing, visit)
+        case .swordfish: fish(size: 3, .swordfish, visit)
+        case .xyWing: xyWing(visit)
+        }
     }
 
     mutating func apply(_ step: Step) {

@@ -319,6 +319,64 @@
         }
       }
     },
+    "%lld Techniken · %lld geübt" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld Techniken · %2$lld geübt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld techniques · %2$lld practised"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld técnicas · %2$lld practicadas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld techniques · %2$lld travaillées"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld tecniche · %2$lld allenate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld個のテクニック・%2$lld個練習済み"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기법 %1$lld개 · %2$lld개 연습함"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld technieken · %2$lld geoefend"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld técnicas · %2$lld praticadas"
+          }
+        }
+      }
+    },
     "%lld von %lld gelöst" : {
       "comment" : "Statistics row: solved puzzles out of started ones, e.g. \"3 von 5 gelöst\".",
       "localizations" : {
@@ -784,6 +842,180 @@
         }
       }
     },
+    "Auflösen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auflösen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solve"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resolver"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Résoudre"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Risolvi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "答えを見る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "풀이 보기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oplossen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resolver"
+          }
+        }
+      }
+    },
+    "Beispiel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beispiel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Example"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejemplo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exemple"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esempio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "例"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예시"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voorbeeld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exemplo"
+          }
+        }
+      }
+    },
+    "Beispiel für %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beispiel für %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Example of %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejemplo de %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exemple de %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esempio di %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の例"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 예시"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voorbeeld van %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exemplo de %@"
+          }
+        }
+      }
+    },
     "Bernstein" : {
       "localizations" : {
         "de" : {
@@ -897,6 +1129,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Melhor tempo %@"
+          }
+        }
+      }
+    },
+    "Das Mittelfeld hat zwei Kandidaten, etwa 1 oder 2. Ein Partner, den es sieht, hat 1 oder 3, der andere 2 oder 3. Wie auch immer das Mittelfeld ausgeht, einer der Partner wird zur 3. Wo beide Partner hinsehen, fällt die 3 weg." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Mittelfeld hat zwei Kandidaten, etwa 1 oder 2. Ein Partner, den es sieht, hat 1 oder 3, der andere 2 oder 3. Wie auch immer das Mittelfeld ausgeht, einer der Partner wird zur 3. Wo beide Partner hinsehen, fällt die 3 weg."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The middle cell has two candidates, say 1 or 2. One partner it sees has 1 or 3, the other 2 or 3. However the middle cell turns out, one of the partners becomes the 3. Wherever both partners can see, the 3 drops out."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La casilla central tiene dos candidatos, por ejemplo 1 o 2. Una compañera que ve tiene 1 o 3, la otra 2 o 3. Salga lo que salga en la central, una de las compañeras será el 3. Donde ven ambas compañeras, el 3 se descarta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La case centrale a deux candidats, par exemple 1 ou 2. Une partenaire qu'elle voit a 1 ou 3, l'autre 2 ou 3. Quoi qu'il arrive à la case centrale, l'une des partenaires devient le 3. Partout où les deux partenaires voient, le 3 disparaît."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La cella centrale ha due candidati, per esempio 1 o 2. Una partner che vede ha 1 o 3, l'altra 2 o 3. Comunque vada la cella centrale, una delle partner diventa il 3. Dove vedono entrambe le partner, il 3 si elimina."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中心のマスには候補が2つ、たとえば1か2があります。それが見る相手の一方は1か3、もう一方は2か3です。中心がどちらになっても、相手のどちらかが3になります。両方の相手が見えるマスでは3が消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가운데 칸에 후보가 둘, 예를 들어 1 또는 2가 있어요. 그 칸이 보는 짝 하나는 1 또는 3, 다른 짝은 2 또는 3이에요. 가운데 칸이 어떻게 되든 짝 중 하나는 3이 돼요. 두 짝이 모두 보는 칸에서는 3이 지워져요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het middelste vakje heeft twee kandidaten, zeg 1 of 2. Een partner die het ziet heeft 1 of 3, de andere 2 of 3. Hoe het middelste vakje ook uitvalt, een van de partners wordt de 3. Waar beide partners naartoe kijken, valt de 3 weg."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A casa do meio tem dois candidatos, digamos 1 ou 2. Uma parceira que ela vê tem 1 ou 3, a outra 2 ou 3. Seja como for a casa do meio, uma das parceiras vira o 3. Onde as duas parceiras enxergam, o 3 sai."
           }
         }
       }
@@ -1017,6 +1307,180 @@
         }
       }
     },
+    "Die %lld passt hier nicht." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die %lld passt hier nicht."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The %lld doesn't fit here."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El %lld no encaja aquí."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le %lld ne va pas ici."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il %lld qui non va."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ここに%lldは入りません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여기에는 %lld이 들어가지 않아요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De %lld past hier niet."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O %lld não cabe aqui."
+          }
+        }
+      }
+    },
+    "Die Ziffer muss im Kasten irgendwo in dieser Zeile stehen. Damit ist sie in der Zeile vergeben, auch außerhalb des Kastens. Mit Spalten geht es genauso, und ebenso von der Zeile zum Kasten." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Ziffer muss im Kasten irgendwo in dieser Zeile stehen. Damit ist sie in der Zeile vergeben, auch außerhalb des Kastens. Mit Spalten geht es genauso, und ebenso von der Zeile zum Kasten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The digit has to stand somewhere in that row within the box. So the row has it, outside the box too. It works the same with columns, and from the row to the box as well."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El dígito tiene que estar en esa fila dentro del bloque. Así la fila ya lo tiene, también fuera del bloque. Con columnas funciona igual, y también de la fila al bloque."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le chiffre doit se trouver quelque part sur cette ligne dans le bloc. La ligne l'a donc déjà, aussi hors du bloc. C'est pareil avec les colonnes, et aussi de la ligne vers le bloc."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La cifra deve stare da qualche parte in quella riga dentro il riquadro. Quindi la riga ce l'ha già, anche fuori dal riquadro. Con le colonne funziona allo stesso modo, e anche dalla riga al riquadro."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その数字はブロック内のこの行のどこかに入ります。だからブロックの外でも、この行ではもう使われています。列でも同じで、行からブロックへの向きでも成り立ちます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 숫자는 상자 안 이 행의 어딘가에 들어가야 해요. 그래서 상자 밖에서도 그 행에는 이미 쓰인 셈이에요. 열에서도 같고, 행에서 상자 쪽으로도 마찬가지예요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het cijfer moet in het blok ergens in die rij staan. Daarmee is het in de rij vergeven, ook buiten het blok. Met kolommen werkt het net zo, en ook van de rij naar het blok."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O dígito tem de estar em algum lugar dessa linha dentro do bloco. Então a linha já o tem, também fora do bloco. Com colunas é igual, e também da linha para o bloco."
+          }
+        }
+      }
+    },
+    "Die Ziffer verteilt sich auf drei Felder, in jeder der drei Zeilen und jeder der drei Spalten eines. Im Rest dieser Spalten fällt sie weg. Nicht jede Zeile muss alle drei Spalten berühren." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Ziffer verteilt sich auf drei Felder, in jeder der drei Zeilen und jeder der drei Spalten eines. Im Rest dieser Spalten fällt sie weg. Nicht jede Zeile muss alle drei Spalten berühren."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The digit is spread over three cells, one in each of the three rows and each of the three columns. It drops out of the rest of those columns. Not every row has to touch all three columns."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El dígito se reparte en tres casillas, una en cada una de las tres filas y de las tres columnas. Se descarta en el resto de esas columnas. No todas las filas tienen que tocar las tres columnas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le chiffre se répartit sur trois cases, une dans chacune des trois lignes et des trois colonnes. Il disparaît du reste de ces colonnes. Chaque ligne n'a pas besoin de toucher les trois colonnes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La cifra si distribuisce su tre celle, una in ciascuna delle tre righe e delle tre colonne. Si elimina dal resto di quelle colonne. Non tutte le righe devono toccare tutte e tre le colonne."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その数字は3つのマスに入ります。3つの行と3つの列にそれぞれ1つずつです。だからその列の残りからは消えます。各行が3つの列すべてに候補を持つ必要はありません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 숫자는 세 칸에 들어가요. 세 행과 세 열에 하나씩이에요. 그래서 그 열의 나머지에서 지워져요. 모든 행이 세 열을 다 지날 필요는 없어요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het cijfer verdeelt zich over drie vakjes, één in elk van de drie rijen en elk van de drie kolommen. In de rest van die kolommen valt het weg. Niet elke rij hoeft alle drie de kolommen te raken."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O dígito se distribui por três casas, uma em cada uma das três linhas e das três colunas. Ele sai do resto dessas colunas. Nem toda linha precisa tocar as três colunas."
+          }
+        }
+      }
+    },
     "Die Ziffern jedes Käfigs ergeben seine kleine Zahl und wiederholen sich darin nicht." : {
       "localizations" : {
         "de" : {
@@ -1071,6 +1535,180 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Os dígitos de cada gaiola somam o seu número pequeno e não se repetem nela."
+          }
+        }
+      }
+    },
+    "Die beiden Ziffern brauchen diese zwei Felder. Für andere Ziffern ist dort kein Platz mehr, also fallen dort alle übrigen Kandidaten weg." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die beiden Ziffern brauchen diese zwei Felder. Für andere Ziffern ist dort kein Platz mehr, also fallen dort alle übrigen Kandidaten weg."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The two digits need these two cells. There is no room left there for other digits, so all other candidates drop out of them."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los dos dígitos necesitan esas dos casillas. Ahí ya no hay sitio para otros, así que se descartan los demás candidatos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les deux chiffres ont besoin de ces deux cases. Il n'y reste plus de place pour d'autres, donc tous les autres candidats y disparaissent."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le due cifre hanno bisogno di quelle due celle. Lì non c'è più posto per altre cifre, quindi tutti gli altri candidati si eliminano."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2つの数字はこの2マスを必要とします。ほかの数字が入る余地はないので、そこではほかの候補がすべて消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "두 숫자는 이 두 칸이 필요해요. 다른 숫자가 들어갈 자리가 없으니 그 칸의 다른 후보는 모두 지워져요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De twee cijfers hebben deze twee vakjes nodig. Voor andere cijfers is daar geen plek meer, dus vallen daar alle overige kandidaten weg."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os dois dígitos precisam dessas duas casas. Não sobra lugar para outros, então todos os outros candidatos saem delas."
+          }
+        }
+      }
+    },
+    "Die gelben Felder tragen den Schluss." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die gelben Felder tragen den Schluss."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The yellow cells hold the key."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las casillas amarillas son la clave."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les cases jaunes portent la déduction."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le celle gialle reggono la deduzione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "黄色のマスが決め手です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "노란 칸이 결론의 근거예요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De gele vakjes dragen de conclusie."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As casas amarelas sustentam a conclusão."
+          }
+        }
+      }
+    },
+    "Drei Felder einer Gruppe haben zusammen nur drei Kandidaten, auch wenn nicht jedes Feld alle drei hat. Die drei Ziffern verteilen sich auf diese Felder und fallen im Rest der Gruppe weg." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drei Felder einer Gruppe haben zusammen nur drei Kandidaten, auch wenn nicht jedes Feld alle drei hat. Die drei Ziffern verteilen sich auf diese Felder und fallen im Rest der Gruppe weg."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three cells of a group have only three candidates between them, even if not every cell has all three. The three digits are spread over these cells and drop out of the rest of the group."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tres casillas de un grupo tienen entre todas solo tres candidatos, aunque no todas tengan los tres. Los tres dígitos se reparten entre ellas y se descartan en el resto del grupo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trois cases d'un groupe n'ont que trois candidats à elles toutes, même si chaque case ne les a pas tous. Les trois chiffres se répartissent sur ces cases et disparaissent du reste du groupe."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tre celle di un gruppo hanno in tutto solo tre candidati, anche se non tutte li hanno tutti e tre. Le tre cifre si distribuiscono su quelle celle e si eliminano dal resto del gruppo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グループの3マスが合わせて3つの候補しか持っていません。各マスが3つ全部を持っていなくてもかまいません。3つの数字はこの3マスに入るので、グループの残りからは消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그룹의 세 칸이 합쳐서 후보가 세 개뿐이에요. 칸마다 세 개를 다 가질 필요는 없어요. 세 숫자는 이 칸들에 들어가니 그룹의 나머지에서 지워져요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drie vakjes van een groep hebben samen maar drie kandidaten, ook als niet elk vakje ze alle drie heeft. De drie cijfers verdelen zich over deze vakjes en vallen in de rest van de groep weg."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Três casas de um grupo têm juntas só três candidatos, mesmo que nem todas tenham os três. Os três dígitos se distribuem por elas e saem do resto do grupo."
           }
         }
       }
@@ -1130,6 +1768,180 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Média %@"
+          }
+        }
+      }
+    },
+    "Ein Feld mit zwei Kandidaten zwingt eines von zwei Partnerfeldern zur selben Ziffer, also fällt sie überall weg, wo beide hinsehen." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Feld mit zwei Kandidaten zwingt eines von zwei Partnerfeldern zur selben Ziffer, also fällt sie überall weg, wo beide hinsehen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A cell with two candidates forces one of two partner cells to the same digit, so it drops out wherever both can see."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una casilla con dos candidatos obliga a una de dos casillas compañeras al mismo dígito, así que se descarta donde ven ambas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une case à deux candidats force l'une de deux cases partenaires au même chiffre : il disparaît donc partout où les deux voient."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una cella con due candidati costringe una di due celle partner alla stessa cifra, quindi si elimina ovunque le vedano entrambe."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "候補が2つのマスが、2つの相手マスのどちらかを同じ数字に決めます。だから両方が見えるマスからその数字は消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "후보가 둘인 칸이 두 짝 칸 중 하나를 같은 숫자로 만들어요. 그래서 둘 다 보는 칸에서 그 숫자가 지워져요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een vakje met twee kandidaten dwingt een van twee partnervakjes tot hetzelfde cijfer, dus valt het weg overal waar beide naartoe kijken."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma casa com dois candidatos força uma de duas casas parceiras ao mesmo dígito, então ele sai onde as duas enxergam."
+          }
+        }
+      }
+    },
+    "Ein Feld, in das nur noch eine Ziffer passt." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Feld, in das nur noch eine Ziffer passt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A cell where only one digit still fits."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una casilla en la que solo cabe un dígito."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une case où un seul chiffre est encore possible."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una cella in cui ci sta ancora una sola cifra."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "入る数字が1つしか残っていないマス。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "들어갈 숫자가 하나만 남은 칸."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een vakje waarin nog maar één cijfer past."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma casa onde só cabe um dígito."
+          }
+        }
+      }
+    },
+    "Eine Ziffer, die in einer Zeile, Spalte oder einem Kasten nur noch in ein Feld passt." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Ziffer, die in einer Zeile, Spalte oder einem Kasten nur noch in ein Feld passt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A digit that fits only one cell of a row, column or box."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un dígito que en una fila, columna o bloque solo cabe en una casilla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un chiffre qui ne tient plus que dans une case d'une ligne, d'une colonne ou d'un bloc."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una cifra che in una riga, colonna o riquadro sta in una sola cella."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行・列・ブロックの中で、1つのマスにしか入らない数字。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "행, 열, 상자 안에서 한 칸에만 들어갈 수 있는 숫자."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een cijfer dat in een rij, kolom of blok nog maar in één vakje past."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um dígito que numa linha, coluna ou bloco só cabe numa casa."
           }
         }
       }
@@ -1541,6 +2353,122 @@
         }
       }
     },
+    "Geschafft" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschafft"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conseguido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réussi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fatto"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "できました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "해냈어요"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelukt"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conseguiu"
+          }
+        }
+      }
+    },
+    "Geübt" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geübt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practised"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practicada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Travaillée"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allenata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "練習済み"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연습함"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geoefend"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Praticada"
+          }
+        }
+      }
+    },
     "Graphit" : {
       "localizations" : {
         "de" : {
@@ -1595,6 +2523,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grafite"
+          }
+        }
+      }
+    },
+    "Hier hilft „%@“. Tippe noch einmal auf Tipp, dann zeige ich dir die Stelle." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hier hilft „%@“. Tippe noch einmal auf Tipp, dann zeige ich dir die Stelle."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” helps here. Tap Hint again to see where."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquí sirve «%@». Toca Pista otra vez para ver dónde."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ici, « %@ » aide. Touche encore une fois Indice pour voir où."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qui aiuta «%@». Tocca di nuovo Aiuto per vedere dove."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ここでは「%@」が使えます。もう一度ヒントをタップすると場所を表示します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여기서는 ‘%@’ 기법이 도움이 됩니다. 힌트를 한 번 더 누르면 위치를 보여 드립니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hier helpt ‘%@’. Tik nog een keer op Tip om te zien waar."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aqui ajuda “%@”. Toque em Dica de novo para ver onde."
           }
         }
       }
@@ -1715,6 +2701,64 @@
         }
       }
     },
+    "In jeder der beiden Zeilen steht die Ziffer in einer der zwei Spalten, also über Kreuz. Damit ist sie in beiden Spalten vergeben. Mit Zeilen und Spalten vertauscht geht es genauso." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In jeder der beiden Zeilen steht die Ziffer in einer der zwei Spalten, also über Kreuz. Damit ist sie in beiden Spalten vergeben. Mit Zeilen und Spalten vertauscht geht es genauso."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In each of the two rows the digit stands in one of the two columns, so crosswise. That takes it in both columns. It works the same with rows and columns swapped."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En cada una de las dos filas el dígito está en una de las dos columnas, en cruz. Así queda ocupado en ambas columnas. Con filas y columnas intercambiadas funciona igual."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur chacune des deux lignes, le chiffre est dans l'une des deux colonnes, donc en croix. Il est ainsi pris dans les deux colonnes. C'est pareil en échangeant lignes et colonnes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In ognuna delle due righe la cifra sta in una delle due colonne, quindi a incrocio. Così è occupata in entrambe le colonne. Scambiando righe e colonne funziona allo stesso modo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2つの行のそれぞれで、その数字は2つの列のどちらかに入ります。つまり交差する形です。だから両方の列でその数字は使われます。行と列を入れ替えても同じです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "두 행 각각에서 그 숫자는 두 열 중 하나에 들어가요. 엇갈리는 모양이죠. 그래서 두 열 모두에서 그 숫자는 쓰인 셈이에요. 행과 열을 바꿔도 같아요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In elk van de twee rijen staat het cijfer in een van de twee kolommen, dus kruiselings. Daarmee is het in beide kolommen vergeven. Met rijen en kolommen verwisseld werkt het net zo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Em cada uma das duas linhas o dígito está numa das duas colunas, em cruz. Assim ele fica ocupado nas duas colunas. Trocando linhas e colunas funciona igual."
+          }
+        }
+      }
+    },
     "Indigo" : {
       "localizations" : {
         "de" : {
@@ -1769,6 +2813,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Índigo"
+          }
+        }
+      }
+    },
+    "Jede Zeile, Spalte und jeder Kasten braucht jede Ziffer genau einmal. Sind alle anderen Felder für eine Ziffer gesperrt, muss sie in das letzte." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jede Zeile, Spalte und jeder Kasten braucht jede Ziffer genau einmal. Sind alle anderen Felder für eine Ziffer gesperrt, muss sie in das letzte."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every row, column and box needs each digit exactly once. If all other cells are closed to a digit, it must go in the last one."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada fila, columna y bloque necesita cada dígito exactamente una vez. Si todas las demás casillas están cerradas para un dígito, va en la última."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque ligne, colonne et bloc contient chaque chiffre une seule fois. Si toutes les autres cases lui sont fermées, il va dans la dernière."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ogni riga, colonna e riquadro ha bisogno di ogni cifra esattamente una volta. Se tutte le altre celle sono chiuse a una cifra, va nell'ultima."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どの行・列・ブロックにも各数字がちょうど1回入ります。ほかのマスにある数字が入れないなら、残った1マスに入ります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 행, 열, 상자에는 각 숫자가 정확히 한 번 들어가요. 다른 칸에 그 숫자가 모두 들어갈 수 없다면 마지막 칸에 들어가요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elke rij, kolom en elk blok heeft elk cijfer precies één keer nodig. Is een cijfer in alle andere vakjes uitgesloten, dan moet het in het laatste."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada linha, coluna e bloco precisa de cada dígito exatamente uma vez. Se todas as outras casas estão fechadas para um dígito, ele vai na última."
           }
         }
       }
@@ -2411,6 +3513,64 @@
         }
       }
     },
+    "Liegt eine Ziffer in einem Kasten nur in einer Zeile, fällt sie im Rest dieser Zeile weg, und umgekehrt." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liegt eine Ziffer in einem Kasten nur in einer Zeile, fällt sie im Rest dieser Zeile weg, und umgekehrt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If a digit in a box lies only in one row, it drops out of the rest of that row, and the other way round."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si en un bloque un dígito solo está en una fila, se descarta en el resto de esa fila, y al revés."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si, dans un bloc, un chiffre ne se trouve que sur une ligne, il disparaît du reste de cette ligne, et inversement."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se in un riquadro una cifra sta solo in una riga, si elimina dal resto di quella riga, e viceversa."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロック内である数字が1つの行にしかないなら、その行の残りから消えます。逆も同じです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상자 안에서 어떤 숫자가 한 행에만 있으면, 그 행의 나머지에서 지워집니다. 반대도 마찬가지예요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligt een cijfer in een blok maar in één rij, dan valt het in de rest van die rij weg, en omgekeerd."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se num bloco um dígito só está numa linha, ele sai do resto dessa linha, e vice-versa."
+          }
+        }
+      }
+    },
     "Löschen" : {
       "localizations" : {
         "de" : {
@@ -2877,6 +4037,64 @@
         }
       }
     },
+    "Nächste Übung" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächste Übung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next exercise"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente ejercicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercice suivant"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prossimo esercizio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の練習"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음 연습"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volgende oefening"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximo exercício"
+          }
+        }
+      }
+    },
     "Ohne Tipps" : {
       "comment" : "Statistics tile: puzzles solved without a hint.",
       "localizations" : {
@@ -3048,6 +4266,122 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Encontre pares e trios"
+          }
+        }
+      }
+    },
+    "Passt eine Ziffer in zwei Zeilen nur in dieselben zwei Spalten, fällt sie im Rest dieser Spalten weg." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passt eine Ziffer in zwei Zeilen nur in dieselben zwei Spalten, fällt sie im Rest dieser Spalten weg."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If a digit fits only the same two columns in two rows, it drops out of the rest of those columns."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si en dos filas un dígito solo cabe en las mismas dos columnas, se descarta en el resto de esas columnas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si, sur deux lignes, un chiffre ne tient que dans les deux mêmes colonnes, il disparaît du reste de ces colonnes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se in due righe una cifra sta solo nelle stesse due colonne, si elimina dal resto di quelle colonne."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2つの行である数字が同じ2つの列にしか入らないなら、その列の残りから消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "두 행에서 어떤 숫자가 같은 두 열에만 들어가면, 그 열의 나머지에서 지워져요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Past een cijfer in twee rijen alleen in dezelfde twee kolommen, dan valt het in de rest van die kolommen weg."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se em duas linhas um dígito só cabe nas mesmas duas colunas, ele sai do resto dessas colunas."
+          }
+        }
+      }
+    },
+    "Passt nicht, die %lld bleibt." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passt nicht, die %lld bleibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doesn't fit, the %lld stays."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No encaja, el %lld se queda."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ça ne colle pas, le %lld reste."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non va, il %lld resta."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "違います。%lldは残ります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맞지 않아요. %lld은 남아요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klopt niet, de %lld blijft."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não encaixa, o %lld fica."
           }
         }
       }
@@ -3459,6 +4793,122 @@
         }
       }
     },
+    "Schau in die markierte Gegend." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schau in die markierte Gegend."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look at the highlighted area."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mira la zona marcada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regarde la zone surlignée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda la zona evidenziata."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "色の付いた範囲を見てください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "표시된 영역을 보세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kijk naar het gemarkeerde gebied."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olhe a área destacada."
+          }
+        }
+      }
+    },
+    "Schau, welche Ziffern in der Zeile, der Spalte und dem Kasten des Feldes schon stehen. Fehlt nur noch eine, gehört sie hinein." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schau, welche Ziffern in der Zeile, der Spalte und dem Kasten des Feldes schon stehen. Fehlt nur noch eine, gehört sie hinein."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check which digits are already in the cell's row, column and box. If only one is missing, it belongs there."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mira qué dígitos hay ya en la fila, la columna y el bloque de la casilla. Si solo falta uno, va ahí."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regarde quels chiffres figurent déjà dans la ligne, la colonne et le bloc de la case. S'il n'en manque qu'un, c'est lui."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda quali cifre ci sono già nella riga, nella colonna e nel riquadro della cella. Se ne manca solo una, va lì."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "そのマスの行・列・ブロックにすでにある数字を確かめます。足りないのが1つだけなら、それが入ります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 칸의 행, 열, 상자에 이미 있는 숫자를 확인하세요. 하나만 빠져 있다면 그 숫자가 들어가요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kijk welke cijfers al in de rij, de kolom en het blok van het vakje staan. Ontbreekt er nog maar één, dan hoort die erin."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veja quais dígitos já estão na linha, na coluna e no bloco da casa. Se só falta um, é ele."
+          }
+        }
+      }
+    },
     "Schiefer" : {
       "localizations" : {
         "de" : {
@@ -3571,6 +5021,296 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fecha a dica"
+          }
+        }
+      }
+    },
+    "Schritt ausblenden" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritt ausblenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide step"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar paso"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer l'étape"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nascondi passaggio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "手順を隠す"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단계 숨기기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stap verbergen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar passo"
+          }
+        }
+      }
+    },
+    "Schritt zeigen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritt zeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show step"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar paso"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montrer l'étape"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra passaggio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "手順を表示"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단계 보기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stap tonen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar passo"
+          }
+        }
+      }
+    },
+    "Selbst probieren" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selbst probieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try it yourself"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pruébalo tú"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À toi d'essayer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prova tu"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分で試す"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직접 해 보기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zelf proberen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experimente você"
+          }
+        }
+      }
+    },
+    "Setze eine Ziffer, die hier sicher ist." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setze eine Ziffer, die hier sicher ist."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place a digit that is certain here."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coloca un dígito que aquí sea seguro."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place un chiffre qui est sûr ici."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci una cifra che qui è sicura."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ここで確定する数字を入れてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여기서 확실한 숫자를 넣으세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zet een cijfer dat hier zeker is."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coloque um dígito que aqui é certo."
+          }
+        }
+      }
+    },
+    "So geht es" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So geht es"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Here's how"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Así se hace"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voici comment"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ecco come"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "こうします"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이렇게 해요"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zo werkt het"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "É assim"
           }
         }
       }
@@ -3921,6 +5661,180 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Em vez de blocos há nove regiões irregulares, e cada uma contém de 1 a 9."
+          }
+        }
+      }
+    },
+    "Streiche die Notizen, die wegfallen." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streiche die Notizen, die wegfallen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cross out the notes that drop out."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tacha las notas que se descartan."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barre les notes qui tombent."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancella le note che si eliminano."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "消える候補を消してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지워지는 메모를 지우세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streep de notities door die wegvallen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Risque as notas que saem."
+          }
+        }
+      }
+    },
+    "Technik üben" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Technik üben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practise technique"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practicar técnica"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'entraîner à la technique"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esercitati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テクニックを練習"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기법 연습"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Techniek oefenen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Praticar técnica"
+          }
+        }
+      }
+    },
+    "Techniken üben" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Techniken üben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practise techniques"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practicar técnicas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'entraîner aux techniques"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allenarsi sulle tecniche"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テクニックを練習"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기법 연습"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Technieken oefenen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Praticar técnicas"
           }
         }
       }
@@ -4329,6 +6243,180 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continuar"
+          }
+        }
+      }
+    },
+    "Welche der beiden Ziffern in welches Feld kommt, ist noch offen, aber beide sind vergeben. In den übrigen Feldern der Gruppe fallen sie deshalb weg." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welche der beiden Ziffern in welches Feld kommt, ist noch offen, aber beide sind vergeben. In den übrigen Feldern der Gruppe fallen sie deshalb weg."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which of the two digits goes where is still open, but both are taken. So they drop out of the group's other cells."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no se sabe qué dígito va en cada casilla, pero los dos están ocupados. Por eso se descartan en las demás casillas del grupo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On ne sait pas encore quel chiffre va où, mais les deux sont pris. Ils disparaissent donc des autres cases du groupe."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non si sa ancora quale cifra va dove, ma entrambe sono occupate. Per questo si eliminano dalle altre celle del gruppo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どちらの数字がどちらのマスに入るかはまだ分かりませんが、2つとも使われます。だからグループのほかのマスからは消えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어느 숫자가 어느 칸에 들어갈지는 아직 몰라도, 두 숫자 모두 쓰였어요. 그래서 그룹의 다른 칸에서는 지워져요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welk van de twee cijfers waar komt, is nog open, maar beide zijn vergeven. Daarom vallen ze in de overige vakjes van de groep weg."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ainda não se sabe qual dígito vai em qual casa, mas os dois estão ocupados. Por isso saem das outras casas do grupo."
+          }
+        }
+      }
+    },
+    "Wie das Paar, mit drei Feldern und drei Ziffern." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie das Paar, mit drei Feldern und drei Ziffern."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Like the pair, with three cells and three digits."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como la pareja, con tres casillas y tres dígitos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comme la paire, avec trois cases et trois chiffres."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come la coppia, con tre celle e tre cifre."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ペアと同じで、3マスと3つの数字で考えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쌍과 같지만 세 칸과 세 숫자로 해요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoals het paar, met drie vakjes en drie cijfers."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como o par, com três casas e três dígitos."
+          }
+        }
+      }
+    },
+    "Wie der X-Wing, mit drei Zeilen und drei Spalten." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie der X-Wing, mit drei Zeilen und drei Spalten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Like the X-Wing, with three rows and three columns."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como el X-Wing, con tres filas y tres columnas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comme le X-Wing, avec trois lignes et trois colonnes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come l'X-Wing, con tre righe e tre colonne."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X-Wingと同じで、3つの行と3つの列で考えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X-Wing과 같지만 세 행과 세 열로 해요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoals de X-Wing, met drie rijen en drie kolommen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como o X-Wing, com três linhas e três colunas."
           }
         }
       }
@@ -4855,6 +6943,122 @@
         }
       }
     },
+    "Zurück" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indietro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "戻る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "돌아가기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terug"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voltar"
+          }
+        }
+      }
+    },
+    "Zurück zum Spiel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück zum Spiel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to Game"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver al juego"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour au jeu"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torna al gioco"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームに戻る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임으로 돌아가기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terug naar spel"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voltar ao jogo"
+          }
+        }
+      }
+    },
     "Zurücksetzen" : {
       "comment" : "Confirms resetting the statistics.",
       "localizations" : {
@@ -4910,6 +7114,122 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Redefinir"
+          }
+        }
+      }
+    },
+    "Zwei Felder einer Gruppe mit denselben zwei Kandidaten teilen sie unter sich auf." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwei Felder einer Gruppe mit denselben zwei Kandidaten teilen sie unter sich auf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two cells of a group with the same two candidates share them between them."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dos casillas de un grupo con los mismos dos candidatos se los reparten."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux cases d'un groupe avec les deux mêmes candidats se les partagent."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Due celle di un gruppo con gli stessi due candidati se li dividono."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同じグループで同じ2つの候補を持つ2マスは、その2つを分け合います。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "같은 그룹에서 같은 두 후보를 가진 두 칸은 그 둘을 나눠 가져요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twee vakjes van een groep met dezelfde twee kandidaten verdelen die onder elkaar."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duas casas de um grupo com os mesmos dois candidatos dividem-nos entre si."
+          }
+        }
+      }
+    },
+    "Zwei Ziffern, die in einer Gruppe nur in dieselben zwei Felder passen, belegen diese Felder." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwei Ziffern, die in einer Gruppe nur in dieselben zwei Felder passen, belegen diese Felder."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two digits that fit only the same two cells of a group take those cells."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dos dígitos que en un grupo solo caben en las mismas dos casillas las ocupan."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux chiffres qui, dans un groupe, ne tiennent que dans les deux mêmes cases occupent ces cases."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Due cifre che in un gruppo stanno solo nelle stesse due celle le occupano."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グループ内で同じ2マスにしか入らない2つの数字は、その2マスを占めます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그룹 안에서 같은 두 칸에만 들어갈 수 있는 두 숫자는 그 칸을 차지해요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twee cijfers die in een groep alleen in dezelfde twee vakjes passen, bezetten die vakjes."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dois dígitos que num grupo só cabem nas mesmas duas casas ocupam essas casas."
           }
         }
       }

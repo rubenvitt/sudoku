@@ -196,7 +196,7 @@ extension Board {
     }
 
     /// Cage sums (`.cageSum`) or the rule of 45 (`.rule45`): digits that fit no way of reaching the sum drop out.
-    func sumRule(_ technique: Technique) -> Step? {
+    func sumRule(_ technique: Technique, _ visit: Visit) {
         for rule in layout.sumRules {
             guard rule.isCage == (technique == .cageSum), rule.cells.contains(where: { cells[$0] == 0 }) else { continue }
             let (possible, sets) = fillings(rule)
@@ -207,7 +207,7 @@ extension Board {
             guard !eliminations.isEmpty else { continue }
             // Digit sets are only telling when no digit repeats.
             let combinations = rule.distinct ? sets.sorted().map { digits($0).map(String.init).joined(separator: " + ") } : []
-            return Step(technique: technique, placement: nil, eliminations: eliminations, focus: rule.cells) { [layout] language in
+            let step = Step(technique: technique, placement: nil, eliminations: eliminations, focus: rule.cells) { [layout] language in
                 let premise = switch rule.origin {
                 case .cage:
                     localized("Die markierten Felder ergeben zusammen \(rule.sum).", language)
@@ -227,8 +227,8 @@ extension Board {
                     : localized("Also fällt dort weg, was zu keiner möglichen Summe passt.", language)
                 return localized("\(premise) \(conclusion)", language)
             }
+            if visit(step) { return }
         }
-        return nil
     }
 }
 

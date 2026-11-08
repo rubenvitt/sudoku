@@ -8,6 +8,32 @@ final class SmokeTests: XCTestCase {
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
     }
 
+    /// Menu → technique list → technique page with its example → an exercise, solved by asking for all help.
+    @MainActor
+    func testPracticeAnExercise() {
+        let app = launch(["-uiTestFixedPuzzle"])
+        scrollTo(app.buttons["practice"], in: app).tap()
+        app.buttons["technique-nakedSingle"].tap()
+        scrollTo(app.buttons["show-step"], in: app).tap()
+        scrollTo(app.buttons["try"], in: app).tap()
+        let hint = app.buttons["hint"]
+        XCTAssertTrue(hint.waitForExistence(timeout: 5))
+        for _ in 0..<4 { hint.tap() }
+        let next = app.buttons["next-exercise"]
+        XCTAssertTrue(next.waitForExistence(timeout: 5), "the fourth help shows the solution")
+        next.tap()
+        XCTAssertTrue(hint.waitForExistence(timeout: 5))
+        XCTAssertFalse(next.exists, "a fresh exercise")
+    }
+
+    /// Swipes up until `element` can be tapped, for screens taller than the device.
+    @MainActor
+    private func scrollTo(_ element: XCUIElement, in app: XCUIApplication) -> XCUIElement {
+        XCTAssertTrue(element.waitForExistence(timeout: 5))
+        for _ in 0..<5 where !element.isHittable { app.swipeUp() }
+        return element
+    }
+
     @MainActor
     func testStartGameEnterDigitAndCheck() {
         let app = launch(["-uiTestFixedPuzzle"])
@@ -108,7 +134,8 @@ final class SmokeTests: XCTestCase {
         cell(0).tap() // the given 5: highlights every 5
         attachScreenshot("1-Spiel")
 
-        app.buttons["hint"].tap()
+        app.buttons["hint"].tap() // names the technique
+        app.buttons["hint"].tap() // shows the step
         sleep(1)
         attachScreenshot("4-Tipp")
 
@@ -184,6 +211,26 @@ final class SmokeTests: XCTestCase {
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    /// The first hint names the technique and leads into the practice room; the second shows the step.
+    @MainActor
+    func testStagedHintOpensThePracticePage() {
+        let app = launch(["-uiTestFixedPuzzle"])
+        app.buttons["Leicht"].tap()
+        app.buttons["hint"].tap()
+        let announcement = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label BEGINSWITH 'Hier hilft'")).firstMatch
+        XCTAssertTrue(announcement.waitForExistence(timeout: 5), "the first hint names the technique")
+        let practise = app.buttons["practiseTechnique"]
+        XCTAssertTrue(practise.waitForExistence(timeout: 5))
+        practise.tap()
+        XCTAssertTrue(app.buttons["try"].waitForExistence(timeout: 5), "the technique page did not open")
+        app.buttons["backToGame"].tap()
+        XCTAssertTrue(app.buttons["try"].waitForNonExistence(timeout: 5))
+        app.buttons["hint"].tap()
+        XCTAssertTrue(announcement.waitForNonExistence(timeout: 5), "the second hint shows the step")
+        XCTAssertTrue(app.buttons["practiseTechnique"].exists)
     }
 
     /// The statistics start empty and count a started game.

@@ -74,6 +74,13 @@ struct MenuView: View {
                         }
                     }
                 }
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Techniken üben").font(.title2.bold()).accessibilityAddTraits(.isHeader)
+                        .padding(.horizontal, 4)
+                    PracticeEntry()
+                        .disabled(starting != nil)
+                }
             }
             .frame(maxWidth: 680)
             .padding(.horizontal, sizeClass == .compact ? 16 : 32)

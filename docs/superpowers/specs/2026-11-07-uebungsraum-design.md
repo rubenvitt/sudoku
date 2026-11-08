@@ -1,6 +1,13 @@
 # Sudoku – Übungsraum für Lösungstechniken
 
-**Stand:** 7. November 2026 · Konzept, noch nichts gebaut
+**Stand:** 8. November 2026 · Alle Schritte aus §8 gebaut, in einem PR statt
+fünf. Texte in allen neun Sprachen der App. Ruben hat die Fragen aus §9 am
+8. November mit dreimal Ja beantwortet: gestufter Tipp im Spiel mit Link
+„Technik üben“ (§7), drei Übungen = geübt, englischer Name in Klammern in der
+Liste und klein unter dem Titel der Technikseite. Die Uhr steht, solange die
+Technikseite über dem Spiel liegt. Als Startstellungen dienen die bekannten Beispielbretter je Technik
+(`Exercises.starters`), umgeformt bei jedem Aufruf; neue Stellungen kommen im
+Hintergrund aus frisch erzeugten Rätseln dazu.
 
 Ein eigener Bereich der App, in dem man jede Lösungstechnik einzeln kennenlernt:
 kurz erklärt, an einem Beispiel gezeigt, dann an echten Stellungen selbst

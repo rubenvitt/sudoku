@@ -5,7 +5,7 @@ extension Board {
 
     /// Along a thermometer every cell holds more than the one before it, so it can't be smaller than the smallest digit
     /// left there plus one, nor larger than the largest digit left in the next cell minus one.
-    func thermo() -> Step? {
+    func thermo(_ visit: Visit) {
         for thermo in layout.variant.thermos {
             var low = thermo.map { digits(options($0)).first ?? 10 }
             var high = thermo.map { digits(options($0)).last ?? 0 }
@@ -16,18 +16,18 @@ extension Board {
                 eliminations += digits(cand[c]).filter { $0 < low[i] || $0 > high[i] }.map { (cell: c, digit: $0) }
             }
             guard !eliminations.isEmpty else { continue }
-            return Step(technique: .thermo, placement: nil, eliminations: eliminations, focus: thermo) { language in
+            let step = Step(technique: .thermo, placement: nil, eliminations: eliminations, focus: thermo) { language in
                 localized("""
                     Auf dem markierten Thermometer steigen die Ziffern vom Kolben aus an, \
                     also fällt in seinen Feldern weg, was dafür zu klein oder zu groß ist.
                     """, language)
             }
+            if visit(step) { return }
         }
-        return nil
     }
 
     /// A digit next to a dot needs a partner on the other side: one more or less at a white dot, half or double at a black one.
-    func kropki() -> Step? {
+    func kropki(_ visit: Visit) {
         for dot in layout.variant.dots {
             let a = dot.cells[0], b = dot.cells[1]
             var eliminations: [(cell: Int, digit: Int)] = []
@@ -36,7 +36,7 @@ extension Board {
                 eliminations += digits(cand[here]).filter { d in !partners.contains { dot.allows(d, $0) } }.map { (cell: here, digit: $0) }
             }
             guard !eliminations.isEmpty else { continue }
-            return Step(technique: .kropki, placement: nil, eliminations: eliminations, focus: [a, b]) { language in
+            let step = Step(technique: .kropki, placement: nil, eliminations: eliminations, focus: [a, b]) { language in
                 switch dot.kind {
                 case .white:
                     localized("""
@@ -50,8 +50,8 @@ extension Board {
                         """, language)
                 }
             }
+            if visit(step) { return }
         }
-        return nil
     }
 }
 

@@ -16,6 +16,13 @@ struct GameView: View {
     /// Handwriting per cell; shown instead of the typeset digit while the cell holds the digit it was written as.
     @State private var ink: [Int: Ink]
     @State private var banner: String?
+    /// The technique the banner names, when the practice room has a page for it.
+    @State private var bannerTechnique: Technique?
+    /// The technique page opened from the banner; the clock stops while it is open.
+    @State private var practising: Technique?
+    /// Where the grid and the hint banner are on screen, so the handwriting layer leaves the banner's taps alone.
+    @State private var gridFrame: CGRect = .zero
+    @State private var bannerFrame: CGRect = .null
     /// Edits per cell that did not come from the pencil; see `ScribbleLayer.revisions`.
     @State private var revisions: [Int: Int] = [:]
     @State private var showsRule = false
@@ -65,6 +72,21 @@ struct GameView: View {
                 .padding(24)
             }
         }
+        // Above everything and inside the game's bounds, so the banner's buttons get their taps:
+        // it sits right above the action keys and grows upward over the grid.
+        .overlayPreferenceValue(BannerSlot.self) { slot in
+            GeometryReader { proxy in
+                if let slot, let banner {
+                    let rect = proxy[slot]
+                    bannerView(banner)
+                        .frame(width: rect.width)
+                        .padding(.leading, rect.minX)
+                        .padding(.bottom, max(0, proxy.size.height - rect.minY))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+        }
         // Taps that land beside the grid and the keys clear the selection, and with it the highlighted digit.
         .background {
             Color.clear
@@ -91,8 +113,21 @@ struct GameView: View {
         .sensoryFeedback(.impact(weight: .light), trigger: game.entries)
         .sensoryFeedback(.selection, trigger: noteMode)
         .sensoryFeedback(.success, trigger: game.isSolved) { _, solved in solved }
-        .task(id: scenePhase) {
-            guard scenePhase == .active else { return }
+        .sheet(isPresented: Binding(get: { practising != nil }, set: { if !$0 { practising = nil } })) {
+            if let practising {
+                NavigationStack {
+                    TechniquePage(technique: practising)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Zurück zum Spiel") { self.practising = nil }
+                                    .accessibilityIdentifier("backToGame")
+                            }
+                        }
+                }
+            }
+        }
+        .task(id: ClockState(phase: scenePhase, isPractising: practising != nil)) {
+            guard scenePhase == .active, practising == nil else { return }
             while !game.isSolved {
                 do { try await Task.sleep(for: .seconds(1)) } catch { return }
                 if game.isSolved { return } // solved during the sleep: the result shows the final time
@@ -101,6 +136,44 @@ struct GameView: View {
         }
         .onChange(of: scenePhase) { if scenePhase != .active && !game.isSolved { save() } }
         .onDisappear { save(); onLeave() }
+    }
+
+    /// The hint, with a way into the practice room when it names a technique that has a page there.
+    private func bannerView(_ text: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Button { self.banner = nil } label: {
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Image(systemName: "lightbulb.max.fill")
+                        .foregroundStyle(.yellow)
+                        .accessibilityHidden(true)
+                    Text(text)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Schließt den Hinweis")
+            if let bannerTechnique {
+                Button {
+                    save()
+                    practising = bannerTechnique
+                } label: {
+                    Label("Technik üben", systemImage: "graduationcap")
+                        .font(.callout.weight(.semibold))
+                }
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .padding(.leading, 30) // under the text, past the bulb
+                .accessibilityIdentifier("practiseTechnique")
+            }
+        }
+        .font(.callout)
+        .padding(.horizontal, 18).padding(.vertical, 14)
+        .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
+        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
+        .fixedSize(horizontal: false, vertical: true)
+        .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { bannerFrame = $0 }
     }
 
     /// Variant, difficulty and time. Tapping it shows the variant's rule, for a first Killer or Jigsaw game.
@@ -145,10 +218,13 @@ struct GameView: View {
         GridView(game: game, selection: $selection, focus: focus, ink: ink)
             .equatable()
             .aspectRatio(1, contentMode: .fit)
+            .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { gridFrame = $0 }
             // Before `.frame`, so the layer covers exactly the grid and shares its coordinates.
             .overlay {
                 ScribbleLayer(givens: givens, noteMode: noteMode, onInput: apply, inkColor: accent,
-                              onSelect: toggleSelection, onUndo: { history { $0.undo() } }, revisions: revisions)
+                              onSelect: toggleSelection, onUndo: { history { $0.undo() } }, revisions: revisions,
+                              excluded: banner == nil ? .null
+                                  : bannerFrame.offsetBy(dx: -gridFrame.minX, dy: -gridFrame.minY))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -171,30 +247,10 @@ struct GameView: View {
 
     private func controls(actionColumns: Int, digitColumns: Int, keyHeight: CGFloat) -> some View {
         VStack(spacing: 14) {
-            // Zero-height anchor: the banner grows upward over free space, so the grid's size
-            // (and the Scribble layer laid over it) never changes when it appears.
-            Color.clear.frame(height: 0).overlay(alignment: .bottom) {
-                if let banner {
-                    Button { self.banner = nil } label: {
-                        HStack(alignment: .firstTextBaseline, spacing: 12) {
-                            Image(systemName: "lightbulb.max.fill")
-                                .foregroundStyle(.yellow)
-                                .accessibilityHidden(true)
-                            Text(banner)
-                                .multilineTextAlignment(.leading)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .font(.callout)
-                        .padding(.horizontal, 18).padding(.vertical, 14)
-                        .background(.regularMaterial, in: .rect(cornerRadius: 18, style: .continuous))
-                        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
-                    }
-                    .buttonStyle(.plain)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityHint("Schließt den Hinweis")
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-            }
+            // Zero-height anchor for the hint banner, which is laid over the whole game (see `body`),
+            // so the grid's size (and the Scribble layer laid over it) never changes when it appears.
+            Color.clear.frame(height: 0)
+                .anchorPreference(key: BannerSlot.self, value: .bounds) { $0 }
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: actionColumns), spacing: 8) {
                 actions
             }
@@ -271,9 +327,12 @@ struct GameView: View {
         switch game.hint() {
         case let .wrongEntry(row):
             announce(String(localized: "In Zeile \(row) stimmt etwas nicht."))
+        case let .technique(technique):
+            announce(String(localized: "Hier hilft „\(technique.title)“. Tippe noch einmal auf Tipp, dann zeige ich dir die Stelle."),
+                     technique: technique)
         case let .step(step):
             focus = Set(step.focus)
-            announce("\(step.technique.title): \(step.explanation)")
+            announce("\(step.technique.title): \(step.explanation)", technique: step.technique)
         case nil:
             announce(String(localized: "Für diese Stellung habe ich keinen Tipp."))
         }
@@ -286,8 +345,10 @@ struct GameView: View {
         save()
     }
 
-    private func announce(_ text: String) {
+    /// Shows `text` in the banner, with a way into the practice room when `technique` has a page there.
+    private func announce(_ text: String, technique: Technique? = nil) {
         banner = text
+        bannerTechnique = technique.flatMap { Exercises.techniques.contains($0) ? $0 : nil }
         AccessibilityNotification.Announcement(text).post()
     }
 
@@ -295,6 +356,20 @@ struct GameView: View {
         guard !game.isSolved else { return } // the save was deleted on solve; never bring it back
         try? store.save(game, ink: ink) // nothing to offer the player beyond retrying on the next move
     }
+}
+
+/// Where the hint banner goes: right above the action keys.
+private struct BannerSlot: PreferenceKey {
+    static var defaultValue: Anchor<CGRect>? { nil }
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = value ?? nextValue()
+    }
+}
+
+/// What the clock depends on: it runs only while the app is active and no technique page covers the game.
+private struct ClockState: Equatable {
+    let phase: ScenePhase
+    let isPractising: Bool
 }
 
 /// Symbol above a short caption; `isOn` marks a toggle that is switched on.
