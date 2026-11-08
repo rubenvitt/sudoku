@@ -51,8 +51,8 @@ struct StatisticsView: View {
         }
         .confirmationDialog("Alle Statistiken löschen?", isPresented: $confirmingReset, titleVisibility: .visible) {
             Button("Zurücksetzen", role: .destructive) {
-                statistics = Statistics()
-                try? store.saveStatistics(statistics) // a failed write leaves the old numbers for next time
+                // Shown as reset only once saved: a failed write keeps the numbers that will load next time.
+                if (try? store.saveStatistics(Statistics())) != nil { statistics = Statistics() }
             }
         } message: {
             Text("Gelöste Rätsel, Zeiten und Bestzeiten gehen dabei verloren.")
