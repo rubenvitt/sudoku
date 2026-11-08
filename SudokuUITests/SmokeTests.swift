@@ -186,6 +186,23 @@ final class SmokeTests: XCTestCase {
         add(attachment)
     }
 
+    /// The statistics start empty and count a started game.
+    @MainActor
+    func testStatisticsCountAStartedGame() {
+        let app = launch(["-uiTestFixedPuzzle"])
+        app.buttons["statistics"].tap()
+        XCTAssertTrue(app.staticTexts["Noch keine Statistik"].waitForExistence(timeout: 5))
+        app.buttons["Fertig"].tap()
+        pickVariant("classic", in: app) // also checks that the variant card and tiles carry their identifiers
+        app.buttons["difficulty-easy"].tap()
+        XCTAssertTrue(app.buttons["cell-2"].waitForExistence(timeout: 5))
+        app.navigationBars.buttons.firstMatch.tap()
+        app.buttons["statistics"].tap()
+        let row = app.descendants(matching: .any)["statistics-easy"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        XCTAssertTrue(row.label.contains("0 von 1 gelöst"), row.label)
+    }
+
     @MainActor
     func testTwoFingerTapUndoes() {
         let app = launch(["-uiTestFixedPuzzle"])

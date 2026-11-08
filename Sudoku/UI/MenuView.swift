@@ -10,6 +10,7 @@ struct MenuView: View {
     @State private var pendingDiscard: Difficulty?
     @State private var starting: Difficulty?
     @State private var choosingAccent = false
+    @State private var showingStatistics = false
     @AppStorage("variant") private var variantID = Variant.classic.id
     @Environment(\.accent) private var accent
 
@@ -26,6 +27,14 @@ struct MenuView: View {
             menu
                 .navigationTitle("Sudoku")
                 .toolbar {
+                    // Statistics stay a side door: a toolbar icon, not a card among the games.
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button { showingStatistics = true } label: {
+                            Image(systemName: "chart.bar")
+                        }
+                        .accessibilityLabel("Statistik")
+                        .accessibilityIdentifier("statistics")
+                    }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button { choosingAccent = true } label: {
                             Image(systemName: "paintpalette")
@@ -35,6 +44,9 @@ struct MenuView: View {
                 }
                 .sheet(isPresented: $choosingAccent) {
                     AccentPicker().presentationDetents([.medium, .large])
+                }
+                .sheet(isPresented: $showingStatistics) {
+                    StatisticsView(store: store)
                 }
                 .navigationDestination(for: Session.self) { session in
                     // Leaving saves the game first, so reloading afterwards shows the current time.
@@ -159,6 +171,7 @@ struct MenuView: View {
         Task {
             let game = Game(puzzle: await stock.take(difficulty, variant: variant))
             try? store.save(game) // a failed save only loses the resume option
+            store.updateStatistics { $0.recordStart(game.puzzle) }
             starting = nil
             saved = game
             path = [Session(game: game)]
