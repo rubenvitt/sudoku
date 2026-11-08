@@ -16,7 +16,7 @@ SEU JOGO FICA ONDE ESTÁ
 Cada jogada é salva na hora. Feche o app quando quiser e continue exatamente de onde parou.
 
 E MAIS
-• Cinco variantes: clássico, diagonal, Windoku, Jigsaw e Killer
+• Sete variantes: clássico, diagonal, Windoku, Jigsaw, Killer, Thermo e Kropki
 • Notas para candidatos, números iguais ficam destacados
 • Desfazer e refazer, também com toque de dois dedos
 • Resumo com tempo, dicas e erros encontrados

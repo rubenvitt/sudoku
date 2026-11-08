@@ -1,2 +1,2 @@
-• Two new variants: Jigsaw, with irregular regions instead of boxes, and Killer, with cages whose digits add up to a given sum. Hints also explain cage sums and the rule of 45.
+• Four new variants: Jigsaw, with irregular regions instead of boxes; Killer, with cages whose digits add up to a given sum; Thermo, with thermometers along which the digits rise; and Kropki, with white and black dots between neighbouring cells. Hints also explain cage sums, the rule of 45, thermometers and dots.
 • Sudoku now also speaks Japanese, Korean, Dutch and Portuguese (Brazil), including every hint explanation.

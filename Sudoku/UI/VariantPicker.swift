@@ -122,7 +122,7 @@ struct VariantSheet: View {
 }
 
 /// A miniature board that shows what sets the variant apart: tinted diagonals or windows, Jigsaw regions,
-/// Killer cages. Jigsaw and Killer draw a sample, since every puzzle brings its own regions and cages.
+/// Killer cages, thermometers, Kropki dots. All but the first two draw a sample, since every puzzle brings its own.
 struct VariantPreview: View {
     let variant: Variant
     @Environment(\.accent) private var accent
@@ -140,8 +140,10 @@ struct VariantPreview: View {
                 context.stroke(cage.outline(step: step, inset: step * 0.15, label: .zero), with: .color(accent),
                                style: StrokeStyle(lineWidth: 1, lineCap: .round))
             }
+            shown.drawThermos(in: context, side: side, color: accent.opacity(0.55))
             context.stroke(shown.regionBorders(side: side), with: .color(Color(.label).opacity(0.7)),
                            style: StrokeStyle(lineWidth: 1, lineCap: .square))
+            shown.drawDots(in: context, side: side, ink: Color(.label), size: 0.55)
         }
         .padding(4)
         .background(Color(.systemBackground), in: .rect(cornerRadius: 8, style: .continuous))
@@ -149,7 +151,7 @@ struct VariantPreview: View {
         .accessibilityHidden(true)
     }
 
-    /// What the preview draws for `variant`: the variant itself, or for Jigsaw and Killer a typical puzzle's shape.
+    /// What the preview draws for `variant`: the variant itself, or for Jigsaw, Killer, Thermo and Kropki a typical puzzle's shape.
     static func sample(for variant: Variant) -> Variant {
         switch variant.id {
         case Variant.jigsaw.id:
@@ -175,6 +177,19 @@ struct VariantPreview: View {
                 Cage(cells: [46, 47, 55, 64], sum: 18),
                 Cage(cells: [67, 68, 76], sum: 18),
                 Cage(cells: [70, 79, 80], sum: 19),
+            ])
+        case Variant.thermo.id:
+            Variant(id: variant.id, rows: variant.rows, columns: variant.columns, regions: variant.regions, extras: [], thermos: [
+                [9, 10, 11, 12],
+                [24, 16, 8],
+                [37, 46, 55, 64],
+                [60, 61, 70, 79],
+                [41, 32, 23],
+            ])
+        case Variant.kropki.id:
+            Variant(id: variant.id, rows: variant.rows, columns: variant.columns, regions: variant.regions, extras: [], dots: [
+                Dot(0, 1, .white), Dot(10, 19, .black), Dot(22, 23, .white), Dot(15, 16, .black), Dot(30, 39, .black),
+                Dot(42, 43, .white), Dot(51, 60, .white), Dot(57, 58, .black), Dot(64, 73, .white), Dot(69, 70, .white),
             ])
         default:
             variant
