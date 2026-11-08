@@ -193,7 +193,6 @@ final class SmokeTests: XCTestCase {
         app.buttons["statistics"].tap()
         XCTAssertTrue(app.staticTexts["Noch keine Statistik"].waitForExistence(timeout: 5))
         app.buttons["Fertig"].tap()
-        pickVariant("classic", in: app)
         app.buttons["difficulty-easy"].tap()
         XCTAssertTrue(app.buttons["cell-2"].waitForExistence(timeout: 5))
         app.navigationBars.buttons.firstMatch.tap()
