@@ -12,7 +12,9 @@ runs:
         SHA256: 4d9e34b62172d645eed6457cac13fc222569974098ef4ee9c3368bedf0196806
       run: |
         ZIP="$RUNNER_TEMP/xcodegen.zip"
-        curl -sSLf -o "$ZIP" "https://github.com/yonaskolb/XcodeGen/releases/download/$VERSION/xcodegen.zip"
+        # Retries: the release download sometimes answers 504 for a while; the checksum below still guards the file.
+        curl -sSLf --retry 5 --retry-all-errors --retry-delay 10 -o "$ZIP" \
+          "https://github.com/yonaskolb/XcodeGen/releases/download/$VERSION/xcodegen.zip"
         echo "$SHA256  $ZIP" | shasum -a 256 -c -
         unzip -q -o "$ZIP" -d "$RUNNER_TEMP"
         "$RUNNER_TEMP/xcodegen/bin/xcodegen" generate
