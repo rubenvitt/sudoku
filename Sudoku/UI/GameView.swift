@@ -26,6 +26,8 @@ struct GameView: View {
     /// Edits per cell that did not come from the pencil; see `ScribbleLayer.revisions`.
     @State private var revisions: [Int: Int] = [:]
     @State private var showsRule = false
+    /// Set when the solve beat the best time so far, for the result card.
+    @State private var isBestTime = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.accent) private var accent
@@ -102,7 +104,7 @@ struct GameView: View {
         }
         .overlay {
             if game.isSolved {
-                ResultView(game: game, onNewGame: { onNewGame(game.puzzle.difficulty) }, onMenu: onMenu)
+                ResultView(game: game, isBestTime: isBestTime, onNewGame: { onNewGame(game.puzzle.difficulty) }, onMenu: onMenu)
                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
             }
         }
@@ -314,6 +316,7 @@ struct GameView: View {
         focus = []
         if game.isSolved {
             try? store.deleteGame() // a leftover save only offers a finished game once more
+            isBestTime = store.updateStatistics { $0.recordSolve(game) } ?? false // no badge for a record that wasn't kept
             return
         }
         if game.isFull { game.markErrors() }

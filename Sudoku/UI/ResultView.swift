@@ -3,6 +3,7 @@ import SudokuEngine
 
 struct ResultView: View {
     let game: Game
+    var isBestTime = false
     let onNewGame: () -> Void
     let onMenu: () -> Void
     @State private var starting = false
@@ -23,6 +24,14 @@ struct ResultView: View {
                     Text("\(game.puzzle.label) in \(game.elapsed.clock)")
                         .font(.title3.monospacedDigit())
                         .foregroundStyle(.secondary)
+                    if isBestTime {
+                        Label("Neue Bestzeit", systemImage: "trophy.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.orange)
+                            .padding(.horizontal, 12).padding(.vertical, 6)
+                            .background(Color.orange.opacity(0.15), in: .capsule)
+                            .accessibilityIdentifier("bestTime")
+                    }
                 }
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
                     tile("Zeit", game.elapsed.clock, "stopwatch", .blue)

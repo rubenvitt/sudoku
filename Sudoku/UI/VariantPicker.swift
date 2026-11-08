@@ -44,7 +44,6 @@ struct VariantCard: View {
         }
         .buttonStyle(PressableStyle())
         .opacity(isEnabled ? 1 : 0.5)
-        .accessibilityElement(children: .ignore)
         .accessibilityLabel("Spielart")
         .accessibilityValue(variant.title)
         .accessibilityHint(variant.rule)
@@ -113,7 +112,6 @@ struct VariantSheet: View {
             .contentShape(.rect(cornerRadius: 20, style: .continuous))
         }
         .buttonStyle(PressableStyle())
-        .accessibilityElement(children: .ignore)
         .accessibilityLabel(variant.title)
         .accessibilityHint(variant.rule)
         .accessibilityAddTraits(isSelected ? .isSelected : [])

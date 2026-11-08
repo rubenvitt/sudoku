@@ -19,6 +19,7 @@ struct Store: Sendable {
         directory.appending(path: variant == .classic ? "stock.json" : "stock-\(variant.id).json")
     }
     private var inkURL: URL { directory.appending(path: "ink.json") }
+    private var statisticsURL: URL { directory.appending(path: "statistics.json") }
 
     /// Missing and corrupt files both mean "no saved game".
     func loadGame() -> Game? { load(Game.self, from: gameURL) }
@@ -59,6 +60,20 @@ struct Store: Sendable {
     func loadPractice() -> [String: Int] { load([String: Int].self, from: practiceURL) ?? [:] }
 
     func savePractice(_ solved: [String: Int]) throws { try write(solved, to: practiceURL) }
+
+    /// Missing or corrupt means no games played yet.
+    func loadStatistics() -> Statistics { load(Statistics.self, from: statisticsURL) ?? Statistics() }
+
+    func saveStatistics(_ statistics: Statistics) throws { try write(statistics, to: statisticsURL) }
+
+    /// Reads, changes and writes the statistics. Nil if the write failed: that game is then missing from them.
+    @discardableResult
+    func updateStatistics<T>(_ change: (inout Statistics) -> T) -> T? {
+        var statistics = loadStatistics()
+        let result = change(&statistics)
+        do { try saveStatistics(statistics) } catch { return nil }
+        return result
+    }
 
     private func load<T: Decodable>(_ type: T.Type, from url: URL) -> T? {
         guard let data = try? Data(contentsOf: url) else { return nil }
