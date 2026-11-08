@@ -86,7 +86,7 @@ final class SmokeTests: XCTestCase {
                           fill: jigsawGivens.indices.filter { jigsawGivens[$0] == "." }.prefix(18), select: 40)
 
         let app = launch(["-uiTestFixedPuzzle"], language: language)
-        app.buttons["variant-classic"].tap() // the app remembers the last variant across launches
+        pickVariant("classic", in: app) // the app remembers the last variant across launches
         app.buttons["difficulty-easy"].tap()
 
         func cell(_ index: Int) -> XCUIElement { app.buttons["cell-\(index)"] }
@@ -129,13 +129,7 @@ final class SmokeTests: XCTestCase {
     private func variantScreenshot(_ id: String, _ name: String, language: String, solution: [Character],
                                    fill: some Sequence<Int>, select: Int) {
         let app = launch(["-uiTestFixedPuzzle"], language: language)
-        let variant = app.buttons["variant-\(id)"]
-        XCTAssertTrue(variant.waitForExistence(timeout: 5))
-        for _ in 0..<3 where !variant.isHittable {
-            app.descendants(matching: .any)["variant"].firstMatch.swipeLeft()
-        }
-        XCTAssertTrue(variant.isHittable, "variant-\(id) is not reachable in the picker")
-        variant.tap()
+        pickVariant(id, in: app)
         app.buttons["difficulty-easy"].tap()
         for index in fill {
             app.buttons["cell-\(index)"].tap()
@@ -144,6 +138,18 @@ final class SmokeTests: XCTestCase {
         app.buttons["cell-\(select)"].tap()
         attachScreenshot(name)
         app.terminate()
+    }
+
+    /// Opens the variant sheet from the menu and picks the variant `id`, which closes the sheet again.
+    @MainActor
+    private func pickVariant(_ id: String, in app: XCUIApplication) {
+        let card = app.buttons["variant"]
+        XCTAssertTrue(card.waitForExistence(timeout: 5))
+        card.tap()
+        let tile = app.buttons["variant-\(id)"]
+        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        tile.tap()
+        XCTAssertTrue(tile.waitForNonExistence(timeout: 5), "the variant sheet did not close")
     }
 
     /// The app in `language`; German by default, which the labels in these tests are written in.
