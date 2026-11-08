@@ -18,6 +18,7 @@ struct GameView: View {
     @State private var banner: String?
     /// Edits per cell that did not come from the pencil; see `ScribbleLayer.revisions`.
     @State private var revisions: [Int: Int] = [:]
+    @State private var showsRule = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.accent) private var accent
@@ -100,18 +101,42 @@ struct GameView: View {
         .onDisappear { save(); onLeave() }
     }
 
+    /// Variant, difficulty and time. Tapping it shows the variant's rule, for a first Killer or Jigsaw game.
     private var title: some View {
-        VStack(spacing: 0) {
-            Text(game.puzzle.label)
+        Button { showsRule = true } label: {
+            VStack(spacing: 0) {
+                HStack(spacing: 3) {
+                    Text(game.puzzle.label)
+                    Image(systemName: "info.circle")
+                        .imageScale(.small)
+                }
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
-            Text(game.elapsed.clock)
-                .font(.system(.headline, design: .rounded).monospacedDigit())
-                .contentTransition(.numericText())
+                Text(game.elapsed.clock)
+                    .font(.system(.headline, design: .rounded).monospacedDigit())
+                    .foregroundStyle(.primary)
+                    .contentTransition(.numericText())
+            }
+        }
+        .buttonStyle(.plain)
+        .popover(isPresented: $showsRule) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(game.puzzle.variant.offered.title).font(.headline)
+                Text(game.puzzle.variant.offered.rule)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding()
+            .frame(idealWidth: 280, alignment: .leading)
+            .presentationCompactAdaptation(.popover)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(game.puzzle.label), Zeit \(game.elapsed.clock)")
+        .accessibilityHint("Zeigt die Regel der Spielart.")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier("rule")
     }
 
     private var board: some View {
