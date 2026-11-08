@@ -91,12 +91,34 @@ struct GridView: View, Equatable {
         if value == 0 && !notes.isEmpty {
             label += ", " + String(localized: "Notizen \(notes.map(String.init).joined(separator: ", "))")
         }
-        if let cage = game.puzzle.variant.cages.first(where: { $0.cells.contains(index) }) {
+        let variant = game.puzzle.variant
+        if let cage = variant.cages.first(where: { $0.cells.contains(index) }) {
             label += ", " + String(localized: "Käfigsumme \(cage.sum)")
+        }
+        if let thermo = variant.thermoPlace(of: index) {
+            label += ", " + String(localized: "Thermometer, Feld \(thermo.place) von \(thermo.length)")
+        }
+        for dot in variant.dots where dot.cells.contains(index) {
+            label += ", " + Self.describe(dot, from: index)
         }
         if isGiven { label += ", " + String(localized: "vorgegeben") }
         if isWrong { label += ", " + String(localized: "falsch") }
         return label
+    }
+
+    /// "weißer Punkt rechts": the dot's colour and on which side of `cell` it sits.
+    private static func describe(_ dot: Dot, from cell: Int) -> String {
+        let other = dot.cells[0] == cell ? dot.cells[1] : dot.cells[0]
+        switch (dot.kind, other - cell) {
+        case (.white, 1): return String(localized: "weißer Punkt rechts")
+        case (.white, -1): return String(localized: "weißer Punkt links")
+        case (.white, 9): return String(localized: "weißer Punkt unten")
+        case (.white, _): return String(localized: "weißer Punkt oben")
+        case (.black, 1): return String(localized: "schwarzer Punkt rechts")
+        case (.black, -1): return String(localized: "schwarzer Punkt links")
+        case (.black, 9): return String(localized: "schwarzer Punkt unten")
+        case (.black, _): return String(localized: "schwarzer Punkt oben")
+        }
     }
 
     /// Notes of `highlight`, the digit in the selected cell, stand out so its candidates are easy to spot.
@@ -131,19 +153,21 @@ struct GridView: View, Equatable {
     }
 
     /// Cells of the variant's extra groups (diagonals, windows) are tinted, so the extra rule is visible
-    /// without lines crossing the handwriting.
+    /// without lines crossing the handwriting. Thermometers lie under the digits the same way.
     private var shading: some View {
-        let cells = Set(game.puzzle.variant.extras.joined())
+        let variant = game.puzzle.variant
+        let cells = Set(variant.extras.joined())
         return Canvas { context, size in
             let step = size.width / 9
             for index in cells {
                 let rect = CGRect(x: CGFloat(index % 9) * step, y: CGFloat(index / 9) * step, width: step, height: step)
                 context.fill(Path(rect), with: .color(Color(.tertiarySystemFill)))
             }
+            variant.drawThermos(in: context, side: size.width, color: Color(.systemGray4))
         }
     }
 
-    /// Thin lines between all cells; thick ones where regions meet, so Jigsaw regions show their shape.
+    /// Thin lines between all cells; thick ones where regions meet, so Jigsaw regions show their shape. Then Kropki dots.
     private var lines: some View {
         let variant = game.puzzle.variant
         return Canvas { context, size in
@@ -157,6 +181,8 @@ struct GridView: View, Equatable {
             context.stroke(thin, with: .color(Color(.separator)), lineWidth: 0.5)
             context.stroke(variant.regionBorders(side: size.width), with: .color(Color(.label).opacity(0.8)),
                            style: StrokeStyle(lineWidth: 1.5, lineCap: .square))
+            // Kropki dots sit on the lines between their cells.
+            variant.drawDots(in: context, side: size.width, ink: Color(.label))
         }
     }
 

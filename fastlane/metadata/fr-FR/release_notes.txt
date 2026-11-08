@@ -1,2 +1,2 @@
-• Deux nouvelles variantes : Jigsaw, avec des zones irrégulières à la place des blocs, et Killer, avec des cages dont les chiffres font une somme donnée. Les indices expliquent aussi les sommes de cage et la règle des 45.
+• Quatre nouvelles variantes : Jigsaw, avec des zones irrégulières à la place des blocs ; Killer, avec des cages dont les chiffres font une somme donnée ; Thermo, avec des thermomètres le long desquels les chiffres montent ; et Kropki, avec des points blancs et noirs entre cases voisines. Les indices expliquent aussi les sommes de cage, la règle des 45, les thermomètres et les points.
 • Le sudoku parle désormais aussi japonais, coréen, néerlandais et portugais (Brésil), y compris toutes les explications des indices.

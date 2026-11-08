@@ -7,6 +7,8 @@ extension Variant {
         case "windoku": String(localized: "Windoku")
         case "jigsaw": String(localized: "Jigsaw")
         case "killer": String(localized: "Killer")
+        case "thermo": String(localized: "Thermo")
+        case "kropki": String(localized: "Kropki")
         default: String(localized: "Klassisch")
         }
     }
@@ -18,6 +20,8 @@ extension Variant {
         case "windoku": String(localized: "Auch die vier grauen Fenster enthalten 1 bis 9.")
         case "jigsaw": String(localized: "Statt Kästen gibt es neun verwinkelte Gebiete, jedes enthält 1 bis 9.")
         case "killer": String(localized: "Die Ziffern jedes Käfigs ergeben seine kleine Zahl und wiederholen sich darin nicht.")
+        case "thermo": String(localized: "Auf jedem Thermometer steigen die Ziffern vom Kolben aus an.")
+        case "kropki": String(localized: "Am weißen Punkt folgen zwei Ziffern aufeinander, am schwarzen ist eine doppelt so groß wie die andere.")
         default: String(localized: "Jede Zeile, Spalte und jeder Kasten enthält 1 bis 9.")
         }
     }

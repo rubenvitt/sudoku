@@ -52,12 +52,9 @@ struct MenuView: View {
                 if let saved { continueCard(saved) }
 
                 VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Neues Spiel").font(.title2.bold()).accessibilityAddTraits(.isHeader)
-                        Text(variant.rule).font(.subheadline).foregroundStyle(.secondary)
-                    }
-                    .padding(.horizontal, 4)
-                    VariantPicker(selection: $variantID)
+                    Text("Neues Spiel").font(.title2.bold()).accessibilityAddTraits(.isHeader)
+                        .padding(.horizontal, 4)
+                    VariantCard(selection: $variantID)
                         .disabled(starting != nil)
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 280), spacing: 12)], spacing: 12) {
                         ForEach(variant.difficulties, id: \.self) { difficulty in
@@ -166,45 +163,6 @@ struct MenuView: View {
             saved = game
             path = [Session(game: game)]
         }
-    }
-}
-
-/// One capsule per variant in a row that scrolls sideways, so every variant keeps its full name.
-private struct VariantPicker: View {
-    @Binding var selection: String
-    @Environment(\.accent) private var accent
-    @Environment(\.isEnabled) private var isEnabled
-
-    var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 8) {
-                ForEach(Variant.all, id: \.id) { variant in
-                    let isSelected = variant.id == selection
-                    Button { selection = variant.id } label: {
-                        Text(variant.title)
-                            .font(.subheadline.weight(.semibold))
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 9)
-                            .foregroundStyle(isSelected ? AnyShapeStyle(.white) : AnyShapeStyle(.primary))
-                            .background(isSelected ? AnyShapeStyle(accent) : AnyShapeStyle(Color(.secondarySystemGroupedBackground)),
-                                        in: .capsule)
-                            .contentShape(.capsule)
-                    }
-                    .buttonStyle(PressableStyle())
-                    .accessibilityAddTraits(isSelected ? .isSelected : [])
-                    .accessibilityIdentifier("variant-\(variant.id)")
-                }
-            }
-            .padding(.horizontal, 4)
-            .padding(.vertical, 2)
-        }
-        .scrollIndicators(.hidden)
-        .scrollClipDisabled()
-        .opacity(isEnabled ? 1 : 0.5)
-        .animation(.easeOut(duration: 0.15), value: selection)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("Spielart")
-        .accessibilityIdentifier("variant")
     }
 }
 

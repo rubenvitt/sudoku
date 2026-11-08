@@ -42,6 +42,38 @@ func canMake(_ sum: Int, count: Int, from available: CandidateMask) -> Bool {
     return digitCombinations[count][sum].contains { $0 & ~available == 0 }
 }
 
+/// Per cell: every cell a thermometer or dot ties it to, with the digits that fit here for each digit there (index 1…9).
+func relationLinks(_ variant: Variant) -> [[(other: Int, fits: [CandidateMask])]] {
+    var links = [[(other: Int, fits: [CandidateMask])]](repeating: [], count: 81)
+    func table(_ fits: (Int, Int) -> Bool) -> [CandidateMask] {
+        (0...9).map { there in (1...9).filter { fits($0, there) }.reduce(CandidateMask(0)) { $0 | 1 << ($1 - 1) } }
+    }
+    for thermo in variant.thermos {
+        for (low, high) in zip(thermo, thermo.dropFirst()) {
+            links[low].append((other: high, fits: table { here, there in here < there }))
+            links[high].append((other: low, fits: table { here, there in here > there }))
+        }
+    }
+    for dot in variant.dots {
+        let fits = table(dot.allows)
+        links[dot.cells[0]].append((other: dot.cells[1], fits: fits))
+        links[dot.cells[1]].append((other: dot.cells[0], fits: fits))
+    }
+    return links
+}
+
+/// Per cell: the digits its place on a thermometer leaves room for. The third cell of five holds at least 3 and at most 7.
+func thermoBounds(_ variant: Variant) -> [CandidateMask] {
+    var bounds = [CandidateMask](repeating: 0x1FF, count: 81)
+    for thermo in variant.thermos {
+        for (i, cell) in thermo.enumerated() {
+            let low = i + 1, high = 9 - (thermo.count - 1 - i)
+            bounds[cell] = low <= high ? (low...high).reduce(CandidateMask(0)) { $0 | 1 << ($1 - 1) } : 0
+        }
+    }
+    return bounds
+}
+
 private struct Search {
     let limit: Int
     let maxNodes: Int
@@ -56,6 +88,10 @@ private struct Search {
     private var cageUsed: [CandidateMask]
     private var cageTotal: [Int]
     private var cageOpen: [Int]
+    /// Thermometers and dots as pairs: `links[cell]` lists each other cell with, per digit there, the digits that fit here.
+    private let links: [[(other: Int, fits: [CandidateMask])]]
+    /// Digits a thermometer leaves room for at the cell's place on it.
+    private let bounds: [CandidateMask]
     private var valid = true
 
     init(_ grid: Grid, _ variant: Variant, limit: Int, maxNodes: Int = .max) {
@@ -74,9 +110,11 @@ private struct Search {
         cageUsed = [CandidateMask](repeating: 0, count: variant.cages.count)
         cageTotal = [Int](repeating: 0, count: variant.cages.count)
         cageOpen = variant.cages.map(\.cells.count)
+        links = relationLinks(variant)
+        bounds = thermoBounds(variant)
         for cell in 0..<81 where cells[cell] != 0 {
             let bit: CandidateMask = 1 << (cells[cell] - 1)
-            if groupMask(cell) & bit == 0 { valid = false }
+            if groupMask(cell) & bit == 0 || relationMask(cell) & bit == 0 { valid = false }
             for g in cellGroups[cell] { used[g] |= bit }
             let k = cageOf[cell]
             if k >= 0 {
@@ -96,9 +134,16 @@ private struct Search {
         ~cellGroups[cell].reduce(CandidateMask(0)) { $0 | used[$1] } & 0x1FF
     }
 
-    /// Group candidates, minus digits that leave the cell's cage unable to reach its sum.
+    /// Digits that fit the thermometers and dots, given the digits placed in the linked cells.
+    private func relationMask(_ cell: Int) -> CandidateMask {
+        var m = bounds[cell]
+        for link in links[cell] where cells[link.other] != 0 { m &= link.fits[Int(cells[link.other])] }
+        return m
+    }
+
+    /// Group candidates, minus digits that break a thermometer or dot or leave the cell's cage unable to reach its sum.
     private func mask(_ cell: Int) -> CandidateMask {
-        let m = groupMask(cell)
+        let m = groupMask(cell) & relationMask(cell)
         let k = cageOf[cell]
         guard k >= 0 else { return m }
         let free = ~cageUsed[k] & 0x1FF
