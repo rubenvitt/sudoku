@@ -1,3 +1,5 @@
+require "openssl"
+
 default_platform(:ios)
 
 APP_IDENTIFIER = "dev.rubeen.sudoku"
@@ -32,6 +34,30 @@ platform :ios do
       raise unless distribute && e.message.include?("Another build is in review")
       UI.important("Uploaded, but not handed to #{group}: another build of this version is still in beta review. " \
                    "Internal testers have it; add it to #{group} in App Store Connect once that review is done.")
+    end
+  end
+
+  desc "Revoke the Apple Development certificates Xcode made on this CI runner"
+  desc "Cloud signing creates one per fresh runner, and the team may only hold a few; left behind, they block later archives."
+  lane :revoke_runner_certificates do
+    pems = `security find-certificate -a -c "Apple Development" -p 2>/dev/null`
+           .scan(/-----BEGIN CERTIFICATE-----.+?-----END CERTIFICATE-----/m)
+    serials = pems.map { |pem| normalized_serial(OpenSSL::X509::Certificate.new(pem).serial.to_s(16)) }
+    if serials.empty?
+      UI.message("No Apple Development certificate on this runner, nothing to revoke")
+      next
+    end
+    development = [
+      Spaceship::ConnectAPI::Certificate::CertificateType::DEVELOPMENT,
+      Spaceship::ConnectAPI::Certificate::CertificateType::IOS_DEVELOPMENT
+    ]
+    asc_api_key
+    # Only a certificate whose private key sits in this runner's keychain matches, so certificates made on a Mac stay.
+    Spaceship::ConnectAPI::Certificate.all.each do |certificate|
+      next unless development.include?(certificate.certificate_type)
+      next unless serials.include?(normalized_serial(certificate.serial_number))
+      certificate.delete!
+      UI.success("Revoked #{certificate.name} (#{certificate.serial_number}), made on this runner")
     end
   end
 
@@ -99,6 +125,10 @@ def review_information
     phone_number: ENV["REVIEW_PHONE"]
   }.reject { |_, value| value.to_s.empty? }
   contact.merge(notes: notes, demo_required: false)
+end
+
+def normalized_serial(serial)
+  serial.to_s.upcase.sub(/\A0+/, "")
 end
 
 def marketing_version
