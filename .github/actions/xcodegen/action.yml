@@ -2,19 +2,28 @@ name: XcodeGen
 description: Installs a pinned, checksum-verified XcodeGen release and generates Sudoku.xcodeproj.
 
 # Pinned instead of `brew install xcodegen`, so a new release (or a tampered bottle) never reaches the jobs that hold
-# the App Store Connect key. To update: change VERSION and SHA256 (shasum -a 256 of the release's xcodegen.zip).
+# the App Store Connect key. To update: change VERSION and SHA256 (also in the cache key) (shasum -a 256 of the release's xcodegen.zip).
 runs:
   using: composite
   steps:
+    # Keeps the release zip between runs, so a job only needs GitHub's release download when VERSION changes.
+    # The checksum below still checks the cached file.
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: ${{ runner.temp }}/xcodegen-cache
+        key: xcodegen-2.46.0-4d9e34b62172d645eed6457cac13fc222569974098ef4ee9c3368bedf0196806
     - shell: bash
       env:
         VERSION: 2.46.0
         SHA256: 4d9e34b62172d645eed6457cac13fc222569974098ef4ee9c3368bedf0196806
       run: |
-        ZIP="$RUNNER_TEMP/xcodegen.zip"
-        # Retries: the release download sometimes answers 504 for a while; the checksum below still guards the file.
-        curl -sSLf --retry 5 --retry-all-errors --retry-delay 10 -o "$ZIP" \
-          "https://github.com/yonaskolb/XcodeGen/releases/download/$VERSION/xcodegen.zip"
+        mkdir -p "$RUNNER_TEMP/xcodegen-cache"
+        ZIP="$RUNNER_TEMP/xcodegen-cache/xcodegen-$VERSION.zip"
+        if [ ! -f "$ZIP" ]; then
+          # Retries: the release download sometimes answers 504 for a while; the checksum below still guards the file.
+          curl -sSLf --retry 8 --retry-all-errors --retry-delay 15 -o "$ZIP" \
+            "https://github.com/yonaskolb/XcodeGen/releases/download/$VERSION/xcodegen.zip"
+        fi
         echo "$SHA256  $ZIP" | shasum -a 256 -c -
         unzip -q -o "$ZIP" -d "$RUNNER_TEMP"
         "$RUNNER_TEMP/xcodegen/bin/xcodegen" generate
