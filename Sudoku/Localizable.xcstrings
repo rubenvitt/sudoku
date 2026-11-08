@@ -435,60 +435,60 @@
         }
       }
     },
-    "Am weißen Punkt folgen zwei Ziffern aufeinander, am schwarzen ist eine doppelt so groß wie die andere." : {
+    "Am weißen Punkt folgen zwei Ziffern aufeinander, am schwarzen ist eine doppelt so groß wie die andere. Nicht jedes solche Paar hat einen Punkt." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Am weißen Punkt folgen zwei Ziffern aufeinander, am schwarzen ist eine doppelt so groß wie die andere."
+            "value" : "Am weißen Punkt folgen zwei Ziffern aufeinander, am schwarzen ist eine doppelt so groß wie die andere. Nicht jedes solche Paar hat einen Punkt."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Digits at a white dot are consecutive; at a black dot one is twice the other."
+            "value" : "Digits at a white dot are consecutive; at a black dot one is twice the other. Not every such pair has a dot."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En un punto blanco los dígitos son consecutivos; en uno negro, uno es el doble del otro."
+            "value" : "En un punto blanco los dígitos son consecutivos; en uno negro, uno es el doble del otro. No todos esos pares tienen punto."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "À un point blanc, les chiffres se suivent ; à un point noir, l'un est le double de l'autre."
+            "value" : "À un point blanc, les chiffres se suivent ; à un point noir, l'un est le double de l'autre. Toutes ces paires n'ont pas forcément de point."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A un punto bianco le cifre sono consecutive; a uno nero una è il doppio dell'altra."
+            "value" : "A un punto bianco le cifre sono consecutive; a uno nero una è il doppio dell'altra. Non tutte queste coppie hanno un punto."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "白い点の両側は連続した数字、黒い点の両側は一方がもう一方の2倍です。"
+            "value" : "白い点の両側は連続した数字、黒い点の両側は一方がもう一方の2倍です。そうした組すべてに点があるとは限りません。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "흰 점 양쪽은 연속된 숫자이고, 검은 점 양쪽은 한쪽이 다른 쪽의 두 배입니다."
+            "value" : "흰 점 양쪽은 연속된 숫자이고, 검은 점 양쪽은 한쪽이 다른 쪽의 두 배입니다. 그런 쌍마다 점이 있는 것은 아니에요."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bij een witte stip volgen de cijfers op elkaar; bij een zwarte is het ene het dubbele van het andere."
+            "value" : "Bij een witte stip volgen de cijfers op elkaar; bij een zwarte is het ene het dubbele van het andere. Niet elk zulk paar heeft een stip."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Num ponto branco os dígitos são consecutivos; num preto, um é o dobro do outro."
+            "value" : "Num ponto branco os dígitos são consecutivos; num preto, um é o dobro do outro. Nem todo par assim tem ponto."
           }
         }
       }

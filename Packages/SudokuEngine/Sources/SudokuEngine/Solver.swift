@@ -68,7 +68,8 @@ func thermoBounds(_ variant: Variant) -> [CandidateMask] {
     for thermo in variant.thermos {
         for (i, cell) in thermo.enumerated() {
             let low = i + 1, high = 9 - (thermo.count - 1 - i)
-            bounds[cell] = low <= high ? (low...high).reduce(CandidateMask(0)) { $0 | 1 << ($1 - 1) } : 0
+            // Intersected, so a cell on two thermometers keeps both bounds.
+            bounds[cell] &= low <= high ? (low...high).reduce(CandidateMask(0)) { $0 | 1 << ($1 - 1) } : 0
         }
     }
     return bounds
