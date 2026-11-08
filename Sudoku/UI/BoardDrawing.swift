@@ -127,10 +127,11 @@ extension Variant {
         }
     }
 
-    /// Where `cell` sits on a thermometer: its place counted from the bulb, and the thermometer's length.
-    func thermoPlace(of cell: Int) -> (place: Int, length: Int)? {
+    /// Where `cell` sits on a thermometer: its place counted from the bulb, the thermometer's length and the
+    /// cell that follows it, nil at the tip.
+    func thermoPlace(of cell: Int) -> (place: Int, length: Int, next: Int?)? {
         for thermo in thermos {
-            if let i = thermo.firstIndex(of: cell) { return (i + 1, thermo.count) }
+            if let i = thermo.firstIndex(of: cell) { return (i + 1, thermo.count, thermo.dropFirst(i + 1).first) }
         }
         return nil
     }

@@ -4619,6 +4619,64 @@
         }
       }
     },
+    "weiter in Zeile %lld, Spalte %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "weiter in Zeile %1$lld, Spalte %2$lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "continues in row %1$lld, column %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sigue en la fila %1$lld, columna %2$lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "continue en ligne %1$lld, colonne %2$lld"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "prosegue nella riga %1$lld, colonna %2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次は%1$lld行%2$lld列"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음은 %1$lld행 %2$lld열"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "gaat verder in rij %1$lld, kolom %2$lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "continua na linha %1$lld, coluna %2$lld"
+          }
+        }
+      }
+    },
     "weißer Punkt links" : {
       "localizations" : {
         "de" : {

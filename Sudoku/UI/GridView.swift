@@ -97,6 +97,9 @@ struct GridView: View, Equatable {
         }
         if let thermo = variant.thermoPlace(of: index) {
             label += ", " + String(localized: "Thermometer, Feld \(thermo.place) von \(thermo.length)")
+            if let next = thermo.next { // adjacent thermometers would otherwise sound alike
+                label += ", " + String(localized: "weiter in Zeile \(next / 9 + 1), Spalte \(next % 9 + 1)")
+            }
         }
         for dot in variant.dots where dot.cells.contains(index) {
             label += ", " + Self.describe(dot, from: index)
