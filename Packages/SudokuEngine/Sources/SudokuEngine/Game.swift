@@ -65,6 +65,14 @@ public struct Game: Codable, Sendable {
         notes = [CandidateMask](repeating: 0, count: 81)
     }
 
+    /// A game whose notes are already filled in, as a practice exercise starts.
+    public init(puzzle: Puzzle, notes: [CandidateMask]) {
+        precondition(notes.count == 81, "one note mask per cell")
+        self.puzzle = puzzle
+        entries = puzzle.givens
+        self.notes = notes
+    }
+
     public var canUndo: Bool { !undoStack.isEmpty }
     public var canRedo: Bool { !redoStack.isEmpty }
     public var isFull: Bool { entries.isComplete }

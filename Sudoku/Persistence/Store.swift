@@ -47,6 +47,19 @@ struct Store: Sendable {
         try write(stock, to: stockURL(variant))
     }
 
+    private var exercisesURL: URL { directory.appending(path: "exercises.json") }
+    private var practiceURL: URL { directory.appending(path: "practice.json") }
+
+    /// Mined practice exercises by technique name; missing or corrupt means none, and the starters fill in.
+    func loadExercises() -> [String: [Exercise]] { load([String: [Exercise]].self, from: exercisesURL) ?? [:] }
+
+    func saveExercises(_ exercises: [String: [Exercise]]) throws { try write(exercises, to: exercisesURL) }
+
+    /// Solved exercises by technique name.
+    func loadPractice() -> [String: Int] { load([String: Int].self, from: practiceURL) ?? [:] }
+
+    func savePractice(_ solved: [String: Int]) throws { try write(solved, to: practiceURL) }
+
     private func load<T: Decodable>(_ type: T.Type, from url: URL) -> T? {
         guard let data = try? Data(contentsOf: url) else { return nil }
         return try? JSONDecoder().decode(type, from: data)

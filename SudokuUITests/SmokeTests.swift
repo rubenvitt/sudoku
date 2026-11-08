@@ -8,6 +8,32 @@ final class SmokeTests: XCTestCase {
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
     }
 
+    /// Menu → technique list → technique page with its example → an exercise, solved by asking for all help.
+    @MainActor
+    func testPracticeAnExercise() {
+        let app = launch(["-uiTestFixedPuzzle"])
+        scrollTo(app.buttons["practice"], in: app).tap()
+        app.buttons["technique-nakedSingle"].tap()
+        scrollTo(app.buttons["show-step"], in: app).tap()
+        scrollTo(app.buttons["try"], in: app).tap()
+        let hint = app.buttons["hint"]
+        XCTAssertTrue(hint.waitForExistence(timeout: 5))
+        for _ in 0..<4 { hint.tap() }
+        let next = app.buttons["next-exercise"]
+        XCTAssertTrue(next.waitForExistence(timeout: 5), "the fourth help shows the solution")
+        next.tap()
+        XCTAssertTrue(hint.waitForExistence(timeout: 5))
+        XCTAssertFalse(next.exists, "a fresh exercise")
+    }
+
+    /// Swipes up until `element` can be tapped, for screens taller than the device.
+    @MainActor
+    private func scrollTo(_ element: XCUIElement, in app: XCUIApplication) -> XCUIElement {
+        XCTAssertTrue(element.waitForExistence(timeout: 5))
+        for _ in 0..<5 where !element.isHittable { app.swipeUp() }
+        return element
+    }
+
     @MainActor
     func testStartGameEnterDigitAndCheck() {
         let app = launch(["-uiTestFixedPuzzle"])
