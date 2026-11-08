@@ -16,7 +16,7 @@ DEIN SPIEL BLEIBT, WO ES IST
 Jeder Zug wird sofort gespeichert. Schließ die App, wann du willst – beim nächsten Öffnen geht es genau dort weiter.
 
 AUSSERDEM
-• Fünf Varianten: klassisch, Diagonal, Windoku, Jigsaw und Killer
+• Sieben Varianten: klassisch, Diagonal, Windoku, Jigsaw, Killer, Thermo und Kropki
 • Notizen für Kandidaten, passende Ziffern werden hervorgehoben
 • Rückgängig und Wiederholen, auch per Zwei-Finger-Tipp
 • Auswertung mit Zeit, Tipps und gefundenen Fehlern

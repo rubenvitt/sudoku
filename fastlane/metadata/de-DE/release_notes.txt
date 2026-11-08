@@ -1,2 +1,2 @@
-• Zwei neue Varianten: Jigsaw mit verwinkelten Gebieten statt Kästen und Killer mit Käfigen, deren Ziffern eine vorgegebene Summe ergeben. Die Tipps erklären auch Käfigsummen und die 45er-Regel.
+• Vier neue Varianten: Jigsaw mit verwinkelten Gebieten statt Kästen, Killer mit Käfigen, deren Ziffern eine vorgegebene Summe ergeben, Thermo mit Thermometern, auf denen die Ziffern ansteigen, und Kropki mit weißen und schwarzen Punkten zwischen Nachbarfeldern. Die Tipps erklären auch Käfigsummen, die 45er-Regel, Thermometer und Punkte.
 • Sudoku spricht jetzt auch Japanisch, Koreanisch, Niederländisch und Portugiesisch (Brasilien), samt allen Tipp-Erklärungen.

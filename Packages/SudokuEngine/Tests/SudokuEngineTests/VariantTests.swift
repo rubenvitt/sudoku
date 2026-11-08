@@ -16,9 +16,9 @@ final class VariantTests: XCTestCase {
     }
 
     func testEveryVariantIsFoundByItsId() {
-        XCTAssertEqual(Variant.all.map(\.id), ["classic", "diagonal", "windoku", "jigsaw", "killer"])
+        XCTAssertEqual(Variant.all.map(\.id), ["classic", "diagonal", "windoku", "jigsaw", "killer", "thermo", "kropki"])
         for variant in Variant.all { XCTAssertEqual(Variant.named(variant.id), variant) }
-        XCTAssertNil(Variant.named("thermo"))
+        XCTAssertNil(Variant.named("arrow"))
     }
 
     func testVariantSurvivesSaving() throws {

@@ -16,7 +16,7 @@ public enum Difficulty: String, Codable, CaseIterable, Sendable {
 
 public enum Technique: Int, Comparable, CaseIterable, Sendable {
     // Ordered by difficulty: grading keeps the hardest technique used, by this order.
-    case nakedSingle, hiddenSingle, cageSum, intersection, rule45, nakedPair, hiddenPair, nakedTriple, xWing, swordfish, xyWing
+    case nakedSingle, hiddenSingle, cageSum, thermo, kropki, intersection, rule45, nakedPair, hiddenPair, nakedTriple, xWing, swordfish, xyWing
 
     public var title: String { title(language: nil) }
 
@@ -26,6 +26,8 @@ public enum Technique: Int, Comparable, CaseIterable, Sendable {
         case .nakedSingle: localized("Nackter Einer", language)
         case .hiddenSingle: localized("Versteckter Einer", language)
         case .cageSum: localized("Käfigsumme", language)
+        case .thermo: localized("Thermometer", language)
+        case .kropki: localized("Kropki-Punkt", language)
         case .rule45: localized("45er-Regel", language)
         case .intersection: localized("Reihe-Kasten-Check", language)
         case .nakedPair: localized("Nacktes Paar", language)
@@ -41,7 +43,7 @@ public enum Technique: Int, Comparable, CaseIterable, Sendable {
 
     public var difficulty: Difficulty {
         switch self {
-        case .nakedSingle, .hiddenSingle, .cageSum: .easy
+        case .nakedSingle, .hiddenSingle, .cageSum, .thermo, .kropki: .easy
         case .intersection, .rule45: .medium
         case .nakedPair, .hiddenPair, .nakedTriple: .hard
         case .xWing, .swordfish, .xyWing: .expert
@@ -104,7 +106,7 @@ struct Board {
     func nextStep() -> Step? {
         // In enum order; the first that applies wins. Closures keep the type checker from timing out on one long `??` chain.
         let techniques: [() -> Step?] = [
-            nakedSingle, hiddenSingle, { sumRule(.cageSum) }, intersection, { sumRule(.rule45) },
+            nakedSingle, hiddenSingle, { sumRule(.cageSum) }, thermo, kropki, intersection, { sumRule(.rule45) },
             { nakedSubset(size: 2, .nakedPair) }, hiddenPair, { nakedSubset(size: 3, .nakedTriple) },
             { fish(size: 2, .xWing) }, { fish(size: 3, .swordfish) }, xyWing,
         ]

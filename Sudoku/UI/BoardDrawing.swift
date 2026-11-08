@@ -91,3 +91,48 @@ extension Cage {
         return path
     }
 }
+
+/// Thermometers and Kropki dots, shared by the board and the menu's miniatures.
+extension Variant {
+    /// A bulb on each thermometer's first cell and a tube through the centres of the others, `side` points wide.
+    func drawThermos(in context: GraphicsContext, side: CGFloat, color: Color) {
+        let step = side / 9
+        func centre(_ cell: Int) -> CGPoint {
+            CGPoint(x: (CGFloat(cell % 9) + 0.5) * step, y: (CGFloat(cell / 9) + 0.5) * step)
+        }
+        for thermo in thermos {
+            guard let bulb = thermo.first else { continue }
+            var tube = Path()
+            tube.move(to: centre(bulb))
+            for cell in thermo.dropFirst() { tube.addLine(to: centre(cell)) }
+            context.stroke(tube, with: .color(color), style: StrokeStyle(lineWidth: step * 0.3, lineCap: .round, lineJoin: .round))
+            let radius = step * 0.36
+            let middle = centre(bulb)
+            context.fill(Path(ellipseIn: CGRect(x: middle.x - radius, y: middle.y - radius, width: radius * 2, height: radius * 2)),
+                         with: .color(color))
+        }
+    }
+
+    /// Each dot on the middle of the edge its two cells share: white ones hollow, black ones filled, both ringed in `ink`
+    /// so they show in dark mode too. `size` is the dot's width as a share of a cell.
+    func drawDots(in context: GraphicsContext, side: CGFloat, ink: Color, size: CGFloat = 0.24) {
+        let step = side / 9
+        let radius = step * size / 2
+        for dot in dots {
+            let a = dot.cells[0], b = dot.cells[1]
+            let x = (CGFloat(a % 9 + b % 9) / 2 + 0.5) * step, y = (CGFloat(a / 9 + b / 9) / 2 + 0.5) * step
+            let circle = Path(ellipseIn: CGRect(x: x - radius, y: y - radius, width: radius * 2, height: radius * 2))
+            context.fill(circle, with: .color(dot.kind == .white ? .white : .black))
+            context.stroke(circle, with: .color(ink), lineWidth: max(0.75, step * 0.03))
+        }
+    }
+
+    /// Where `cell` sits on a thermometer: its place counted from the bulb, the thermometer's length and the
+    /// cell that follows it, nil at the tip.
+    func thermoPlace(of cell: Int) -> (place: Int, length: Int, next: Int?)? {
+        for thermo in thermos {
+            if let i = thermo.firstIndex(of: cell) { return (i + 1, thermo.count, thermo.dropFirst(i + 1).first) }
+        }
+        return nil
+    }
+}

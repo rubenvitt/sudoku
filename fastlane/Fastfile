@@ -24,7 +24,15 @@ platform :ios do
       groups: (distribute ? [group] : nil),
       skip_waiting_for_build_processing: !distribute
     }.compact
-    pilot(options)
+    begin
+      pilot(options)
+    rescue StandardError => e
+      # Apple reviews one build per version for external testing at a time. While that review runs, later builds of
+      # the version are uploaded and reach internal testers, but can't be handed to the external group yet.
+      raise unless distribute && e.message.include?("Another build is in review")
+      UI.important("Uploaded, but not handed to #{group}: another build of this version is still in beta review. " \
+                   "Internal testers have it; add it to #{group} in App Store Connect once that review is done.")
+    end
   end
 
   desc "Upload texts, review notes and (if present) fastlane/screenshots; no binary, no submission"
