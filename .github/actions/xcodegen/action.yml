@@ -16,14 +16,29 @@ runs:
       env:
         VERSION: 2.46.0
         SHA256: 4d9e34b62172d645eed6457cac13fc222569974098ef4ee9c3368bedf0196806
+        # The commit the 2.46.0 tag points at, for building from source when the release download is down.
+        COMMIT: 8445e778451c7e44237b90281bde622d764b0084
       run: |
-        mkdir -p "$RUNNER_TEMP/xcodegen-cache"
         ZIP="$RUNNER_TEMP/xcodegen-cache/xcodegen-$VERSION.zip"
         if [ ! -f "$ZIP" ]; then
-          # Retries: the release download sometimes answers 504 for a while; the checksum below still guards the file.
-          curl -sSLf --retry 8 --retry-all-errors --retry-delay 15 -o "$ZIP" \
-            "https://github.com/yonaskolb/XcodeGen/releases/download/$VERSION/xcodegen.zip"
+          mkdir -p "$RUNNER_TEMP/xcodegen-cache"
+          # The release download sometimes answers 504 for a long while; the checksum below still guards the file.
+          curl -sSLf --retry 4 --retry-all-errors --retry-delay 10 -o "$ZIP" \
+            "https://github.com/yonaskolb/XcodeGen/releases/download/$VERSION/xcodegen.zip" \
+            || rm -rf "$RUNNER_TEMP/xcodegen-cache" # no empty cache entry, so a later run downloads again
         fi
-        echo "$SHA256  $ZIP" | shasum -a 256 -c -
-        unzip -q -o "$ZIP" -d "$RUNNER_TEMP"
-        "$RUNNER_TEMP/xcodegen/bin/xcodegen" generate
+        if [ -f "$ZIP" ]; then
+          echo "$SHA256  $ZIP" | shasum -a 256 -c -
+          unzip -q -o "$ZIP" -d "$RUNNER_TEMP"
+          XCODEGEN="$RUNNER_TEMP/xcodegen/bin/xcodegen"
+        else
+          # Fallback: build the pinned commit (git works when the release download does not).
+          echo "::warning::XcodeGen release download failed; building $COMMIT from source"
+          SRC="$RUNNER_TEMP/xcodegen-src"
+          git init -q "$SRC"
+          git -C "$SRC" fetch -q --depth 1 https://github.com/yonaskolb/XcodeGen "$COMMIT"
+          git -C "$SRC" checkout -q FETCH_HEAD
+          swift build --package-path "$SRC" -c release --product xcodegen
+          XCODEGEN="$SRC/.build/release/xcodegen"
+        fi
+        "$XCODEGEN" generate
